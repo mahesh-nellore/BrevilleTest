@@ -7,7 +7,7 @@
       <class name="website.tests.AddToCartTest">
         <methods>
           <include name="initBaseConfig"/>
-          <include name="removeTheItemFromCart"/>
+          <include name="completeTillPayment"/>
           <include name="setUp"/>
           <include name="tearDown"/>
           <include name="teardown"/>

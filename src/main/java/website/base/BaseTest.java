@@ -71,7 +71,7 @@ public class BaseTest {
 	@BeforeTest
 	@Parameters({ "browser" })
 	public static void setUp(String browser) {
-		initBaseConfig();
+		// initBaseConfig();
 		if (browser.equalsIgnoreCase("chrome")) {
 			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver();
@@ -135,6 +135,22 @@ public class BaseTest {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public void waitForTheElementToVisible(WebElement element) {
+		int count = 0;
+		boolean result = false;
+		while (count < 2) {
+			try {
+				hardWait(5000);
+				result = element.isDisplayed();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+			count++;
+			if (result)
+				break;
 		}
 	}
 

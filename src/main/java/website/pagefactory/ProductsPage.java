@@ -58,7 +58,15 @@ public class ProductsPage extends BaseTest {
 	}
 
 	public void clickGoToCart() {
+		waitForElement(goToCartButton);
+		hardWait(2000);
 		goToCartButton.click();
+	}
+
+	public void clickOnAddToCartButton() {
+		waitForElement(addToCartButton);
+		hardWait(5000);
+		addToCartButton.click();
 	}
 
 }

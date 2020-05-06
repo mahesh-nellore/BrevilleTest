@@ -91,7 +91,7 @@
               <div class="suite-section-content">
                 <ul>
                   <li>
-                    <span class="method-stats">8 methods,   8 passed</span>
+                    <span class="method-stats">9 methods,   9 passed</span>
                   </li>
                   <li>
                     <span class="method-list-title passed">Passed methods</span>
@@ -103,6 +103,11 @@
                       <span>
                         <img width="3%" src="passed.png"/>
                         <a href="#" class="method navigator-link" panel-name="suite-Suite" title="website.tests.AddToCartTest" hash-for-method="addItemToCart">addItemToCart</a> <!-- method navigator-link -->
+                      </span>
+                      <br/>
+                      <span>
+                        <img width="3%" src="passed.png"/>
+                        <a href="#" class="method navigator-link" panel-name="suite-Suite" title="website.tests.AddToCartTest" hash-for-method="completeTillPayment">completeTillPayment</a> <!-- method navigator-link -->
                       </span>
                       <br/>
                       <span>
@@ -227,6 +232,13 @@
               </div> <!-- method -->
               <div class="method">
                 <div class="method-content">
+                  <a name="completeTillPayment">
+                  </a> <!-- completeTillPayment -->
+                  <span class="method-name">completeTillPayment</span>
+                </div> <!-- method-content -->
+              </div> <!-- method -->
+              <div class="method">
+                <div class="method-content">
                   <a name="removeTheItemFromCart">
                   </a> <!-- removeTheItemFromCart -->
                   <span class="method-name">removeTheItemFromCart</span>
@@ -289,44 +301,48 @@ data.addColumn('number', 'Number');
 data.addColumn('string', 'Method');
 data.addColumn('string', 'Class');
 data.addColumn('number', 'Time (ms)');
-data.addRows(8);
+data.addRows(9);
 data.setCell(0, 0, 0)
-data.setCell(0, 1, 'addItemToCart')
+data.setCell(0, 1, 'completeTillPayment')
 data.setCell(0, 2, 'website.tests.AddToCartTest')
-data.setCell(0, 3, 26434);
+data.setCell(0, 3, 64445);
 data.setCell(1, 0, 1)
-data.setCell(1, 1, 'verifySearchFunction')
-data.setCell(1, 2, 'website.tests.SearchTest')
-data.setCell(1, 3, 7266);
+data.setCell(1, 1, 'addItemToCart')
+data.setCell(1, 2, 'website.tests.AddToCartTest')
+data.setCell(1, 3, 30292);
 data.setCell(2, 0, 2)
 data.setCell(2, 1, 'verifySearchFunction')
 data.setCell(2, 2, 'website.tests.SearchTest')
-data.setCell(2, 3, 7011);
+data.setCell(2, 3, 6853);
 data.setCell(3, 0, 3)
-data.setCell(3, 1, 'removeTheItemFromCart')
-data.setCell(3, 2, 'website.tests.AddToCartTest')
-data.setCell(3, 3, 5399);
+data.setCell(3, 1, 'verifySearchFunction')
+data.setCell(3, 2, 'website.tests.SearchTest')
+data.setCell(3, 3, 6645);
 data.setCell(4, 0, 4)
-data.setCell(4, 1, 'verifyPartsAndAccessories')
-data.setCell(4, 2, 'website.tests.HomeTest')
-data.setCell(4, 3, 538);
+data.setCell(4, 1, 'removeTheItemFromCart')
+data.setCell(4, 2, 'website.tests.AddToCartTest')
+data.setCell(4, 3, 5415);
 data.setCell(5, 0, 5)
 data.setCell(5, 1, 'verifyProducts')
 data.setCell(5, 2, 'website.tests.HomeTest')
-data.setCell(5, 3, 362);
+data.setCell(5, 3, 382);
 data.setCell(6, 0, 6)
 data.setCell(6, 1, 'verifyLabels')
 data.setCell(6, 2, 'website.tests.HomeTest')
-data.setCell(6, 3, 342);
+data.setCell(6, 3, 338);
 data.setCell(7, 0, 7)
-data.setCell(7, 1, 'verifyHomePage')
+data.setCell(7, 1, 'verifyPartsAndAccessories')
 data.setCell(7, 2, 'website.tests.HomeTest')
-data.setCell(7, 3, 10);
+data.setCell(7, 3, 337);
+data.setCell(8, 0, 8)
+data.setCell(8, 1, 'verifyHomePage')
+data.setCell(8, 2, 'website.tests.HomeTest')
+data.setCell(8, 3, 48);
 window.suiteTableData['Suite']= { tableData: data, tableDiv: 'times-div-Suite'}
 return data;
 }
               </script>
-              <span class="suite-total-time">Total running time: 47 seconds</span>
+              <span class="suite-total-time">Total running time: 1 minutes</span>
               <div id="times-div-Suite">
               </div> <!-- times-div-Suite -->
             </div> <!-- times-div -->
@@ -381,84 +397,92 @@ return data;
               </div> <!-- configuration-suite before -->
               <div class="configuration-test before">
                 <span class="method-name">setUp(chrome)</span>
-                <span class="method-start">104 ms</span>
+                <span class="method-start">98 ms</span>
               </div> <!-- configuration-test before -->
               <div class="test-method">
                 <span class="method-name">verifyHomePage</span>
-                <span class="method-start">19761 ms</span>
+                <span class="method-start">19960 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">teardown([TestResult name=verifyHomePage status=SUCCESS method=HomeTest.verifyHomePage()[pri:0, instance:webs...)</span>
-                <span class="method-start">19774 ms</span>
+                <span class="method-start">20011 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifyLabels</span>
-                <span class="method-start">19977 ms</span>
+                <span class="method-start">20221 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">teardown([TestResult name=verifyLabels status=SUCCESS method=HomeTest.verifyLabels()[pri:1, instance:website....)</span>
-                <span class="method-start">20320 ms</span>
+                <span class="method-start">20560 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifyProducts</span>
-                <span class="method-start">20356 ms</span>
+                <span class="method-start">20594 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">teardown([TestResult name=verifyProducts status=SUCCESS method=HomeTest.verifyProducts()[pri:2, instance:webs...)</span>
-                <span class="method-start">20719 ms</span>
+                <span class="method-start">20977 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifyPartsAndAccessories</span>
-                <span class="method-start">20754 ms</span>
+                <span class="method-start">21025 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">teardown([TestResult name=verifyPartsAndAccessories status=SUCCESS method=HomeTest.verifyPartsAndAccessories(...)</span>
-                <span class="method-start">21293 ms</span>
+                <span class="method-start">21364 ms</span>
               </div> <!-- configuration-method after -->
             </div> <!-- chronological-class -->
             <div class="chronological-class">
               <div class="chronological-class-name">website.tests.SearchTest</div> <!-- chronological-class-name -->
               <div class="test-method">
                 <span class="method-name">verifySearchFunction(Ovens)</span>
-                <span class="method-start">21678 ms</span>
+                <span class="method-start">21802 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">teardown([TestResult name=verifySearchFunction status=SUCCESS method=SearchTest.verifySearchFunction(java.lan...)</span>
-                <span class="method-start">28945 ms</span>
+                <span class="method-start">28656 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">verifySearchFunction(Toasters)</span>
-                <span class="method-start">28977 ms</span>
+                <span class="method-start">28688 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">teardown([TestResult name=verifySearchFunction status=SUCCESS method=SearchTest.verifySearchFunction(java.lan...)</span>
-                <span class="method-start">35989 ms</span>
+                <span class="method-start">35334 ms</span>
               </div> <!-- configuration-method after -->
             </div> <!-- chronological-class -->
             <div class="chronological-class">
               <div class="chronological-class-name">website.tests.AddToCartTest</div> <!-- chronological-class-name -->
               <div class="test-method">
                 <span class="method-name">addItemToCart</span>
-                <span class="method-start">36020 ms</span>
+                <span class="method-start">35362 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">teardown([TestResult name=addItemToCart status=SUCCESS method=AddToCartTest.addItemToCart()[pri:0, instance:w...)</span>
-                <span class="method-start">62454 ms</span>
+                <span class="method-start">65655 ms</span>
               </div> <!-- configuration-method after -->
               <div class="test-method">
                 <span class="method-name">removeTheItemFromCart</span>
-                <span class="method-start">62491 ms</span>
+                <span class="method-start">65684 ms</span>
               </div> <!-- test-method -->
               <div class="configuration-method after">
                 <span class="method-name">teardown([TestResult name=removeTheItemFromCart status=SUCCESS method=AddToCartTest.removeTheItemFromCart()[p...)</span>
-                <span class="method-start">67891 ms</span>
+                <span class="method-start">71100 ms</span>
+              </div> <!-- configuration-method after -->
+              <div class="test-method">
+                <span class="method-name">completeTillPayment</span>
+                <span class="method-start">71138 ms</span>
+              </div> <!-- test-method -->
+              <div class="configuration-method after">
+                <span class="method-name">teardown([TestResult name=completeTillPayment status=SUCCESS method=AddToCartTest.completeTillPayment()[pri:2...)</span>
+                <span class="method-start">135586 ms</span>
               </div> <!-- configuration-method after -->
             </div> <!-- chronological-class -->
             <div class="chronological-class">
               <div class="chronological-class-name">website.tests.HomeTest</div> <!-- chronological-class-name -->
               <div class="configuration-suite after">
                 <span class="method-name">tearDown</span>
-                <span class="method-start">67938 ms</span>
+                <span class="method-start">135628 ms</span>
               </div> <!-- configuration-suite after -->
           </div> <!-- main-panel-content rounded-window-bottom -->
         </div> <!-- panel -->

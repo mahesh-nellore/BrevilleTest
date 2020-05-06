@@ -16,7 +16,7 @@ public class SearchTest extends BaseTest {
 
 	SoftAssert softassert = new SoftAssert();
 
-	@Test(dataProvider = "websiteSearch", priority = 0)
+	@Test(dataProvider = "websiteSearch")
 	public void verifySearchFunction(String searchValue) {
 		logger = reporter.createTest("SearchTest");
 		logger.log(Status.INFO, "Verify Search Function>>");

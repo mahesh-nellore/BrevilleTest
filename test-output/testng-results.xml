@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results skipped="0" failed="0" ignored="6" total="14" passed="8">
+<testng-results skipped="0" failed="0" ignored="6" total="15" passed="9">
   <reporter-output>
   </reporter-output>
-  <suite name="Suite" duration-ms="67825" started-at="2020-05-06T13:16:35 IST" finished-at="2020-05-06T13:17:43 IST">
+  <suite name="Suite" duration-ms="135521" started-at="2020-05-06T18:16:13 IST" finished-at="2020-05-06T18:18:29 IST">
     <groups>
     </groups>
-    <test name="Test" duration-ms="67825" started-at="2020-05-06T13:16:35 IST" finished-at="2020-05-06T13:17:43 IST">
+    <test name="Test" duration-ms="135521" started-at="2020-05-06T18:16:13 IST" finished-at="2020-05-06T18:18:29 IST">
       <class name="website.tests.HomeTest">
-        <test-method status="PASS" signature="initBaseConfig()[pri:0, instance:website.tests.HomeTest@77f99a05]" name="initBaseConfig" is-config="true" duration-ms="101" started-at="2020-05-06T13:16:35 IST" finished-at="2020-05-06T13:16:35 IST">
+        <test-method status="PASS" signature="initBaseConfig()[pri:0, instance:website.tests.HomeTest@3aeaafa6]" name="initBaseConfig" is-config="true" duration-ms="95" started-at="2020-05-06T18:16:13 IST" finished-at="2020-05-06T18:16:13 IST">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- initBaseConfig -->
-        <test-method status="PASS" signature="setUp(java.lang.String)[pri:0, instance:website.tests.HomeTest@77f99a05]" name="setUp" is-config="true" duration-ms="19607" started-at="2020-05-06T13:16:35 IST" finished-at="2020-05-06T13:16:55 IST">
+        <test-method status="PASS" signature="setUp(java.lang.String)[pri:0, instance:website.tests.HomeTest@3aeaafa6]" name="setUp" is-config="true" duration-ms="19848" started-at="2020-05-06T18:16:13 IST" finished-at="2020-05-06T18:16:33 IST">
           <params>
             <param index="0">
               <value>
@@ -22,96 +22,111 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method status="PASS" signature="verifyHomePage()[pri:0, instance:website.tests.HomeTest@77f99a05]" name="verifyHomePage" duration-ms="10" started-at="2020-05-06T13:16:55 IST" finished-at="2020-05-06T13:16:55 IST">
+        <test-method status="PASS" signature="verifyHomePage()[pri:0, instance:website.tests.HomeTest@3aeaafa6]" name="verifyHomePage" duration-ms="48" started-at="2020-05-06T18:16:33 IST" finished-at="2020-05-06T18:16:33 IST">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyHomePage -->
-        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.HomeTest@77f99a05]" name="teardown" is-config="true" duration-ms="200" started-at="2020-05-06T13:16:55 IST" finished-at="2020-05-06T13:16:55 IST">
+        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.HomeTest@3aeaafa6]" name="teardown" is-config="true" duration-ms="208" started-at="2020-05-06T18:16:33 IST" finished-at="2020-05-06T18:16:34 IST">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=verifyHomePage status=SUCCESS method=HomeTest.verifyHomePage()[pri:0, instance:website.tests.HomeTest@77f99a05] output={null}]]]>
+                <![CDATA[[TestResult name=verifyHomePage status=SUCCESS method=HomeTest.verifyHomePage()[pri:0, instance:website.tests.HomeTest@3aeaafa6] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- teardown -->
-        <test-method status="PASS" signature="verifyLabels()[pri:1, instance:website.tests.HomeTest@77f99a05]" name="verifyLabels" duration-ms="342" started-at="2020-05-06T13:16:55 IST" finished-at="2020-05-06T13:16:55 IST">
+        <test-method status="PASS" signature="verifyLabels()[pri:1, instance:website.tests.HomeTest@3aeaafa6]" name="verifyLabels" duration-ms="338" started-at="2020-05-06T18:16:34 IST" finished-at="2020-05-06T18:16:34 IST">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyLabels -->
-        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.HomeTest@77f99a05]" name="teardown" is-config="true" duration-ms="36" started-at="2020-05-06T13:16:55 IST" finished-at="2020-05-06T13:16:56 IST">
+        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.HomeTest@3aeaafa6]" name="teardown" is-config="true" duration-ms="34" started-at="2020-05-06T18:16:34 IST" finished-at="2020-05-06T18:16:34 IST">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=verifyLabels status=SUCCESS method=HomeTest.verifyLabels()[pri:1, instance:website.tests.HomeTest@77f99a05] output={null}]]]>
+                <![CDATA[[TestResult name=verifyLabels status=SUCCESS method=HomeTest.verifyLabels()[pri:1, instance:website.tests.HomeTest@3aeaafa6] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- teardown -->
-        <test-method status="PASS" signature="verifyProducts()[pri:2, instance:website.tests.HomeTest@77f99a05]" name="verifyProducts" duration-ms="362" started-at="2020-05-06T13:16:56 IST" finished-at="2020-05-06T13:16:56 IST">
+        <test-method status="PASS" signature="verifyProducts()[pri:2, instance:website.tests.HomeTest@3aeaafa6]" name="verifyProducts" duration-ms="382" started-at="2020-05-06T18:16:34 IST" finished-at="2020-05-06T18:16:34 IST">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyProducts -->
-        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.HomeTest@77f99a05]" name="teardown" is-config="true" duration-ms="34" started-at="2020-05-06T13:16:56 IST" finished-at="2020-05-06T13:16:56 IST">
+        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.HomeTest@3aeaafa6]" name="teardown" is-config="true" duration-ms="47" started-at="2020-05-06T18:16:34 IST" finished-at="2020-05-06T18:16:34 IST">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=verifyProducts status=SUCCESS method=HomeTest.verifyProducts()[pri:2, instance:website.tests.HomeTest@77f99a05] output={null}]]]>
+                <![CDATA[[TestResult name=verifyProducts status=SUCCESS method=HomeTest.verifyProducts()[pri:2, instance:website.tests.HomeTest@3aeaafa6] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- teardown -->
-        <test-method status="PASS" signature="verifyPartsAndAccessories()[pri:3, instance:website.tests.HomeTest@77f99a05]" name="verifyPartsAndAccessories" duration-ms="538" started-at="2020-05-06T13:16:56 IST" finished-at="2020-05-06T13:16:56 IST">
+        <test-method status="PASS" signature="verifyPartsAndAccessories()[pri:3, instance:website.tests.HomeTest@3aeaafa6]" name="verifyPartsAndAccessories" duration-ms="337" started-at="2020-05-06T18:16:34 IST" finished-at="2020-05-06T18:16:35 IST">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifyPartsAndAccessories -->
-        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.HomeTest@77f99a05]" name="teardown" is-config="true" duration-ms="38" started-at="2020-05-06T13:16:56 IST" finished-at="2020-05-06T13:16:56 IST">
+        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.HomeTest@3aeaafa6]" name="teardown" is-config="true" duration-ms="41" started-at="2020-05-06T18:16:35 IST" finished-at="2020-05-06T18:16:35 IST">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=verifyPartsAndAccessories status=SUCCESS method=HomeTest.verifyPartsAndAccessories()[pri:3, instance:website.tests.HomeTest@77f99a05] output={null}]]]>
+                <![CDATA[[TestResult name=verifyPartsAndAccessories status=SUCCESS method=HomeTest.verifyPartsAndAccessories()[pri:3, instance:website.tests.HomeTest@3aeaafa6] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- teardown -->
-        <test-method status="PASS" signature="tearDown()[pri:0, instance:website.tests.HomeTest@77f99a05]" name="tearDown" is-config="true" duration-ms="73" started-at="2020-05-06T13:17:43 IST" finished-at="2020-05-06T13:17:43 IST">
+        <test-method status="PASS" signature="tearDown()[pri:0, instance:website.tests.HomeTest@3aeaafa6]" name="tearDown" is-config="true" duration-ms="77" started-at="2020-05-06T18:18:29 IST" finished-at="2020-05-06T18:18:29 IST">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
       </class> <!-- website.tests.HomeTest -->
       <class name="website.tests.AddToCartTest">
-        <test-method status="PASS" signature="addItemToCart()[pri:0, instance:website.tests.AddToCartTest@3aeaafa6]" name="addItemToCart" duration-ms="26434" started-at="2020-05-06T13:17:11 IST" finished-at="2020-05-06T13:17:38 IST">
+        <test-method status="PASS" signature="addItemToCart()[pri:0, instance:website.tests.AddToCartTest@4d3167f4]" name="addItemToCart" duration-ms="30292" started-at="2020-05-06T18:16:49 IST" finished-at="2020-05-06T18:17:19 IST">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- addItemToCart -->
-        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.AddToCartTest@3aeaafa6]" name="teardown" is-config="true" duration-ms="37" started-at="2020-05-06T13:17:38 IST" finished-at="2020-05-06T13:17:38 IST">
+        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.AddToCartTest@4d3167f4]" name="teardown" is-config="true" duration-ms="29" started-at="2020-05-06T18:17:19 IST" finished-at="2020-05-06T18:17:19 IST">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=addItemToCart status=SUCCESS method=AddToCartTest.addItemToCart()[pri:0, instance:website.tests.AddToCartTest@3aeaafa6] output={null}]]]>
+                <![CDATA[[TestResult name=addItemToCart status=SUCCESS method=AddToCartTest.addItemToCart()[pri:0, instance:website.tests.AddToCartTest@4d3167f4] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- teardown -->
-        <test-method status="PASS" signature="removeTheItemFromCart()[pri:1, instance:website.tests.AddToCartTest@3aeaafa6]" name="removeTheItemFromCart" duration-ms="5399" started-at="2020-05-06T13:17:38 IST" finished-at="2020-05-06T13:17:43 IST">
+        <test-method status="PASS" signature="removeTheItemFromCart()[pri:1, instance:website.tests.AddToCartTest@4d3167f4]" name="removeTheItemFromCart" duration-ms="5415" started-at="2020-05-06T18:17:19 IST" finished-at="2020-05-06T18:17:24 IST">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- removeTheItemFromCart -->
-        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.AddToCartTest@3aeaafa6]" name="teardown" is-config="true" duration-ms="36" started-at="2020-05-06T13:17:43 IST" finished-at="2020-05-06T13:17:43 IST">
+        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.AddToCartTest@4d3167f4]" name="teardown" is-config="true" duration-ms="38" started-at="2020-05-06T18:17:24 IST" finished-at="2020-05-06T18:17:24 IST">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=removeTheItemFromCart status=SUCCESS method=AddToCartTest.removeTheItemFromCart()[pri:1, instance:website.tests.AddToCartTest@3aeaafa6] output={null}]]]>
+                <![CDATA[[TestResult name=removeTheItemFromCart status=SUCCESS method=AddToCartTest.removeTheItemFromCart()[pri:1, instance:website.tests.AddToCartTest@4d3167f4] output={null}]]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- teardown -->
+        <test-method status="PASS" signature="completeTillPayment()[pri:2, instance:website.tests.AddToCartTest@4d3167f4]" name="completeTillPayment" duration-ms="64445" started-at="2020-05-06T18:17:24 IST" finished-at="2020-05-06T18:18:29 IST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- completeTillPayment -->
+        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.AddToCartTest@4d3167f4]" name="teardown" is-config="true" duration-ms="31" started-at="2020-05-06T18:18:29 IST" finished-at="2020-05-06T18:18:29 IST">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[[TestResult name=completeTillPayment status=SUCCESS method=AddToCartTest.completeTillPayment()[pri:2, instance:website.tests.AddToCartTest@4d3167f4] output={null}]]]>
               </value>
             </param>
           </params>
@@ -120,7 +135,7 @@
         </test-method> <!-- teardown -->
       </class> <!-- website.tests.AddToCartTest -->
       <class name="website.tests.SearchTest">
-        <test-method status="PASS" signature="verifySearchFunction(java.lang.String)[pri:0, instance:website.tests.SearchTest@63440df3]" name="verifySearchFunction" duration-ms="7266" started-at="2020-05-06T13:16:57 IST" data-provider="websiteSearch" finished-at="2020-05-06T13:17:04 IST">
+        <test-method status="PASS" signature="verifySearchFunction(java.lang.String)[pri:0, instance:website.tests.SearchTest@76a3e297]" name="verifySearchFunction" duration-ms="6853" started-at="2020-05-06T18:16:35 IST" data-provider="websiteSearch" finished-at="2020-05-06T18:16:42 IST">
           <params>
             <param index="0">
               <value>
@@ -131,18 +146,18 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifySearchFunction -->
-        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.SearchTest@63440df3]" name="teardown" is-config="true" duration-ms="32" started-at="2020-05-06T13:17:04 IST" finished-at="2020-05-06T13:17:04 IST">
+        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.SearchTest@76a3e297]" name="teardown" is-config="true" duration-ms="32" started-at="2020-05-06T18:16:42 IST" finished-at="2020-05-06T18:16:42 IST">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=verifySearchFunction status=SUCCESS method=SearchTest.verifySearchFunction(java.lang.String)[pri:0, instance:website.tests.SearchTest@63440df3] output={null}]]]>
+                <![CDATA[[TestResult name=verifySearchFunction status=SUCCESS method=SearchTest.verifySearchFunction(java.lang.String)[pri:0, instance:website.tests.SearchTest@76a3e297] output={null}]]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- teardown -->
-        <test-method status="PASS" signature="verifySearchFunction(java.lang.String)[pri:0, instance:website.tests.SearchTest@63440df3]" name="verifySearchFunction" duration-ms="7011" started-at="2020-05-06T13:17:04 IST" data-provider="websiteSearch" finished-at="2020-05-06T13:17:11 IST">
+        <test-method status="PASS" signature="verifySearchFunction(java.lang.String)[pri:0, instance:website.tests.SearchTest@76a3e297]" name="verifySearchFunction" duration-ms="6645" started-at="2020-05-06T18:16:42 IST" data-provider="websiteSearch" finished-at="2020-05-06T18:16:49 IST">
           <params>
             <param index="0">
               <value>
@@ -153,11 +168,11 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- verifySearchFunction -->
-        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.SearchTest@63440df3]" name="teardown" is-config="true" duration-ms="31" started-at="2020-05-06T13:17:11 IST" finished-at="2020-05-06T13:17:11 IST">
+        <test-method status="PASS" signature="teardown(org.testng.ITestResult)[pri:0, instance:website.tests.SearchTest@76a3e297]" name="teardown" is-config="true" duration-ms="28" started-at="2020-05-06T18:16:49 IST" finished-at="2020-05-06T18:16:49 IST">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[TestResult name=verifySearchFunction status=SUCCESS method=SearchTest.verifySearchFunction(java.lang.String)[pri:0, instance:website.tests.SearchTest@63440df3] output={null}]]]>
+                <![CDATA[[TestResult name=verifySearchFunction status=SUCCESS method=SearchTest.verifySearchFunction(java.lang.String)[pri:0, instance:website.tests.SearchTest@76a3e297] output={null}]]]>
               </value>
             </param>
           </params>

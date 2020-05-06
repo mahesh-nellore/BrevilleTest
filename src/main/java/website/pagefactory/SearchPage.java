@@ -22,6 +22,9 @@ public class SearchPage extends BaseTest {
 	@FindAll(@FindBy(xpath = "//div[contains(@class,'container')]//div[contains(@class,'item__details')]//h3"))
 	private List<WebElement> listOfSearchResults;
 
+	@FindBy(css = "div[class='item__details']>h3")
+	private WebElement modelIdBOV900;
+
 	public SearchPage() {
 		PageFactory.initElements(driver, this);
 	}
@@ -38,6 +41,12 @@ public class SearchPage extends BaseTest {
 			set.add(element.getText());
 		});
 		return set;
+	}
+
+	public void selectModelIdBOV900() {
+		waitForElement(modelIdBOV900);
+		hardWait(5000);
+		modelIdBOV900.click();
 	}
 
 }
