@@ -2,6 +2,7 @@ package website.tests;
 
 import java.io.File;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -46,21 +47,8 @@ public class AddToCartTest extends BaseTest {
 
 	}
 
-	@Test(priority = 2)
-	public void completeTillPayment() {
-		String path = System.getProperty("user.dir") + File.separator + "testdata" + File.separator
-				+ "websiteTestData.xlsx";
-		int sheetIndex = 1;
-		String email = ExcelUtility.getCellValue(path, sheetIndex, 1, 0);
-		String firstname = ExcelUtility.getCellValue(path, sheetIndex, 2, 0);
-		String lastname = ExcelUtility.getCellValue(path, sheetIndex, 3, 0);
-		String address1 = ExcelUtility.getCellValue(path, sheetIndex, 4, 0);
-		String address2 = ExcelUtility.getCellValue(path, sheetIndex, 5, 0);
-		String city = ExcelUtility.getCellValue(path, sheetIndex, 6, 0);
-		String zipcode = ExcelUtility.getCellValue(path, sheetIndex, 7, 0);
-		String statevalue = ExcelUtility.getCellValue(path, sheetIndex, 8, 0);
-		String phone = ExcelUtility.getCellValue(path, sheetIndex, 9, 0);
-		String form[] = { email, firstname, lastname, address1, address2, city, zipcode, statevalue, phone };
+	@Test(dataProvider = "checkoutAsGuest", priority = 2)
+	public void completeTillPayment(String data[]) {
 		String searchKey = webprop.getProperty("search");
 		logger.log(Status.INFO, "<<Remove Item to Cart Test Started>>");
 		homepage.clickOnSearch();
@@ -71,7 +59,17 @@ public class AddToCartTest extends BaseTest {
 		productspage.clickOnAddToCartButton();
 		productspage.clickGoToCart();
 		transactionpage.clickCheckoutAsGuestButton();
-		transactionpage.fillTheForm(form);
+		transactionpage.fillTheForm(data);
+
+	}
+
+	@DataProvider(name = "checkoutAsGuest")
+	public Object[][] getData() {
+		String path = System.getProperty("user.dir") + File.separator + "testdata" + File.separator
+				+ "websiteTestData.xlsx";
+		int sheetIndex = 2;
+		Object[][] data = ExcelUtility.getData(path, sheetIndex);
+		return data;
 
 	}
 
