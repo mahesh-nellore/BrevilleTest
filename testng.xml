@@ -4,9 +4,8 @@
   <test thread-count="5" name="Test">
   <parameter name = "browser" value = "chrome"/>
     <classes>
-      <class name="website.tests.HomeTest"/>
-      <class name="website.tests.SearchTest"/>
-      <class name="website.tests.AddToCartTest"/>
+      <class name="website.tests.SanityCheck_UAT"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
+	

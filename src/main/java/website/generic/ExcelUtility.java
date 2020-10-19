@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -23,7 +23,9 @@ public class ExcelUtility {
 			
 			wb = new XSSFWorkbook(fis);
 			
-			str = wb.getSheetAt(sheetIndex).getRow(row).getCell(coloumn).getStringCellValue();
+			DataFormatter formatter = new DataFormatter();
+			
+			str = formatter.formatCellValue(wb.getSheetAt(sheetIndex).getRow(row).getCell(coloumn));
 			
 			
 			
@@ -79,7 +81,8 @@ public class ExcelUtility {
 	
 	public static void main(String[] args) {
 		
-		String filePath = System.getProperty("user.dir")+"/src/main/java/demo/config/Budget.xlsx";
+		String filePath = System.getProperty("user.dir")+"\\testdata\\testData.xlsx";
+		System.out.println(filePath);
 		Object[][] getvalue = getData(filePath, 0);
 		
 		System.out.println(getvalue.length);

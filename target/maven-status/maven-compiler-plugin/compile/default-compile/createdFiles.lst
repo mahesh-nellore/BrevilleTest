@@ -1,7 +1,9 @@
-website/pagefactory/TransactionPage.class
-website/base/BaseTest.class
-website/pagefactory/ProductsPage.class
-website/pagefactory/SearchPage.class
-website/pagefactory/HomePage.class
-website/generic/ExcelUtility.class
-website/generic/RobotClassUtility.class
+website\base\BaseTest.class
+website\pagefactory\TransactionPage.class
+website\generic\RobotClassUtility.class
+website\pagefactory\HomePage.class
+website\pagefactory\SearchPage.class
+website\generic\GenericUtility.class
+website\pagefactory\MyBreville.class
+website\generic\ExcelUtility.class
+website\pagefactory\ProductsPage.class

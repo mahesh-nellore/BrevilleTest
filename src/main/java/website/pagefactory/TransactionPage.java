@@ -1,15 +1,28 @@
 package website.pagefactory;
 
+import java.util.List;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import com.aventstack.extentreports.Status;
 
 import website.base.BaseTest;
 
 public class TransactionPage extends BaseTest {
 
-	@FindBy(xpath = "//a[contains(text(),'Checkout as Guest')]")
+	private static TransactionPage transactionpage = null;
+
+	@FindBy(id = "onetimecheckoutasguest")
+	private WebElement checkoutAsGuest_Registered;
+
+	@FindBy(id = "js-sign-up-label")
+	private WebElement createAccountLoginButton;
+
+	@FindBy(xpath = "(//div[contains(@class,'c-login-btn')])[1]")
+	private WebElement loginButton;
+
+	@FindBy(id = "checkoutasguest")
 	private WebElement checkoutAsGuest;
 
 	@FindBy(css = "td[class='totals__price js-total-price']")
@@ -31,7 +44,7 @@ public class TransactionPage extends BaseTest {
 	@FindBy(css = "input#email-address")
 	private WebElement emailAddress;
 
-	@FindBy(xpath = "//button[contains(text(),'Continue to Shipping')]")
+	@FindBy(css = "button[class$='shipping-btn']")
 	private WebElement continueToShippingButton;
 
 	@FindBy(css = "input#firstName_shipping")
@@ -55,33 +68,146 @@ public class TransactionPage extends BaseTest {
 	@FindBy(css = "select#state_shipping")
 	private WebElement state;
 
-	@FindBy(xpath = "//button[contains(text(),'Continue To Payment')]")
+	@FindBy(css = "button[class$='submit-btn']")
 	private WebElement continueToPayment;
 
 	@FindBy(css = "input#phoneNumber_shipping")
 	private WebElement phoneNumber;
 
-	public TransactionPage() {
+	@FindBy(id = "item-quantity-0")
+	private WebElement quantityDropDown;
+
+	@FindBy(id = "cardholder-name")
+	private WebElement cardHolderName;
+
+	@FindBy(id = "credit-card-number")
+	private WebElement creditCardNumber;
+
+	@FindBy(id = "expiration")
+	private WebElement expiryDate;
+
+	@FindBy(id = "cvv")
+	private WebElement cvv;
+
+	@FindBy(id = "tncCheckboxCreditCart")
+	private WebElement termsAndConditionsCheckbox;
+
+	@FindBy(id = "ccPayment")
+	private WebElement submitOrderButton;
+
+	@FindBy(css = "span[class='js-purchage-id']")
+	private WebElement purchaseOrderId;
+
+	@FindBy(id = "braintree-hosted-field-number")
+	private WebElement iframeBrainTree;
+
+	@FindBy(id = "braintree-hosted-field-expirationDate")
+	private WebElement iframeExpiryDate;
+
+	@FindBy(id = "braintree-hosted-field-cvv")
+	private WebElement iframeCvv;
+
+	@FindBy(id = "password")
+	private WebElement authPassword;
+
+	@FindBy(id = "authWindow")
+	private WebElement authIframe;
+
+	@FindBy(name = "UsernamePasswordEntry")
+	private WebElement submitButtonAuthPage;
+
+	@FindBy(xpath = "//input[contains(@name,'Username')]")
+	private WebElement username;
+
+	@FindBy(xpath = "//input[contains(@name,'password')]")
+	private WebElement password;
+
+	@FindBy(css = "button[class*='sfdc_button_breville']")
+	private WebElement loginButton_SF;
+
+	@FindBy(id = "item-subscription-1")
+	private WebElement subscriptionPlanDropdown;
+
+	@FindBy(id = "loggedinCheckout")
+	private WebElement checkoutOptForLoggedInUsr;
+
+	private TransactionPage() {
 
 		PageFactory.initElements(driver, this);
 	}
 
-	public boolean verifyCheckoutAsGuest() {
-		waitForElement(checkoutAsGuest);
-		return checkoutAsGuest.isDisplayed();
+	public static TransactionPage getTransactionPage() {
+		if (transactionpage == null)
+			transactionpage = new TransactionPage();
+		return transactionpage;
+	}
+
+	public int getQuantity() {
+		waitForElementToBeVisible(quantityDropDown);
+		Select select = new Select(quantityDropDown);
+		return Integer.parseInt(select.getFirstSelectedOption().getText());
+	}
+
+	public String getPlan() {
+		waitForElementToBeVisible(subscriptionPlanDropdown);
+		Select select = new Select(subscriptionPlanDropdown);
+		return select.getFirstSelectedOption().getText();
+	}
+
+	public void updateQuantity() {
+		String value = Integer.toString(getQuantity() + 1);
+		System.out.println("Quantity: " + value);
+		Select select = new Select(quantityDropDown);
+		select.selectByVisibleText(value);
+	}
+
+	public void updatePlan() {
+		String value = getPlan();
+		logger.log(Status.INFO, "Selected plan is :" + value);
+		System.out.println("Selected plan is :" + value);
+		Select select = new Select(subscriptionPlanDropdown);
+		List<WebElement> options = select.getOptions();
+		for (WebElement webElement : options) {
+			String option = webElement.getText();
+			logger.log(Status.INFO, "Option value is: " + option);
+			System.out.println("Option value is: " + option);
+			if (!value.equalsIgnoreCase(option)) {
+				select.selectByVisibleText(option);
+				break;
+			}
+		}
+	}
+
+	public boolean vefiryUpdateQuantity() {
+		int initialValue = getQuantity();
+		updateQuantity();
+		int editedValue = getQuantity();
+		if (initialValue < editedValue)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean vefiryUpdateplan() {
+		String initialValue = getPlan();
+		updatePlan();
+		String editedValue = getPlan();
+		if (!initialValue.equalsIgnoreCase(editedValue))
+			return true;
+		else
+			return false;
 	}
 
 	public String getSubTotal() {
-		waitForElement(totalPrice);
-		System.out.println("Get the Sub Total>>" + totalPrice.getText());
+		waitForElementToBeVisible(totalPrice);
 		return totalPrice.getText();
 
 	}
 
 	public void removeProduct() {
-		waitForElement(productRemove);
+		waitForElementToBeVisible(productRemove);
 		productRemove.click();
-		waitForElement(removeItemInDialogBox);
+		waitForElementToBeVisible(removeItemInDialogBox);
 		removeItemInDialogBox.click();
 	}
 
@@ -93,48 +219,127 @@ public class TransactionPage extends BaseTest {
 				hardWait(5000);
 				result = cartEmptyMsg.isDisplayed();
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
 			}
 			count++;
 			if (result)
 				break;
 		}
-
-		System.out.println("Cart is Empty Message>>" + cartEmptyMsg.getText());
 		return cartEmptyMsg.getText();
 	}
 
-	public void clickCheckoutAsGuestButton() {
-		waitForElement(checkoutAsGuest);
-		checkoutAsGuest.click();
+	public void clickCheckoutAsGuestButton(String str) {
+		hardWait(8000);
+		if ("ca".equalsIgnoreCase(str)) {
+			waitForElementToBeClickable(checkoutAsGuest_Registered);
+			checkoutAsGuest_Registered.click();
+		} else {
+			waitForElementToBeClickable(checkoutAsGuest);
+			checkoutAsGuest.click();
+		}
+
+	}
+
+	public void loginAndCheckout(String uname, String pwd) {
+		hardWait(8000);
+		logger.log(Status.INFO, "Waiting for few Seconds");
+		waitForElementToBeClickable(createAccountLoginButton);
+		clickElementUsingJavaScriptExecutor(createAccountLoginButton);
+		System.out.println("Clicked On Create account/Login option");
+		logger.log(Status.INFO, "Clicked on Login Button");
+		waitForElementToBeClickable(loginButton);
+		loginButton.click();
+		System.out.println("Clicked on Login Button");
+		logger.log(Status.INFO, "Clicked on Login Button");
+		hardWait(10000);
+		logger.log(Status.INFO, "Wait for 10 milli seconds...");
+		waitForElementToBeClickable(username);
+		username.sendKeys(uname);
+		System.out.println("Entered username: " + uname);
+		logger.log(Status.INFO, "Entered username: " + uname);
+		password.sendKeys(pwd);
+		System.out.println("Entered password: " + pwd);
+		logger.log(Status.INFO, "Entered password: " + pwd);
+		loginButton_SF.click();
+		System.out.println("Clicked on Login Button");
+		logger.log(Status.INFO, "Clicked on Login Button");
+		if (verifyCheckoutOptForLoggedInUsr()) {
+			logger.log(Status.INFO,
+					"Seems like Cart has orders in it, hence redirected to Cart page instead of checkout page..");
+			checkoutOptForLoggedInUsr.click();
+			logger.log(Status.INFO, "Clicked On Chekout Button..");
+		}
+
 	}
 
 	public void fillTheForm(String form[]) {
 		waitForTheElementToVisible(emailAddress);
 		hardWait(2000);
 		emailAddress.sendKeys(form[0]);
-		continueToShippingButton.click();
-		waitForElement(firstname);
-		hardWait(5000);
+		hardWait(1000);
+		waitForElementToBeClickable(continueToShippingButton);
+		clickElementUsingJavaScriptExecutor(continueToShippingButton);
+		waitForElementToBeVisible(firstname);
 		firstname.sendKeys(form[1]);
-		hardWait(1000);
 		lastname.sendKeys(form[2]);
-		hardWait(1000);
 		address1.sendKeys(form[3]);
-		hardWait(1000);
-		address2.sendKeys(form[4]);
-		hardWait(1000);
-		city.sendKeys(form[5]);
-		hardWait(1000);
-		zipcode.sendKeys(form[6]);
+		city.sendKeys(form[4]);
+		zipcode.sendKeys(form[5]);
 		Select select = new Select(state);
-		select.selectByVisibleText(form[7]);
-		hardWait(1000);
+		select.selectByVisibleText(form[6]);
 		phoneNumber.clear();
-		hardWait(1000);
-		phoneNumber.sendKeys(form[8]);
+		phoneNumber.sendKeys(form[7]);
 		continueToPayment.click();
 
+	}
+
+	public void paymentUsingCreditCard(String str[]) {
+		hardWait(5000);
+		waitForElementToBeVisible(cardHolderName);
+		waitForElementToBeClickable(cardHolderName);
+		cardHolderName.sendKeys(str[0]);
+		switchToFrame(iframeBrainTree);
+		creditCardNumber.sendKeys(str[1]);
+		switchToParentFrame();
+		switchToFrame(iframeExpiryDate);
+		expiryDate.sendKeys(str[2]);
+		switchToParentFrame();
+		switchToFrame(iframeCvv);
+		cvv.sendKeys(str[3]);
+		switchToParentFrame();
+		hardWait(2000);
+		clickElementUsingJavaScriptExecutor(termsAndConditionsCheckbox);
+		waitForElementToBeVisible(submitOrderButton);
+		submitOrderButton.click();
+		hardWait(3000);
+		if ("eu".equalsIgnoreCase(str[4])) {
+			boolean iframe = isElementPresent(authIframe);
+			logger.log(Status.INFO, "I Frame is Present:" + iframe);
+			switchToFrame(authIframe);
+			authPassword.sendKeys("123");
+			submitButtonAuthPage.click();
+			logger.log(Status.INFO, " The Order is not the part of EU region");
+		}
+
+	}
+
+	public String getPurchaseOrderId() {
+		hardWait(5000);
+		waitForElementToBeVisible(purchaseOrderId);
+		return purchaseOrderId.getText();
+	}
+
+	public boolean verifyfirstname() {
+		waitForElementToBeVisible(firstname, 120);
+		return isElementPresent(firstname);
+	}
+
+	public boolean verifyCheckoutOptForLoggedInUsr() {
+		hardWait(5000);
+		return isElementPresent(checkoutOptForLoggedInUsr);
+	}
+	
+	public boolean verifyCardHolderName() {
+		return isElementPresent(cardHolderName);
 	}
 
 }
