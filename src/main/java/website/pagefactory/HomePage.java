@@ -3,9 +3,7 @@ package website.pagefactory;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -22,7 +20,7 @@ public class HomePage extends BaseTest {
 
 	public static String modelNumber = "";
 
-	@FindBy(xpath = "//span[contains(text(),'Search')]")
+	@FindBy(xpath = "(//span[contains(@class,'search-link-group')]//span[contains(@class,'text')])[1]")
 	private WebElement searchOption;
 
 	@FindBy(css = "img[title =Breville]")
@@ -70,7 +68,7 @@ public class HomePage extends BaseTest {
 	@FindBy(css = "a[class$='return-link--arrow']")
 	private WebElement returnToKettlesPage;
 
-	@FindBy(css = "svg[class$='close-icon']")
+	@FindBy(xpath = "//div[contains(@class,'close')]")
 	private WebElement newsLetterCloseButton;
 
 	@FindBy(id = "regionPopupConfirm__dialog")
@@ -87,6 +85,9 @@ public class HomePage extends BaseTest {
 
 	@FindBy(css = "a[href*='ca/en']")
 	private WebElement selectCountryCAEN;
+	
+	@FindBy(css = "a[href*='uk/en']")
+	private WebElement selectCountryUK;
 
 	@FindBy(css = "img[src*='western-europe']")
 	private WebElement selectRegionEurope;
@@ -97,6 +98,9 @@ public class HomePage extends BaseTest {
 	@FindBy(id = "signUpBtn")
 	private WebElement newsLetterSignupButton;
 
+	@FindBy(id = "_evidon-accept-button")
+	private WebElement evidonAcceptButton;
+
 	private HomePage() {
 		PageFactory.initElements(driver, this);
 	}
@@ -104,6 +108,15 @@ public class HomePage extends BaseTest {
 	public boolean isRegionSelectPopupDisplayed() {
 		return isElementPresent(regionSelectPopup);
 
+	}
+
+	public boolean verifyEvidonAcceptButton() {
+		return verifyElementIsDisplayed(evidonAcceptButton);
+	}
+
+	public void acceptEvidonAcceptButton() {
+		clickElementUsingJavaScriptExecutor(evidonAcceptButton);
+		logger.log(Status.INFO, "clicked on evidon Acept button");
 	}
 
 	public void selectCountry(String str) {
@@ -119,11 +132,18 @@ public class HomePage extends BaseTest {
 			selectRegionAmericas.click();
 			waitForElementToBeVisible(selectCountryCAEN);
 			selectCountryCAEN.click();
-		} else {
+			selectRegionAmericas.click();
+		} else if("eu".equalsIgnoreCase(str)) {
 			waitForElementToBeVisible(selectRegionEurope);
 			selectRegionEurope.click();
 			waitForElementToBeVisible(selectCountryGerman);
 			selectCountryGerman.click();
+			selectRegionEurope.click();
+		}else {
+			waitForElementToBeVisible(selectRegionEurope);
+			selectRegionEurope.click();
+			waitForElementToBeVisible(selectCountryUK);
+			selectCountryUK.click();
 		}
 
 	}
@@ -144,6 +164,11 @@ public class HomePage extends BaseTest {
 		waitForElementToBeClickable(newsLetterCloseButton);
 		newsLetterCloseButton.click();
 		System.out.println("Closed News letter sign up");
+	}
+
+	public boolean verifyNewsLetterPopUpIsDisplayed() {
+		hardWait(2000);
+		return verifyElementIsDisplayed(newsLetterSignupButton);
 	}
 
 	public static HomePage getHomePage() {
@@ -190,6 +215,8 @@ public class HomePage extends BaseTest {
 	public void clickOnProducts() {
 		waitForElementToBeClickable(productsLabel);
 		productsLabel.click();
+		if (verifyNewsLetterPopUpIsDisplayed())
+			closeNewsLetterPopUp();
 	}
 
 	public int numberOfproductsCount() {
@@ -225,16 +252,25 @@ public class HomePage extends BaseTest {
 	public void clickOnSearch() {
 		hardWait(2000);
 		waitForElementToBeClickable(searchOption);
-		JavascriptExecutor executor = (JavascriptExecutor) driver;
-		executor.executeScript("arguments[0].click();", searchOption);
+		clickElementUsingJavaScriptExecutor(searchOption);
 	}
 
 	public void searchForProduct(String searchValue) {
 		waitForElementToBeVisible(inputTextForSearch);
 		inputTextForSearch.sendKeys(searchValue);
-		hardWait(2500);
-		inputTextForSearch.sendKeys(Keys.ENTER);
+		if (verifySearchresultOption()) {
+			System.out.println("Search result option is displayed in the GUI");
+			logger.log(Status.INFO, "Search result option is displayed in the GUI");
+			searchResultOption.click();
+		} else {
+			System.out.println("Search Result option is not displayed hence using Key board Enter option");
+			logger.log(Status.INFO, "Search Result option is not displayed hence using Key board Enter option");
+			inputTextForSearch.sendKeys(Keys.RETURN);
+		}
+	}
 
+	public boolean verifySearchresultOption() {
+		return verifyElementIsDisplayed(searchResultOption);
 	}
 
 	public void selectOvensFromProductList() {
@@ -245,6 +281,8 @@ public class HomePage extends BaseTest {
 	public void clickOnKettlesImage() {
 		waitForElementToBeClickable(kettlesImage);
 		clickElementUsingJavaScriptExecutor(kettlesImage);
+		if (verifyNewsLetterPopUpIsDisplayed())
+			closeNewsLetterPopUp();
 	}
 
 	public String addKettleToCart() {

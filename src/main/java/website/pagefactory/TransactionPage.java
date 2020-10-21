@@ -68,6 +68,9 @@ public class TransactionPage extends BaseTest {
 	@FindBy(css = "select#state_shipping")
 	private WebElement state;
 
+	@FindBy(id = "region_shipping")
+	private WebElement region;
+
 	@FindBy(css = "button[class$='submit-btn']")
 	private WebElement continueToPayment;
 
@@ -112,6 +115,9 @@ public class TransactionPage extends BaseTest {
 
 	@FindBy(id = "authWindow")
 	private WebElement authIframe;
+	
+	@FindBy(id = "Cardinal-CCA-IFrame")
+	private WebElement cardinalIframe;
 
 	@FindBy(name = "UsernamePasswordEntry")
 	private WebElement submitButtonAuthPage;
@@ -211,6 +217,11 @@ public class TransactionPage extends BaseTest {
 		removeItemInDialogBox.click();
 	}
 
+	public boolean verifyIsCartEmpty() {
+		hardWait(2000);
+		return verifyElementIsDisplayed(cartEmptyMsg);
+	}
+
 	public String getCartEmptyMsg() {
 		int count = 0;
 		boolean result = false;
@@ -262,13 +273,6 @@ public class TransactionPage extends BaseTest {
 		loginButton_SF.click();
 		System.out.println("Clicked on Login Button");
 		logger.log(Status.INFO, "Clicked on Login Button");
-		if (verifyCheckoutOptForLoggedInUsr()) {
-			logger.log(Status.INFO,
-					"Seems like Cart has orders in it, hence redirected to Cart page instead of checkout page..");
-			checkoutOptForLoggedInUsr.click();
-			logger.log(Status.INFO, "Clicked On Chekout Button..");
-		}
-
 	}
 
 	public void fillTheForm(String form[]) {
@@ -284,8 +288,12 @@ public class TransactionPage extends BaseTest {
 		address1.sendKeys(form[3]);
 		city.sendKeys(form[4]);
 		zipcode.sendKeys(form[5]);
-		Select select = new Select(state);
-		select.selectByVisibleText(form[6]);
+		if ("ca".equalsIgnoreCase(form[8]) || "us".equalsIgnoreCase(form[8])) {
+			Select select = new Select(state);
+			select.selectByVisibleText(form[6]);
+		} else if("eu".equalsIgnoreCase(form[8])) {
+			region.sendKeys(form[6]);
+		}
 		phoneNumber.clear();
 		phoneNumber.sendKeys(form[7]);
 		continueToPayment.click();
@@ -293,9 +301,15 @@ public class TransactionPage extends BaseTest {
 	}
 
 	public void paymentUsingCreditCard(String str[]) {
-		hardWait(5000);
-		waitForElementToBeVisible(cardHolderName);
-		waitForElementToBeClickable(cardHolderName);
+		if (verifyCardHolderName())
+			logger.log(Status.INFO, "After merge cart user is navigated to Checkout page.");
+		else {
+			logger.log(Status.INFO,
+					"Seems like Cart has orders in it, hence redirected to Cart page instead of checkout page..");
+			checkoutOptForLoggedInUsr.click();
+			logger.log(Status.INFO, "Clicked On Chekout Button..");
+			waitForElementToBeClickable(cardHolderName);
+		}
 		cardHolderName.sendKeys(str[0]);
 		switchToFrame(iframeBrainTree);
 		creditCardNumber.sendKeys(str[1]);
@@ -310,14 +324,18 @@ public class TransactionPage extends BaseTest {
 		clickElementUsingJavaScriptExecutor(termsAndConditionsCheckbox);
 		waitForElementToBeVisible(submitOrderButton);
 		submitOrderButton.click();
-		hardWait(3000);
-		if ("eu".equalsIgnoreCase(str[4])) {
-			boolean iframe = isElementPresent(authIframe);
-			logger.log(Status.INFO, "I Frame is Present:" + iframe);
+		hardWait(5000);
+		if ("eu".equalsIgnoreCase(str[4]) || "uk".equalsIgnoreCase(str[4])) {
+			logger.log(Status.INFO, " The Order belongs to EU region");
+			hardWait(2000);
+			switchToFrame(cardinalIframe);
+			logger.log(Status.INFO, "Switched to the CC iframe");
 			switchToFrame(authIframe);
+			logger.log(Status.INFO, "Switched to the Auth iframe");
 			authPassword.sendKeys("123");
 			submitButtonAuthPage.click();
-			logger.log(Status.INFO, " The Order is not the part of EU region");
+			hardWait(2000);
+			switchToParentFrame();
 		}
 
 	}
@@ -334,12 +352,28 @@ public class TransactionPage extends BaseTest {
 	}
 
 	public boolean verifyCheckoutOptForLoggedInUsr() {
-		hardWait(5000);
-		return isElementPresent(checkoutOptForLoggedInUsr);
+		hardWait(8000);
+		return verifyElementIsDisplayed(checkoutOptForLoggedInUsr);
+		// isElementPresent(checkoutOptForLoggedInUsr);
 	}
-	
+
 	public boolean verifyCardHolderName() {
-		return isElementPresent(cardHolderName);
+		waitForElementToBeClickable(cardHolderName);
+		try {
+			return cardHolderName.isDisplayed();
+		} catch (Exception e) {
+			logger.log(Status.INFO,
+					"Exception Occured while waiting for the cardHolderName and the exception is:" + e.getMessage());
+		}
+		return false;
+	}
+
+	public boolean verifyStateDropdown() {
+		return verifyElementIsDisplayed(state);
+	}
+
+	public boolean verifyRegionInputTextbox() {
+		return verifyElementIsDisplayed(region);
 	}
 
 }

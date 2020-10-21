@@ -88,7 +88,7 @@ public class SearchPage extends BaseTest {
 				"SP0001879", "SP0021701"};		
 		String [] spareParts = {"SP0016051", "SP0001850", "SP0001834", "SP0001875", "SP0001635",
 				"SP0001880", "SP0001789", "SP0001798", "BEC25000US1", "BES001XL", "SP0001881", "SP0001788"};
-		String[] spareParts_Eu = {"SP0001801", "SP0020146", "SP0020150", "SP0020143", "SP0020147",
+		String[] spareParts_Eu = {"SP0020075", "SP0020082", "SP0021689","SP0020085", "SP0021595", "SP0001801", "SP0020146", "SP0020150", "SP0020143", "SP0020147",
 				"SP0020152", "SP0020151", "SP0020149"};
 		if("us".equalsIgnoreCase(str)) 
 			list = Arrays.asList(spareParts);

@@ -20,12 +20,14 @@ public class SanityCheck_UAT extends BaseTest {
 		String parentwindow = driver.getWindowHandle();
 		logger.log(Status.INFO, "Parent Window | Main Window" + parentwindow);
 		switchToLatestWindow();
-		homepage.closeNewsLetterPopUp();
-		logger.log(Status.INFO, "Closed the News Letter pop up");
-		System.out.println("Waiting for 10 seconds");
+		if (homepage.verifyNewsLetterPopUpIsDisplayed()) {
+			homepage.closeNewsLetterPopUp();
+			logger.log(Status.INFO, "Closed the News Letter pop up");
+		}else if(homepage.verifyEvidonAcceptButton()) {
+			homepage.acceptEvidonAcceptButton();
+		}
 		homepage.clickOnProducts();
 		logger.log(Status.INFO, "Click on Products in Home Page");
-		// hardWait(5000);
 		homepage.clickOnKettlesImage();
 		logger.log(Status.INFO, "Clicked on Kettles from the PLP Page");
 		String modelnumber = homepage.addKettleToCart();
@@ -46,7 +48,7 @@ public class SanityCheck_UAT extends BaseTest {
 		searchpage.addSubscriptionProduct(data[1]);
 		productspage.clickGoToCart();
 		hardWait(5000);
-		String form[] = { data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9] };
+		String form[] = { data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[1] };
 		if ("Registered".equalsIgnoreCase(data[10])) {
 			String plan = transactionpage.getPlan();
 			Assert.assertTrue(plan != null && plan != "");
@@ -100,7 +102,7 @@ public class SanityCheck_UAT extends BaseTest {
 			mybreville.clickOnOrders_hubpage();
 			String ordNumber = mybreville.getFirstOrderNumber_OrdersPage();
 			int retrycount = 0;
-			while (orderNumber.equalsIgnoreCase(ordNumber) || retrycount < 2) {
+			while (orderNumber.equalsIgnoreCase(ordNumber) || retrycount < 3) {
 				hardWait(5000);
 				logger.log(Status.INFO,
 						"Seems like its taking time to display the order in GUI. Retrying one more time..");
@@ -110,7 +112,7 @@ public class SanityCheck_UAT extends BaseTest {
 				ordNumber = mybreville.getFirstOrderNumber_OrdersPage();
 				retrycount++;
 			}
-			Assert.assertEquals(orderNumber, ordNumber);
+			Assert.assertEquals(orderNumber.trim(), ordNumber.trim());
 			logger.log(Status.PASS, "Verified that created order is displayed in Orders page.");
 		}
 
