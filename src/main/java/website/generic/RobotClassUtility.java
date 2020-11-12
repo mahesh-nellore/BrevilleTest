@@ -19,4 +19,30 @@ public class RobotClassUtility {
 		r.keyRelease(KeyEvent.VK_ENTER);
 	}
 
+	public static void clickTab() {
+
+		try {
+			r = new Robot();
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		r.keyPress(KeyEvent.VK_TAB);
+		r.keyRelease(KeyEvent.VK_TAB);
+	}
+
+	public static void clickShiftAndTab() {
+
+		try {
+			r = new Robot();
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		r.keyPress(KeyEvent.VK_SHIFT);
+		r.keyPress(KeyEvent.VK_TAB);
+		r.keyRelease(KeyEvent.VK_TAB);
+		r.keyRelease(KeyEvent.VK_SHIFT);
+	}
+
 }

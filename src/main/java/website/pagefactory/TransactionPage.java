@@ -1,6 +1,9 @@
 package website.pagefactory;
 
 import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -8,372 +11,548 @@ import org.openqa.selenium.support.ui.Select;
 import com.aventstack.extentreports.Status;
 
 import website.base.BaseTest;
+import website.generic.RobotClassUtility;
 
 public class TransactionPage extends BaseTest {
 
-	private static TransactionPage transactionpage = null;
+  private static TransactionPage transactionpage = null;
 
-	@FindBy(id = "onetimecheckoutasguest")
-	private WebElement checkoutAsGuest_Registered;
+  @FindBy(id = "onetimecheckoutasguest")
+  private WebElement checkoutAsGuest_Registered;
 
-	@FindBy(id = "js-sign-up-label")
-	private WebElement createAccountLoginButton;
+  @FindBy(id = "onetimeloggedinSignup")
+  private WebElement oneTimeLoggedInSignup;
 
-	@FindBy(xpath = "(//div[contains(@class,'c-login-btn')])[1]")
-	private WebElement loginButton;
+  @FindBy(id = "js-sign-up-label")
+  private WebElement createAccountLoginButton;
 
-	@FindBy(id = "checkoutasguest")
-	private WebElement checkoutAsGuest;
+  @FindBy(xpath = "(//div[contains(@class,'c-login-btn')])[1]")
+  private WebElement loginButton;
 
-	@FindBy(css = "td[class='totals__price js-total-price']")
-	private WebElement totalPrice;
+  @FindBy(id = "checkoutasguest")
+  private WebElement checkoutAsGuest;
 
-	@FindBy(css = "td[class='product__description']>span[class$='name']")
-	private WebElement productName;
+  @FindBy(css = "td[class='totals__price js-total-price']")
+  private WebElement totalPrice;
 
-	@FindBy(css = "button[class$='remove']")
-	private WebElement productRemove;
+  @FindBy(css = "td[class='product__description']>span[class$='name']")
+  private WebElement productName;
 
-	@FindBy(xpath = "//a[contains(text(),'Remove this Item')]")
-	private WebElement removeItemInDialogBox;
+  @FindBy(css = "button[class$='remove']")
+  private WebElement productRemove;
 
-	@FindBy(css = "div[class='c_empty__product']>p")
-	private WebElement cartEmptyMsg;
+  @FindBy(xpath = "//a[contains(text(),'Remove this Item')]")
+  private WebElement removeItemInDialogBox;
 
-	// Checkout As Guest
-	@FindBy(css = "input#email-address")
-	private WebElement emailAddress;
+  @FindBy(css = "div[class='c_empty__product']>p")
+  private WebElement cartEmptyMsg;
 
-	@FindBy(css = "button[class$='shipping-btn']")
-	private WebElement continueToShippingButton;
+  // Checkout As Guest
+  @FindBy(css = "input#email-address")
+  private WebElement emailAddress;
 
-	@FindBy(css = "input#firstName_shipping")
-	private WebElement firstname;
+  @FindBy(css = "button[class$='shipping-btn']")
+  private WebElement continueToShippingButton;
 
-	@FindBy(css = "input#lastName_shipping")
-	private WebElement lastname;
+  @FindBy(css = "input#firstName_shipping")
+  private WebElement firstname;
 
-	@FindBy(css = "input#streetAddress1_shipping")
-	private WebElement address1;
+  @FindBy(css = "input#lastName_shipping")
+  private WebElement lastname;
 
-	@FindBy(css = "input#aptSuiteLabel_shipping")
-	private WebElement address2;
+  @FindBy(css = "input#streetAddress1_shipping")
+  private WebElement address1;
 
-	@FindBy(css = "input#city_shipping")
-	private WebElement city;
+  @FindBy(css = "input#aptSuiteLabel_shipping")
+  private WebElement address2;
 
-	@FindBy(css = "input#zipCode_shipping")
-	private WebElement zipcode;
+  @FindBy(css = "input#city_shipping")
+  private WebElement city;
 
-	@FindBy(css = "select#state_shipping")
-	private WebElement state;
+  @FindBy(css = "input#zipCode_shipping")
+  private WebElement zipcode;
 
-	@FindBy(id = "region_shipping")
-	private WebElement region;
+  @FindBy(css = "select#state_shipping")
+  private WebElement state;
 
-	@FindBy(css = "button[class$='submit-btn']")
-	private WebElement continueToPayment;
+  @FindBy(id = "region_shipping")
+  private WebElement region;
 
-	@FindBy(css = "input#phoneNumber_shipping")
-	private WebElement phoneNumber;
+  @FindBy(css = "button[class$='submit-btn']")
+  private WebElement continueToPayment;
 
-	@FindBy(id = "item-quantity-0")
-	private WebElement quantityDropDown;
+  @FindBy(css = "input#phoneNumber_shipping")
+  private WebElement phoneNumber;
 
-	@FindBy(id = "cardholder-name")
-	private WebElement cardHolderName;
+  @FindBy(id = "item-quantity-0")
+  private WebElement quantityDropDown;
 
-	@FindBy(id = "credit-card-number")
-	private WebElement creditCardNumber;
+  @FindBy(id = "cardholder-name")
+  private WebElement cardHolderName;
 
-	@FindBy(id = "expiration")
-	private WebElement expiryDate;
+  @FindBy(id = "credit-card-number")
+  private WebElement creditCardNumber;
 
-	@FindBy(id = "cvv")
-	private WebElement cvv;
+  @FindBy(id = "expiration")
+  private WebElement expiryDate;
 
-	@FindBy(id = "tncCheckboxCreditCart")
-	private WebElement termsAndConditionsCheckbox;
+  @FindBy(id = "cvv")
+  private WebElement cvv;
 
-	@FindBy(id = "ccPayment")
-	private WebElement submitOrderButton;
+  @FindBy(xpath = "//input[contains(@id,'tncCheckboxCreditCart')]/../label")
+  private WebElement termsAndConditionsCheckbox;
 
-	@FindBy(css = "span[class='js-purchage-id']")
-	private WebElement purchaseOrderId;
+  @FindBy(id = "ccPayment")
+  private WebElement submitOrderButton;
 
-	@FindBy(id = "braintree-hosted-field-number")
-	private WebElement iframeBrainTree;
+  @FindBy(css = "span[class='js-purchage-id']")
+  private WebElement purchaseOrderId;
 
-	@FindBy(id = "braintree-hosted-field-expirationDate")
-	private WebElement iframeExpiryDate;
+  @FindBy(id = "braintree-hosted-field-number")
+  private WebElement iframeBrainTree;
 
-	@FindBy(id = "braintree-hosted-field-cvv")
-	private WebElement iframeCvv;
+  @FindBy(id = "braintree-hosted-field-expirationDate")
+  private WebElement iframeExpiryDate;
 
-	@FindBy(id = "password")
-	private WebElement authPassword;
-
-	@FindBy(id = "authWindow")
-	private WebElement authIframe;
-	
-	@FindBy(id = "Cardinal-CCA-IFrame")
-	private WebElement cardinalIframe;
-
-	@FindBy(name = "UsernamePasswordEntry")
-	private WebElement submitButtonAuthPage;
-
-	@FindBy(xpath = "//input[contains(@name,'Username')]")
-	private WebElement username;
-
-	@FindBy(xpath = "//input[contains(@name,'password')]")
-	private WebElement password;
-
-	@FindBy(css = "button[class*='sfdc_button_breville']")
-	private WebElement loginButton_SF;
-
-	@FindBy(id = "item-subscription-1")
-	private WebElement subscriptionPlanDropdown;
-
-	@FindBy(id = "loggedinCheckout")
-	private WebElement checkoutOptForLoggedInUsr;
-
-	private TransactionPage() {
-
-		PageFactory.initElements(driver, this);
-	}
-
-	public static TransactionPage getTransactionPage() {
-		if (transactionpage == null)
-			transactionpage = new TransactionPage();
-		return transactionpage;
-	}
-
-	public int getQuantity() {
-		waitForElementToBeVisible(quantityDropDown);
-		Select select = new Select(quantityDropDown);
-		return Integer.parseInt(select.getFirstSelectedOption().getText());
-	}
-
-	public String getPlan() {
-		waitForElementToBeVisible(subscriptionPlanDropdown);
-		Select select = new Select(subscriptionPlanDropdown);
-		return select.getFirstSelectedOption().getText();
-	}
-
-	public void updateQuantity() {
-		String value = Integer.toString(getQuantity() + 1);
-		System.out.println("Quantity: " + value);
-		Select select = new Select(quantityDropDown);
-		select.selectByVisibleText(value);
-	}
-
-	public void updatePlan() {
-		String value = getPlan();
-		logger.log(Status.INFO, "Selected plan is :" + value);
-		System.out.println("Selected plan is :" + value);
-		Select select = new Select(subscriptionPlanDropdown);
-		List<WebElement> options = select.getOptions();
-		for (WebElement webElement : options) {
-			String option = webElement.getText();
-			logger.log(Status.INFO, "Option value is: " + option);
-			System.out.println("Option value is: " + option);
-			if (!value.equalsIgnoreCase(option)) {
-				select.selectByVisibleText(option);
-				break;
-			}
-		}
-	}
-
-	public boolean vefiryUpdateQuantity() {
-		int initialValue = getQuantity();
-		updateQuantity();
-		int editedValue = getQuantity();
-		if (initialValue < editedValue)
-			return true;
-		else
-			return false;
-	}
-
-	public boolean vefiryUpdateplan() {
-		String initialValue = getPlan();
-		updatePlan();
-		String editedValue = getPlan();
-		if (!initialValue.equalsIgnoreCase(editedValue))
-			return true;
-		else
-			return false;
-	}
-
-	public String getSubTotal() {
-		waitForElementToBeVisible(totalPrice);
-		return totalPrice.getText();
-
-	}
-
-	public void removeProduct() {
-		waitForElementToBeVisible(productRemove);
-		productRemove.click();
-		waitForElementToBeVisible(removeItemInDialogBox);
-		removeItemInDialogBox.click();
-	}
-
-	public boolean verifyIsCartEmpty() {
-		hardWait(2000);
-		return verifyElementIsDisplayed(cartEmptyMsg);
-	}
-
-	public String getCartEmptyMsg() {
-		int count = 0;
-		boolean result = false;
-		while (count < 2) {
-			try {
-				hardWait(5000);
-				result = cartEmptyMsg.isDisplayed();
-			} catch (Exception e) {
-			}
-			count++;
-			if (result)
-				break;
-		}
-		return cartEmptyMsg.getText();
-	}
-
-	public void clickCheckoutAsGuestButton(String str) {
-		hardWait(8000);
-		if ("ca".equalsIgnoreCase(str)) {
-			waitForElementToBeClickable(checkoutAsGuest_Registered);
-			checkoutAsGuest_Registered.click();
-		} else {
-			waitForElementToBeClickable(checkoutAsGuest);
-			checkoutAsGuest.click();
-		}
-
-	}
-
-	public void loginAndCheckout(String uname, String pwd) {
-		hardWait(8000);
-		logger.log(Status.INFO, "Waiting for few Seconds");
-		waitForElementToBeClickable(createAccountLoginButton);
-		clickElementUsingJavaScriptExecutor(createAccountLoginButton);
-		System.out.println("Clicked On Create account/Login option");
-		logger.log(Status.INFO, "Clicked on Login Button");
-		waitForElementToBeClickable(loginButton);
-		loginButton.click();
-		System.out.println("Clicked on Login Button");
-		logger.log(Status.INFO, "Clicked on Login Button");
-		hardWait(10000);
-		logger.log(Status.INFO, "Wait for 10 milli seconds...");
-		waitForElementToBeClickable(username);
-		username.sendKeys(uname);
-		System.out.println("Entered username: " + uname);
-		logger.log(Status.INFO, "Entered username: " + uname);
-		password.sendKeys(pwd);
-		System.out.println("Entered password: " + pwd);
-		logger.log(Status.INFO, "Entered password: " + pwd);
-		loginButton_SF.click();
-		System.out.println("Clicked on Login Button");
-		logger.log(Status.INFO, "Clicked on Login Button");
-	}
-
-	public void fillTheForm(String form[]) {
-		waitForTheElementToVisible(emailAddress);
-		hardWait(2000);
-		emailAddress.sendKeys(form[0]);
-		hardWait(1000);
-		waitForElementToBeClickable(continueToShippingButton);
-		clickElementUsingJavaScriptExecutor(continueToShippingButton);
-		waitForElementToBeVisible(firstname);
-		firstname.sendKeys(form[1]);
-		lastname.sendKeys(form[2]);
-		address1.sendKeys(form[3]);
-		city.sendKeys(form[4]);
-		zipcode.sendKeys(form[5]);
-		if ("ca".equalsIgnoreCase(form[8]) || "us".equalsIgnoreCase(form[8])) {
-			Select select = new Select(state);
-			select.selectByVisibleText(form[6]);
-		} else if("eu".equalsIgnoreCase(form[8])) {
-			region.sendKeys(form[6]);
-		}
-		phoneNumber.clear();
-		phoneNumber.sendKeys(form[7]);
-		continueToPayment.click();
-
-	}
-
-	public void paymentUsingCreditCard(String str[]) {
-		if (verifyCardHolderName())
-			logger.log(Status.INFO, "After merge cart user is navigated to Checkout page.");
-		else {
-			logger.log(Status.INFO,
-					"Seems like Cart has orders in it, hence redirected to Cart page instead of checkout page..");
-			checkoutOptForLoggedInUsr.click();
-			logger.log(Status.INFO, "Clicked On Chekout Button..");
-			waitForElementToBeClickable(cardHolderName);
-		}
-		cardHolderName.sendKeys(str[0]);
-		switchToFrame(iframeBrainTree);
-		creditCardNumber.sendKeys(str[1]);
-		switchToParentFrame();
-		switchToFrame(iframeExpiryDate);
-		expiryDate.sendKeys(str[2]);
-		switchToParentFrame();
-		switchToFrame(iframeCvv);
-		cvv.sendKeys(str[3]);
-		switchToParentFrame();
-		hardWait(2000);
-		clickElementUsingJavaScriptExecutor(termsAndConditionsCheckbox);
-		waitForElementToBeVisible(submitOrderButton);
-		submitOrderButton.click();
-		hardWait(5000);
-		if ("eu".equalsIgnoreCase(str[4]) || "uk".equalsIgnoreCase(str[4])) {
-			logger.log(Status.INFO, " The Order belongs to EU region");
-			hardWait(2000);
-			switchToFrame(cardinalIframe);
-			logger.log(Status.INFO, "Switched to the CC iframe");
-			switchToFrame(authIframe);
-			logger.log(Status.INFO, "Switched to the Auth iframe");
-			authPassword.sendKeys("123");
-			submitButtonAuthPage.click();
-			hardWait(2000);
-			switchToParentFrame();
-		}
-
-	}
-
-	public String getPurchaseOrderId() {
-		hardWait(5000);
-		waitForElementToBeVisible(purchaseOrderId);
-		return purchaseOrderId.getText();
-	}
-
-	public boolean verifyfirstname() {
-		waitForElementToBeVisible(firstname, 120);
-		return isElementPresent(firstname);
-	}
-
-	public boolean verifyCheckoutOptForLoggedInUsr() {
-		hardWait(8000);
-		return verifyElementIsDisplayed(checkoutOptForLoggedInUsr);
-		// isElementPresent(checkoutOptForLoggedInUsr);
-	}
-
-	public boolean verifyCardHolderName() {
-		waitForElementToBeClickable(cardHolderName);
-		try {
-			return cardHolderName.isDisplayed();
-		} catch (Exception e) {
-			logger.log(Status.INFO,
-					"Exception Occured while waiting for the cardHolderName and the exception is:" + e.getMessage());
-		}
-		return false;
-	}
-
-	public boolean verifyStateDropdown() {
-		return verifyElementIsDisplayed(state);
-	}
-
-	public boolean verifyRegionInputTextbox() {
-		return verifyElementIsDisplayed(region);
-	}
+  @FindBy(id = "braintree-hosted-field-cvv")
+  private WebElement iframeCvv;
+
+  @FindBy(name = "challengeDataEntry")
+  private WebElement authPassword;
+
+  @FindBy(id = "authWindow")
+  private WebElement authIframe;
+
+  @FindBy(id = "Cardinal-CCA-IFrame")
+  private WebElement cardinalIframe;
+
+  @FindBy(css = "input[value*='SUBMIT']")
+  private WebElement submitButtonAuthPage;
+
+  @FindBy(xpath = "//input[contains(@name,'Username')]")
+  private WebElement username;
+
+  @FindBy(xpath = "//input[contains(@name,'password')]")
+  private WebElement password;
+
+  @FindBy(css = "button[class*='sfdc_button_breville']")
+  private WebElement loginButton_SF;
+
+  @FindBy(id = "item-subscription-1")
+  private WebElement subscriptionPlanDropdown;
+
+  @FindBy(id = "loggedinCheckout")
+  private WebElement checkoutOptForLoggedInUsr;
+
+  @FindBy(xpath = "//div[contains(@id,'spinner__dialog')and(contains(@style,'none'))]")
+  private WebElement loaderImage;
+
+  @FindBy(xpath = "//input[contains(@id,'payPaypal')]/..//label")
+  private WebElement paypalRadioButton;
+
+  @FindBy(id = "payPaypal")
+  private WebElement paypalDiv;
+
+  @FindBy(css = "div[aria-label*='PayPal']")
+  private WebElement payWithpaypalButton;
+
+  @FindBy(id = "email")
+  private WebElement paypalEmailID;
+
+  @FindBy(id = "btnNext")
+  private WebElement paypalNextButton;
+
+  @FindBy(id = "password")
+  private WebElement paypalPassword;
+
+  @FindBy(id = "btnLogin")
+  private WebElement paypalLoginButton;
+
+  @FindBy(id = "fiSubmitButton")
+  private WebElement paypalContinueButton;
+
+  @FindBy(id = "consentButton")
+  private WebElement paypalAgreeAndPayButton;
+
+  @FindBy(xpath = "//input[contains(@id,'tncCheckboxPayPal')]/..//label")
+  private WebElement paypalTermsAndConditionsCheckBox;
+
+  @FindBy(id = "paypalBtn")
+  private WebElement paypalSubmitOrder;
+
+  @FindBy(xpath = "//div[contains(@id,'preloaderSpinner')and contains(@style,'display: none;')]")
+  private WebElement displayLoaderOnPayPalWindow;
+
+  @FindBy(xpath = "iframe[class='xcomponent-component-frame xcomponent-visible']")
+  private WebElement payWithPayPalButtonIframe;
+
+  @FindBy(xpath = "//input[contains(@id,'payKlarna')]/..//label")
+  private WebElement payKlarnaRadioButton;
+
+  @FindBy(xpath = "(//input[contains(@id,'payCredit')]/..//label)[2]")
+  private WebElement payCreditRadioButton;
+
+  private TransactionPage() {
+
+    PageFactory.initElements(driver, this);
+  }
+
+  public static TransactionPage getTransactionPage() {
+    if (transactionpage == null) transactionpage = new TransactionPage();
+    return transactionpage;
+  }
+
+  public int getQuantity() {
+    waitForElementToBeClickable(quantityDropDown);
+    Select select = new Select(quantityDropDown);
+    int qty = Integer.parseInt(select.getFirstSelectedOption().getText());
+    return qty;
+  }
+
+  public String getPlan() {
+    waitForElementToBeClickable(subscriptionPlanDropdown);
+    Select select = new Select(subscriptionPlanDropdown);
+    return select.getFirstSelectedOption().getText();
+  }
+
+  public void updateQuantity() {
+    String value = Integer.toString(getQuantity() + 1);
+    Select select = new Select(quantityDropDown);
+    select.selectByVisibleText(value);
+  }
+
+  public void updatePlan() {
+    String value = getPlan();
+    Select select = new Select(subscriptionPlanDropdown);
+    List < WebElement > options = select.getOptions();
+    for (WebElement webElement: options) {
+      String option = webElement.getText();
+      if (!value.equalsIgnoreCase(option)) {
+        select.selectByVisibleText(option);
+        break;
+      }
+    }
+  }
+
+  public boolean vefiryUpdateQuantity() {
+    int initialValue = getQuantity();
+    updateQuantity();
+    while (verifyLoaderImage()) {
+      hardWait(2000);
+    }
+    int editedValue = getQuantity();
+    logger.log(Status.INFO, "The quantity of the product before edit is and the quantity after update is: " + initialValue + " & " + editedValue);
+    if (initialValue < editedValue) return true;
+    else return false;
+  }
+
+  public boolean vefiryUpdateplan() {
+    String initialValue = getPlan();
+    updatePlan();
+    while (verifyLoaderImage()) {
+      hardWait(5000);
+    }
+    hardWait(2000);
+    String editedValue = getPlan();
+    logger.log(Status.INFO, "The plan for the product before edit is and the plan after update is: " + initialValue + " & " + editedValue);
+    if (!initialValue.equalsIgnoreCase(editedValue)) return true;
+    else return false;
+  }
+
+  public String getSubTotal() {
+    waitForElementToBeVisible(totalPrice);
+    return totalPrice.getText();
+
+  }
+
+  public void removeProduct() {
+    waitForElementToBeVisible(productRemove);
+    productRemove.click();
+    waitForElementToBeVisible(removeItemInDialogBox);
+    removeItemInDialogBox.click();
+  }
+
+  public boolean verifyIsCartEmpty() {
+    hardWait(2000);
+    return verifyElementIsDisplayed(cartEmptyMsg);
+  }
+
+  public String getCartEmptyMsg() {
+    int count = 0;
+    boolean result = false;
+    while (count < 2) {
+      try {
+        hardWait(5000);
+        result = cartEmptyMsg.isDisplayed();
+      } catch(Exception e) {}
+      count++;
+      if (result) break;
+    }
+    return cartEmptyMsg.getText();
+  }
+
+  public void clickCheckoutAsGuestButton(String str) {
+    hardWait(8000);
+    if ("ca".equalsIgnoreCase(str)) {
+      waitForElementToBeClickable(checkoutAsGuest_Registered);
+      checkoutAsGuest_Registered.click();
+    } else {
+      waitForElementToBeClickable(checkoutAsGuest);
+      checkoutAsGuest.click();
+    }
+
+  }
+
+  public boolean loginAndCheckout(String uname, String pwd) {
+    boolean flag = false;
+    hardWait(8000);
+    waitForElementToBeClickable(createAccountLoginButton);
+    clickElementUsingJavaScriptExecutor(createAccountLoginButton);
+    waitForElementToBeClickable(loginButton);
+    loginButton.click();
+    logger.log(Status.INFO, "Clicking on the Login option from My Breville menu.");
+    hardWait(5000);
+    if (verifyusername()) {
+      flag = true;
+      waitForElementToBeClickable(username);
+      username.sendKeys(uname);
+      logger.log(Status.INFO, "Entered username: " + uname);
+      password.sendKeys(pwd);
+      logger.log(Status.INFO, "Entered password: " + pwd);
+      loginButton_SF.click();
+      logger.log(Status.INFO, "Clicked on Login Button");
+    } else {
+      logger.log(Status.INFO, "Seems like system is not redirecting to SF login page when user clicks on Login.");
+    }
+    return flag;
+  }
+
+  public void fillTheForm(String form[]) {
+    waitForTheElementToVisible(emailAddress);
+    hardWait(2000);
+    emailAddress.sendKeys(form[0]);
+    hardWait(1000);
+    waitForElementToBeClickable(continueToShippingButton);
+    clickElementUsingJavaScriptExecutor(continueToShippingButton);
+    waitForElementToBeVisible(firstname);
+    firstname.sendKeys(form[1]);
+    lastname.sendKeys(form[2]);
+    address1.sendKeys(form[3]);
+    city.sendKeys(form[4]);
+    zipcode.sendKeys(form[5]);
+    if ("ca".equalsIgnoreCase(form[8]) || "us".equalsIgnoreCase(form[8])) {
+      Select select = new Select(state);
+      select.selectByVisibleText(form[6]);
+    } else if ("eu".equalsIgnoreCase(form[8])) {
+      region.sendKeys(form[6]);
+    }
+    phoneNumber.clear();
+    phoneNumber.sendKeys(form[7]);
+    continueToPayment.click();
+
+  }
+
+  public void paymentUsingPayPal(String str[]) {
+    if (verifyCardHolderName()) logger.log(Status.INFO, "After merge cart user is navigated to Checkout page.");
+    else {
+      logger.log(Status.INFO, "Seems like Cart has orders in it, hence redirected to Cart page instead of checkout page..");
+      checkoutOptForLoggedInUsr.click();
+      logger.log(Status.INFO, "Clicked On Chekout Button..");
+    }
+    String parentWindow = driver.getWindowHandle();
+    waitForElementToBeClickable(paypalRadioButton);
+    paypalRadioButton.click();
+    logger.log(Status.INFO, "Clicking on paypal radio button");
+    hardWait(8000);
+    driver.switchTo().frame(3);
+    logger.log(Status.INFO, "Switched to the frame");
+    hardWait(8000);
+    waitForElementToBeClickable(payWithpaypalButton);
+    payWithpaypalButton.click();
+    logger.log(Status.INFO, "Clicking on pay with paypal button");
+    hardWait(5000);
+    switchToLatestWindow();
+    logger.log(Status.INFO, "switched to the latest window");
+    while (verifyLoaderImageOnPaypalWindow()) {
+        hardWait(2000);
+      }
+    waitForElementToBeClickable(paypalEmailID);
+    paypalEmailID.sendKeys(str[0]);
+    logger.log(Status.INFO, "Entered username: " + str[0]);
+    waitForElementToBeClickable(paypalNextButton);
+    paypalNextButton.click();
+    logger.log(Status.INFO, "Clicking on Next button");
+    while (verifyLoaderImageOnPaypalWindow()) {
+      hardWait(2000);
+    }
+    waitForElementToBeClickable(paypalPassword);
+    paypalPassword.sendKeys(str[1]);
+    logger.log(Status.INFO, "Entered password: " + str[1]);
+    waitForElementToBeClickable(paypalLoginButton);
+    paypalLoginButton.click();
+    logger.log(Status.INFO, "Clicking on Login button");
+    while (verifyLoaderImageOnPaypalWindow()) {
+      hardWait(2000);
+    }
+    waitForElementToBeClickable(paypalContinueButton);
+    paypalContinueButton.click();
+    logger.log(Status.INFO, "Clicking on paypal continue button");
+    while (verifyLoaderImageOnPaypalWindow()) {
+      hardWait(2000);
+    }
+    waitForElementToBeClickable(paypalAgreeAndPayButton);
+    hardWait(2000);
+    clickElementUsingJavaScriptExecutor(paypalAgreeAndPayButton);
+    logger.log(Status.INFO, "Clicking on Agree button");
+    while (verifyLoaderImageOnPaypalWindow()) {
+      hardWait(2000);
+    }
+    hardWait(5000);
+    driver.switchTo().window(parentWindow);
+    logger.log(Status.INFO, "Switched back to parent window");
+    waitForElementToBeClickable(paypalTermsAndConditionsCheckBox);
+    hardWait(2000);
+    clickElementUsingJavaScriptExecutor(paypalTermsAndConditionsCheckBox);
+    logger.log(Status.INFO, "Selected terms and conditions checkbox");
+    waitForElementToBeClickable(paypalSubmitOrder);
+    paypalSubmitOrder.click();
+    logger.log(Status.INFO, "Clicking on the submit button");
+
+  }
+
+  public void paymentUsingCreditCard(String str[]) {
+    if (verifyCardHolderName()) logger.log(Status.INFO, "After merge cart user is navigated to Checkout page.");
+    else {
+      logger.log(Status.INFO, "Seems like Cart has orders in it, hence redirected to Cart page instead of checkout page..");
+      checkoutOptForLoggedInUsr.click();
+      logger.log(Status.INFO, "Clicked On Chekout Button..");
+    }
+    waitForElementToBeClickable(cardHolderName);
+    cardHolderName.sendKeys(str[0]);
+    switchToFrame(iframeBrainTree);
+    creditCardNumber.sendKeys(str[1]);
+    switchToParentFrame();
+    switchToFrame(iframeExpiryDate);
+    expiryDate.sendKeys(str[2]);
+    switchToParentFrame();
+    switchToFrame(iframeCvv);
+    cvv.sendKeys(str[3]);
+    switchToParentFrame();
+    hardWait(2000);
+    clickElementUsingJavaScriptExecutor(termsAndConditionsCheckbox);
+    waitForElementToBeVisible(submitOrderButton);
+    submitOrderButton.click();
+    hardWait(5000);
+    if ("eu".equalsIgnoreCase(str[4]) || "uk".equalsIgnoreCase(str[4])) {
+      logger.log(Status.INFO, " The Order belongs to EU region");
+      System.out.println("The Order belongs to EU Region");
+      hardWait(8000);
+      System.out.println("-------------------------------------");
+      System.out.println(verifyElementIsDisplayed(cardinalIframe));
+      switchToFrame(cardinalIframe);
+      logger.log(Status.INFO, "Switched to the CC iframe");
+      authPassword.sendKeys("1234");
+      submitButtonAuthPage.click();
+      hardWait(2000);
+      switchToParentFrame();
+    }
+
+  }
+
+  public String getPurchaseOrderId() {
+    waitForElementToBeClickable(purchaseOrderId);
+    while (verifyLoaderImage()) {
+      hardWait(2000);
+    }
+    hardWait(2000);
+    return purchaseOrderId.getText();
+  }
+
+  public boolean verifyfirstname() {
+    waitForElementToBeVisible(firstname, 120);
+    return isElementPresent(firstname);
+  }
+
+  public boolean verifyCheckoutOptForLoggedInUsr() {
+    hardWait(8000);
+    return verifyElementIsDisplayed(checkoutOptForLoggedInUsr);
+    // isElementPresent(checkoutOptForLoggedInUsr);
+  }
+
+  public boolean verifyCardHolderName() {
+    waitForElementToBeClickable(cardHolderName);
+    try {
+      return cardHolderName.isDisplayed();
+    } catch(Exception e) {
+      logger.log(Status.INFO, "Exception Occured while waiting for the cardHolderName and the exception is:" + e.getMessage());
+    }
+    return false;
+  }
+
+  public boolean verifyStateDropdown() {
+    return verifyElementIsDisplayed(state);
+  }
+
+  public boolean verifyRegionInputTextbox() {
+    return verifyElementIsDisplayed(region);
+  }
+
+  public boolean verifyusername() {
+    waitForElementToBeClickable(username);
+    return verifyElementIsDisplayed(username);
+  }
+
+  public boolean verifySignup() {
+    return verifyElementIsDisplayed(createAccountLoginButton);
+  }
+
+  public boolean verifyMultipleOptionDisplayedOnCartPage() {
+    while (verifyLoaderImage()) {
+      hardWait(2000);
+    }
+    boolean flag = false;
+    waitForElementToBeClickable(checkoutAsGuest_Registered);
+    waitForElementToBeClickable(oneTimeLoggedInSignup);
+    hardWait(5000);
+    if (verifyElementIsDisplayed(checkoutAsGuest_Registered) && verifyElementIsDisplayed(oneTimeLoggedInSignup)) flag = true;
+    return flag;
+
+  }
+
+  public boolean verifyCheckoutAsGuestOptionInCartPage() {
+    while (verifyLoaderImage()) {
+      hardWait(5000);
+    }
+    hardWait(5000);
+    return verifyElementIsDisplayed(checkoutAsGuest_Registered);
+  }
+
+  public boolean verifyLoaderImage() {
+    boolean flag = false;
+    try {
+      if (loaderImage.isDisplayed()) flag = true;
+    } catch(Exception e) {
+      logger.log(Status.INFO, "Exception occured while verifying the loader image");
+    }
+    return flag;
+  }
+
+  public boolean verifyLoaderImageOnPaypalWindow() {
+    boolean flag = false;
+    try {
+      if (displayLoaderOnPayPalWindow.isDisplayed()) flag = true;
+    } catch(Exception e) {
+      logger.log(Status.INFO, "Exception occured while verifying the loader image");
+    }
+    return flag;
+  }
+
+  public boolean verifyPayKlarnaRadioButton() {
+    return verifyElementIsDisplayed(payKlarnaRadioButton);
+  }
+
+  public boolean verifyPaypalIframe() {
+    return verifyElementIsDisplayed(payWithPayPalButtonIframe);
+  }
 
 }
