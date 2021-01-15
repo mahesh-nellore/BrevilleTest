@@ -3,8 +3,9 @@
 <suite name="Suite">
   <test thread-count="5" name="Test">
   <parameter name = "browser" value = "chrome"/>
+  <parameter name = "env" value = "uat"/>
     <classes>
-      <class name="website.tests.SanityCheck_UAT"/>
+     <class name="website.tests.SanityCheck_UAT"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

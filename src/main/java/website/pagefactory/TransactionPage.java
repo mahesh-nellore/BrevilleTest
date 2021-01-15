@@ -2,26 +2,28 @@ package website.pagefactory;
 
 import java.util.List;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 import com.aventstack.extentreports.Status;
-
 import website.base.BaseTest;
-import website.generic.RobotClassUtility;
 
 public class TransactionPage extends BaseTest {
 
-  private static TransactionPage transactionpage = null;
+  //private static TransactionPage transactionpage = null;
 
   @FindBy(id = "onetimecheckoutasguest")
   private WebElement checkoutAsGuest_Registered;
 
   @FindBy(id = "onetimeloggedinSignup")
   private WebElement oneTimeLoggedInSignup;
+
+  @FindBy(id = "loggedinSignup")
+  private WebElement createAccountButton_Cartpage;
 
   @FindBy(id = "js-sign-up-label")
   private WebElement createAccountLoginButton;
@@ -155,6 +157,9 @@ public class TransactionPage extends BaseTest {
 
   @FindBy(css = "div[aria-label*='PayPal']")
   private WebElement payWithpaypalButton;
+  
+ /* @FindBy(id = "paypalBtn")
+  private WebElement payWithpaypalButton;*/
 
   @FindBy(id = "email")
   private WebElement paypalEmailID;
@@ -192,14 +197,66 @@ public class TransactionPage extends BaseTest {
   @FindBy(xpath = "(//input[contains(@id,'payCredit')]/..//label)[2]")
   private WebElement payCreditRadioButton;
 
-  private TransactionPage() {
+  @FindBy(css = "button[class*='submit-btn']")
+  private WebElement continuePaymentButton;
+
+  @FindBy(css = "a[class*='goToCartMulberrySC']")
+  private WebElement alertModalOkButton;
+
+  @FindBy(css = "div[aria-labelledby*='errorPopUp']")
+  private WebElement errorPopUpDialogBox;
+
+  @FindBy(id = "errorPopUp__title")
+  private WebElement errorPopUpTitle;
+
+  // Create Account Page
+
+  @FindBy(xpath = "//input[@name='email']")
+  private WebElement emailTextBox_CreateAccount;
+
+  @FindBy(xpath = "//input[@name='password']")
+  private WebElement passwordTextBox_CreateAccount;
+
+  @FindBy(css = "button[class*='button_breville']")
+  private WebElement continueButton_CreateAccount;
+  
+  @FindAll(@FindBy(tagName = "iframe"))
+  private List<WebElement> allFrames;
+  
+  // Save Shipping Address popup
+  @FindBy(css = "button[class='saveBtn']")
+  private WebElement saveShippingAddrButton;
+
+  public TransactionPage() {
 
     PageFactory.initElements(driver, this);
   }
 
-  public static TransactionPage getTransactionPage() {
+ /* public static TransactionPage getTransactionPage() {
     if (transactionpage == null) transactionpage = new TransactionPage();
     return transactionpage;
+  }*/
+
+  public boolean verifyProductOutOfStockAlert() {
+    while (transactionpage.verifyLoaderImage()) {
+      hardWait(5000);
+      System.out.println("Waiting for the page to be loaded");
+    }
+    boolean flag = verifyElementIsDisplayed(errorPopUpDialogBox);
+    System.out.println("Is Alert Displayed on the page: " + flag);
+    return flag;
+
+  }
+
+  public void handleProductOutOfStockAlert() {
+    try {
+      String text = errorPopUpTitle.getText();
+      System.out.println("Error Text is: " + text);
+      alertModalOkButton.click();
+      System.out.println("Clicking on alert pop up Ok Button");
+    } catch(Exception e) {
+      // TODO: handle exception
+    }
   }
 
   public int getQuantity() {
@@ -237,6 +294,11 @@ public class TransactionPage extends BaseTest {
   public boolean vefiryUpdateQuantity() {
     int initialValue = getQuantity();
     updateQuantity();
+    hardWait(2000);
+    while (verifyLoaderImage()) {
+      hardWait(2000);
+    }
+    if (verifyProductOutOfStockAlert()) handleProductOutOfStockAlert();
     while (verifyLoaderImage()) {
       hardWait(2000);
     }
@@ -327,6 +389,29 @@ public class TransactionPage extends BaseTest {
     return flag;
   }
 
+  public boolean loginAndCheckout_NewUser(String uname, String pwd) {
+    boolean flag = false;
+    hardWait(2000);
+    clickOnCreateAccountButton_CartPage();
+    hardWait(10000);
+    waitForElementToBeVisible(emailTextBox_CreateAccount, 60);
+    if (verifyEmailTextBox_CreateAccount()) {
+      waitForElementToBeClickable(emailTextBox_CreateAccount);
+      emailTextBox_CreateAccount.sendKeys(uname);
+      logger.log(Status.INFO, "Entered Email Id:" + uname);
+      hardWait(2000);
+      waitForElementToBeClickable(passwordTextBox_CreateAccount);
+      passwordTextBox_CreateAccount.sendKeys(pwd);
+      logger.log(Status.INFO, "Entered password: " + pwd);
+      hardWait(2000);
+      waitForElementToBeClickable(continueButton_CreateAccount);
+      continueButton_CreateAccount.click();
+      logger.log(Status.INFO, "Clicking on continue button");
+      flag = true;
+    }
+    return flag;
+  }
+
   public void fillTheForm(String form[]) {
     waitForTheElementToVisible(emailAddress);
     hardWait(2000);
@@ -354,54 +439,121 @@ public class TransactionPage extends BaseTest {
 
   public void paymentUsingPayPal(String str[]) {
     if (verifyCardHolderName()) logger.log(Status.INFO, "After merge cart user is navigated to Checkout page.");
+    else if (verifyFirstName_Checkoutpage()) {
+      waitForElementToBeVisible(firstname);
+      firstname.sendKeys(str[0]);
+      lastname.sendKeys(str[1]);
+      address1.sendKeys(str[2]);
+      city.sendKeys(str[3]);
+      zipcode.sendKeys(str[4]);
+      if ("ca".equalsIgnoreCase(str[7]) || "cafr".equalsIgnoreCase(str[7]) || "us".equalsIgnoreCase(str[7])) {
+        Select select = new Select(state);
+        select.selectByVisibleText(str[5]);
+      } else if ("eu".contains(str[7])) {
+        region.sendKeys(str[5]);
+      }
+      phoneNumber.clear();
+      phoneNumber.sendKeys(str[6]);
+      continueToPayment.click();
+      hardWait(8000);
+      System.out.println(driver.getWindowHandles().size());
+      if(verifyElementIsDisplayed(saveShippingAddrButton)) {
+    	  System.out.println("----------------------------------------");
+    	  System.out.println("Save Shipping Address pop up is displayed");
+    	  System.out.println("----------------------------------------");
+    	  waitForElementToBeClickable(saveShippingAddrButton);
+    	  saveShippingAddrButton.click();
+      }else {
+    	  System.out.println("Save Shipping address pop up is not displayed");
+      }
+    	 
+      
+
+    } else if (verifyContinuePaymentButton()) continuePaymentButton.click();
     else {
       logger.log(Status.INFO, "Seems like Cart has orders in it, hence redirected to Cart page instead of checkout page..");
       checkoutOptForLoggedInUsr.click();
       logger.log(Status.INFO, "Clicked On Chekout Button..");
     }
+
     String parentWindow = driver.getWindowHandle();
     waitForElementToBeClickable(paypalRadioButton);
     paypalRadioButton.click();
     logger.log(Status.INFO, "Clicking on paypal radio button");
-    hardWait(8000);
+    hardWait(10000);
+    int count = 1;
+    for (WebElement element : allFrames) {
+		String value = element.getAttribute("name");
+		System.out.println("The value is: "+value);
+		if(value.contains("xcomponent__ppbutton__4_0_165")) {
+			System.out.println("The paypal iframe is Available");
+		}
+	}
+    System.out.println("---------------------------------------------------------");
+    for (WebElement element : allFrames) {
+		System.out.println(element.getAttribute("id"));
+	}
+    System.out.println("---------------------------------------------------------");
+    for (WebElement element : allFrames) {
+		System.out.println(element.getAttribute("src"));
+	}
+    System.out.println("---------------------------------------------------------");
     driver.switchTo().frame(3);
     logger.log(Status.INFO, "Switched to the frame");
-    hardWait(8000);
-    waitForElementToBeClickable(payWithpaypalButton);
+    System.out.println("---Switched to the Frame----");
+    hardWait(10000);
+    System.out.println("---------------------------------");
+    System.out.println(verifyElementIsDisplayed(payWithpaypalButton));
+    System.out.println("---------------------------------");
+    /*waitForElementToBeVisible(payWithpaypalButton, 90);
+    waitForElementToBeClickable(payWithpaypalButton);*/
     payWithpaypalButton.click();
     logger.log(Status.INFO, "Clicking on pay with paypal button");
-    hardWait(5000);
+    hardWait(8000);
     switchToLatestWindow();
     logger.log(Status.INFO, "switched to the latest window");
     while (verifyLoaderImageOnPaypalWindow()) {
-        hardWait(2000);
-      }
+      hardWait(2000);
+    }
+    waitForElementToBeVisible(paypalEmailID, 60);
     waitForElementToBeClickable(paypalEmailID);
-    paypalEmailID.sendKeys(str[0]);
-    logger.log(Status.INFO, "Entered username: " + str[0]);
-    waitForElementToBeClickable(paypalNextButton);
-    paypalNextButton.click();
-    logger.log(Status.INFO, "Clicking on Next button");
-    while (verifyLoaderImageOnPaypalWindow()) {
-      hardWait(2000);
+    if(verifyPaypalEmail()) {
+    	paypalEmailID.sendKeys(str[8]);
+        logger.log(Status.INFO, "Entered username: " + str[8]);
+        waitForElementToBeClickable(paypalNextButton);
+        paypalNextButton.click();
+        logger.log(Status.INFO, "Clicking on Next button");
+        while (verifyLoaderImageOnPaypalWindow()) {
+            hardWait(2000);
+          }
+        hardWait(5000);
     }
+    waitForElementToBeVisible(paypalPassword, 60);
     waitForElementToBeClickable(paypalPassword);
-    paypalPassword.sendKeys(str[1]);
-    logger.log(Status.INFO, "Entered password: " + str[1]);
-    waitForElementToBeClickable(paypalLoginButton);
-    paypalLoginButton.click();
-    logger.log(Status.INFO, "Clicking on Login button");
-    while (verifyLoaderImageOnPaypalWindow()) {
-      hardWait(2000);
+    if(verifyPaypalPassword()) {
+    	waitForElementToBeClickable(paypalPassword);
+        paypalPassword.sendKeys(str[9]);
+        logger.log(Status.INFO, "Entered password: " + str[9]);
+        waitForElementToBeClickable(paypalLoginButton);
+        paypalLoginButton.click();
+        logger.log(Status.INFO, "Clicking on Login button");
+        while (verifyLoaderImageOnPaypalWindow()) {
+          hardWait(2000);
+        }
+        hardWait(5000);
     }
-    waitForElementToBeClickable(paypalContinueButton);
-    paypalContinueButton.click();
-    logger.log(Status.INFO, "Clicking on paypal continue button");
-    while (verifyLoaderImageOnPaypalWindow()) {
-      hardWait(2000);
+    if(verifyPaypalContinueButton()) {
+    	waitForElementToBeClickable(paypalContinueButton);
+        paypalContinueButton.click();
+        logger.log(Status.INFO, "Clicking on paypal continue button");
+        while (verifyLoaderImageOnPaypalWindow()) {
+          hardWait(2000);
+        }
+        hardWait(5000);
     }
+    
     waitForElementToBeClickable(paypalAgreeAndPayButton);
-    hardWait(2000);
+    hardWait(5000);
     clickElementUsingJavaScriptExecutor(paypalAgreeAndPayButton);
     logger.log(Status.INFO, "Clicking on Agree button");
     while (verifyLoaderImageOnPaypalWindow()) {
@@ -422,28 +574,57 @@ public class TransactionPage extends BaseTest {
 
   public void paymentUsingCreditCard(String str[]) {
     if (verifyCardHolderName()) logger.log(Status.INFO, "After merge cart user is navigated to Checkout page.");
+    else if (verifyFirstName_Checkoutpage()) {
+      waitForElementToBeVisible(firstname);
+      firstname.sendKeys(str[0]);
+      lastname.sendKeys(str[1]);
+      address1.sendKeys(str[2]);
+      city.sendKeys(str[3]);
+      zipcode.sendKeys(str[4]);
+      if ("ca".equalsIgnoreCase(str[7]) || "cafr".equalsIgnoreCase(str[7]) || "us".equalsIgnoreCase(str[7])) {
+        Select select = new Select(state);
+        select.selectByVisibleText(str[5]);
+      } else if ("eu".equalsIgnoreCase(str[7])) {
+        region.sendKeys(str[5]);
+      }
+      phoneNumber.clear();
+      phoneNumber.sendKeys(str[6]);
+      continueToPayment.click();
+      hardWait(8000);
+      System.out.println(driver.getWindowHandles().size());
+      if(verifyElementIsDisplayed(saveShippingAddrButton)) {
+    	  System.out.println("----------------------------------------");
+    	  System.out.println("Save Shipping Address pop up is displayed");
+    	  System.out.println("----------------------------------------");
+    	  waitForElementToBeClickable(saveShippingAddrButton);
+    	  saveShippingAddrButton.click();
+      }else {
+    	  System.out.println("Save Shipping address pop up is not displayed");
+      }
+
+    } else if (verifyContinuePaymentButton()) continuePaymentButton.click();
     else {
       logger.log(Status.INFO, "Seems like Cart has orders in it, hence redirected to Cart page instead of checkout page..");
       checkoutOptForLoggedInUsr.click();
       logger.log(Status.INFO, "Clicked On Chekout Button..");
     }
     waitForElementToBeClickable(cardHolderName);
-    cardHolderName.sendKeys(str[0]);
+    cardHolderName.sendKeys(str[8]);
     switchToFrame(iframeBrainTree);
-    creditCardNumber.sendKeys(str[1]);
+    creditCardNumber.sendKeys(str[9]);
     switchToParentFrame();
     switchToFrame(iframeExpiryDate);
-    expiryDate.sendKeys(str[2]);
+    expiryDate.sendKeys(str[10]);
     switchToParentFrame();
     switchToFrame(iframeCvv);
-    cvv.sendKeys(str[3]);
+    cvv.sendKeys(str[11]);
     switchToParentFrame();
     hardWait(2000);
     clickElementUsingJavaScriptExecutor(termsAndConditionsCheckbox);
     waitForElementToBeVisible(submitOrderButton);
     submitOrderButton.click();
     hardWait(5000);
-    if ("eu".equalsIgnoreCase(str[4]) || "uk".equalsIgnoreCase(str[4])) {
+    if ("eu".equalsIgnoreCase(str[7]) || "uk".equalsIgnoreCase(str[7])) {
       logger.log(Status.INFO, " The Order belongs to EU region");
       System.out.println("The Order belongs to EU Region");
       hardWait(8000);
@@ -460,11 +641,12 @@ public class TransactionPage extends BaseTest {
   }
 
   public String getPurchaseOrderId() {
+	waitForElementToBeVisible(purchaseOrderId, 90);
     waitForElementToBeClickable(purchaseOrderId);
     while (verifyLoaderImage()) {
-      hardWait(2000);
+      hardWait(5000);
     }
-    hardWait(2000);
+    hardWait(8000);
     return purchaseOrderId.getText();
   }
 
@@ -489,6 +671,10 @@ public class TransactionPage extends BaseTest {
     return false;
   }
 
+  public boolean verifyContinuePaymentButton() {
+    return verifyElementIsDisplayed(continuePaymentButton);
+  }
+
   public boolean verifyStateDropdown() {
     return verifyElementIsDisplayed(state);
   }
@@ -508,7 +694,7 @@ public class TransactionPage extends BaseTest {
 
   public boolean verifyMultipleOptionDisplayedOnCartPage() {
     while (verifyLoaderImage()) {
-      hardWait(2000);
+      hardWait(5000);
     }
     boolean flag = false;
     waitForElementToBeClickable(checkoutAsGuest_Registered);
@@ -520,10 +706,10 @@ public class TransactionPage extends BaseTest {
   }
 
   public boolean verifyCheckoutAsGuestOptionInCartPage() {
-    while (verifyLoaderImage()) {
+	  hardWait(8000);
+	  while (verifyLoaderImage()) {
       hardWait(5000);
     }
-    hardWait(5000);
     return verifyElementIsDisplayed(checkoutAsGuest_Registered);
   }
 
@@ -555,4 +741,29 @@ public class TransactionPage extends BaseTest {
     return verifyElementIsDisplayed(payWithPayPalButtonIframe);
   }
 
+  public void clickOnCreateAccountButton_CartPage() {
+    waitForElementToBeClickable(createAccountButton_Cartpage);
+    createAccountButton_Cartpage.click();
+    logger.log(Status.INFO, "Clicked on Create account/Login button in Cart page");
+  }
+
+  public boolean verifyEmailTextBox_CreateAccount() {
+    return verifyElementIsDisplayed(emailTextBox_CreateAccount);
+  }
+
+  public boolean verifyFirstName_Checkoutpage() {
+    return verifyElementIsDisplayed(firstname);
+  }
+  
+  public boolean verifyPaypalEmail() {
+	  return verifyElementIsDisplayed(paypalEmailID);
+  }
+  
+  public boolean verifyPaypalPassword() {
+	  return verifyElementIsDisplayed(paypalPassword);
+  }
+
+  public boolean verifyPaypalContinueButton() {
+	  return verifyElementIsDisplayed(paypalContinueButton);
+  }
 }

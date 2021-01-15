@@ -16,7 +16,7 @@ import website.base.BaseTest;
 
 public class HomePage extends BaseTest {
 
-  private static HomePage homepage = null;
+  //private static HomePage homepage = null;
 
   public static String modelNumber = "";
 
@@ -61,8 +61,11 @@ public class HomePage extends BaseTest {
 
   @FindBy(xpath = "(//img[contains(@src,'tea')])[1]")
   private WebElement kettlesImage;
+  
+  @FindBy(xpath= "(//a[contains(@href,'cookers')])[1]")
+  private WebElement cookersLink;
 
-  @FindAll(@FindBy(xpath = "//div[contains(@data-url, 'tea')]"))
+  @FindAll(@FindBy(xpath = "//div[contains(@class, 'js-grid-item')]/a"))
   private List < WebElement > listOfKettles;
 
   @FindBy(css = "a[class$='return-link--arrow']")
@@ -97,6 +100,15 @@ public class HomePage extends BaseTest {
 
   @FindBy(css = "a[data-country='de']")
   private WebElement selectCountryGerman;
+  
+  @FindBy(css = "a[data-country='nl']")
+  private WebElement selectCountryNetherlands;
+
+  @FindBy(css = "img[src*='asia']")
+  private WebElement selectRegionAsia;
+
+  @FindBy(css = "a[data-country='au']")
+  private WebElement selectCountryAU;
 
   @FindBy(id = "signUpBtn")
   private WebElement newsLetterSignupButton;
@@ -104,7 +116,7 @@ public class HomePage extends BaseTest {
   @FindBy(id = "_evidon-accept-button")
   private WebElement evidonAcceptButton;
 
-  private HomePage() {
+  public HomePage() {
     PageFactory.initElements(driver, this);
   }
 
@@ -119,6 +131,7 @@ public class HomePage extends BaseTest {
 
   public void acceptEvidonAcceptButton() {
     try {
+      waitForElementToBeClickable(evidonAcceptButton);
       clickElementUsingJavaScriptExecutor(evidonAcceptButton);
       logger.log(Status.INFO, "clicked on evidon Acept button");
     } catch(Exception e) {
@@ -142,7 +155,7 @@ public class HomePage extends BaseTest {
       logger.log(Status.INFO, "Chosen continent as America.");
       waitForElementToBeClickable(selectCountryCAEN);
       selectCountryCAEN.click();
-      logger.log(Status.INFO, "Chosen country as USA.");
+      logger.log(Status.INFO, "Chosen country as Canada.");
       selectRegionAmericas.click();
     } else if ("cafr".equalsIgnoreCase(str)) {
       waitForElementToBeClickable(selectRegionAmericas);
@@ -150,9 +163,9 @@ public class HomePage extends BaseTest {
       logger.log(Status.INFO, "Chosen continent as America.");
       waitForElementToBeClickable(selectCountryCAFR);
       selectCountryCAFR.click();
-      logger.log(Status.INFO, "Chosen country as USA.");
+      logger.log(Status.INFO, "Chosen country as Canada FR.");
       selectRegionAmericas.click();
-    } else if ("eu".equalsIgnoreCase(str)) {
+    } else if ("eude".equalsIgnoreCase(str)) {
       waitForElementToBeClickable(selectRegionEurope);
       selectRegionEurope.click();
       logger.log(Status.INFO, "Chosen continent as Europe.");
@@ -160,6 +173,14 @@ public class HomePage extends BaseTest {
       selectCountryGerman.click();
       logger.log(Status.INFO, "Chosen country as German.");
       selectRegionEurope.click();
+    } else if ("au".equalsIgnoreCase(str)) {
+      waitForElementToBeClickable(selectRegionAsia);
+      selectRegionAsia.click();
+      logger.log(Status.INFO, "Chosen continent as Asia.");
+      waitForElementToBeClickable(selectCountryAU);
+      selectCountryAU.click();
+      logger.log(Status.INFO, "Chosen country as Australia.");
+      selectRegionAsia.click();
     } else {
       waitForElementToBeClickable(selectRegionEurope);
       selectRegionEurope.click();
@@ -186,18 +207,16 @@ public class HomePage extends BaseTest {
     waitForElementToBeClickable(newsLetterCloseButton);
     newsLetterCloseButton.click();
     logger.log(Status.INFO, "Newsletter popup closed.");
-    isNewsLetterPopUpDisplayed = true;
   }
 
   public boolean verifyNewsLetterPopUpIsDisplayed() {
-    hardWait(2000);
     return verifyElementIsDisplayed(newsLetterSignupButton);
   }
 
-  public static HomePage getHomePage() {
+ /* public static HomePage getHomePage() {
     if (homepage == null) homepage = new HomePage();
     return homepage;
-  }
+  }*/
 
   public String getTitle() {
     String title = driver.getTitle();
@@ -236,7 +255,7 @@ public class HomePage extends BaseTest {
     waitForElementToBeClickable(productsLabel);
     productsLabel.click();
     logger.log(Status.INFO, "Clicking on the products on the home page.");
-    if (!isNewsLetterPopUpDisplayed) if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
+    if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
   }
 
   public int numberOfproductsCount() {
@@ -299,8 +318,15 @@ public class HomePage extends BaseTest {
     waitForElementToBeClickable(kettlesImage);
     clickElementUsingJavaScriptExecutor(kettlesImage);
     logger.log(Status.INFO, "Clicking on the Kettle on the PLP page.");
-    if (!isNewsLetterPopUpDisplayed) if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
+    if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
   }
+  
+  public void clickOnCookersLink() {
+	    waitForElementToBeClickable(cookersLink);
+	    clickElementUsingJavaScriptExecutor(cookersLink);
+	    logger.log(Status.INFO, "Clicking on the Cookers on the PLP page.");
+	    if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
+	  }
 
   public String addKettleToCart() {
     hardWait(5000);
@@ -311,21 +337,34 @@ public class HomePage extends BaseTest {
     while (totalKettles > 0) {
       try {
         element = listOfKettles.get(totalKettles);
+        System.out.println("The product Xpath: "+element);
+        waitForElementToBeClickable(element);
         clickElementUsingJavaScriptExecutor(element);
         totalKettles--;
       } catch(Exception e) {
         logger.log(Status.INFO, "Exception occured while adding the kettle to the Cart: " + e.getMessage());
       }
       boolean flag = productspage.verifyAddToCartIsPresent();
+      System.out.println("Add to Cart for the produc is displayed: "+flag);
       if (flag) {
         modelNumber = productspage.getModelNumber();
         logger.log(Status.INFO, "Add to cart option is available for the product: " + modelNumber);
         productspage.clickOnAddToCartButton();
-        if (productspage.verifyGoToCartButton() || productspage.verifyAddItemToCart()) break;
-        else {
-          waitForElementToBeClickable(returnToKettlesPage);
-          clickElementUsingJavaScriptExecutor(returnToKettlesPage);
-        }
+        hardWait(9000);
+        if (transactionpage.verifyProductOutOfStockAlert()) {
+          System.out.println("Pop up opened on clicking Add to cart button");
+          transactionpage.handleProductOutOfStockAlert();
+          productspage.clickOnAddToCartButton();
+          hardWait(8000);
+          if (transactionpage.verifyProductOutOfStockAlert()) {
+            System.out.println("Pop up opened on clicking Add to cart button");
+            transactionpage.handleProductOutOfStockAlert();
+            waitForElementToBeClickable(returnToKettlesPage);
+            clickElementUsingJavaScriptExecutor(returnToKettlesPage);
+          }
+
+        } else if (productspage.verifyGoToCartButton() || productspage.verifyAddItemToCart()) break;
+        
       } else {
         waitForElementToBeClickable(returnToKettlesPage);
         clickElementUsingJavaScriptExecutor(returnToKettlesPage);

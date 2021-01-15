@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -120,7 +119,20 @@ public class SearchPage extends BaseTest {
       "SP0001881",
       "SP0001788"
     };
+    String[] spareParts_Uk = {
+      "SES008WHT0NEU1",
+      "BES007UK",
+      "BEC250UK",
+      "BES006UK",
+    };
     String[] spareParts_Eu = {
+      "SES008WHT0NEU1",
+      "SES007NEU0NEU1",
+      "SES006NEU0NEU1",
+      "SEC250NEU0NEU1",
+      "BES007UK",
+      "BEC250UK",
+      "BES006UK",
       "SP0020075",
       "SP0020082",
       "SP0021689",
@@ -135,27 +147,64 @@ public class SearchPage extends BaseTest {
       "SP0020151",
       "SP0020149"
     };
+    String[] spareparts_au = {
+      "BES012CLR0NAN1",
+      "BES040GRY0NAN1",
+      "BES015CLR0NAN1",
+      "BES006",
+      "BES009CLR0NAN1",
+      "BES010CLR0NAN1",
+      "BES480BSS0NAN1",
+      "BES030BSS0NAN1",
+      "BES013CLR0NAN1",
+      "BWF100",
+      "BES035BLK0NAN1",
+      "BES011CLR0NAN1",
+      "BES008WHT0NAN1",
+      "BCB100BSS",
+      "SP0016051",
+      "AQP-CJUG",
+      "AQP-24CS",
+      "AQP-BM4"
+    };
     if ("us".equalsIgnoreCase(str)) list = Arrays.asList(spareParts);
     else if ("ca".equalsIgnoreCase(str) || "cafr".equalsIgnoreCase(str)) list = Arrays.asList(subscriptions);
+    else if ("uk".equalsIgnoreCase(str)) list = Arrays.asList(spareParts_Uk);
+    else if ("au".equalsIgnoreCase(str)) list = Arrays.asList(spareparts_au);
     else list = Arrays.asList(spareParts_Eu);
     for (String string: list) {
       homepage.clickOnSearch();
       homepage.searchForProduct(string);
       if (clickOnSearchResultProduct()) {
+    	  hardWait(5000);
         boolean isAddToCartDisplayed = productspage.verifyAddToCartIsPresent();
         if (isAddToCartDisplayed) {
           logger.log(Status.INFO, "Add To Cart button is displayed for the product: " + string);
           productspage.clickOnAddToCartButton();
           logger.log(Status.INFO, "Clicked on Add To Cart Button");
-          if (productspage.verifyGoToCartButton() || productspage.verifyAddItemToCart()) break;
-        } else {
-          logger.log(Status.INFO, "Add To Cart button is not displayed for the product: " + string);
-          System.out.println("Add To Cart button is not displayed for the product: " + string);
-        }
+          hardWait(8000);
+          while(transactionpage.verifyLoaderImage()) {
+        	  hardWait(5000);
+          }
+          if (transactionpage.verifyProductOutOfStockAlert()) {
+            System.out.println("Pop up opened on clicking Add to cart button");
+            transactionpage.handleProductOutOfStockAlert();
+            productspage.clickOnAddToCartButton();
+            hardWait(3000);
+            if (transactionpage.verifyProductOutOfStockAlert()) {
+              System.out.println("Pop up opened on clicking Add to cart button");
+              transactionpage.handleProductOutOfStockAlert();
+            } 
+          } else if (productspage.verifyGoToCartButton() || productspage.verifyAddItemToCart()) {
+          	break;
+          }
+        }else {
+            logger.log(Status.INFO, "Add To Cart button is not displayed for the product: " + string);
+            System.out.println("Add To Cart button is not displayed for the product: " + string);
+          }
+
       }
 
     }
-
   }
-
 }

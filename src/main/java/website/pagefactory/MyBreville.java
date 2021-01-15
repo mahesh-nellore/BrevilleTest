@@ -12,7 +12,7 @@ import website.generic.GenericUtility;
 
 public class MyBreville extends BaseTest {
 
-  private static MyBreville mybreville = null;
+  //private static MyBreville mybreville = null;
 
   @FindBy(id = "js-my-breville-label")
   private WebElement mybrevilleMenu;
@@ -109,15 +109,53 @@ public class MyBreville extends BaseTest {
 
   @FindBy(xpath = "//a[contains(@href,'home')]")
   private WebElement brevilleHomeLink;
+  
+  // Multiple Address Xpaths
+  
+  @FindBy(css = "a[class*='addAnotherShippingAddr']")
+  private WebElement addAnotherShippingAddrLink;
+  
+  // Alternate Address One
+  
+  @FindBy(id = "Address1_1")
+  private WebElement altAddrOneAddressLine1;
+  
+  @FindBy(id = "City_1")
+  private WebElement altAddrOneCity;
+  
+  @FindBy(id = "Zip_1")
+  private WebElement altAddrOneZip;
+  
+  @FindBy(id = "State_1")
+  private WebElement altAddrOneState;
+  
+  @FindBy(xpath = "//div[contains(@class,'saveDetails_1')]/a")
+  private WebElement altAddrOneSaveLink;
+  
+  
+//Alternate Address Two
+  
+ @FindBy(id = "Address1_2")
+ private WebElement altAddrTwoAddressLine1;
+ 
+ @FindBy(id = "City_2")
+ private WebElement altAddrTwoCity;
+ 
+ @FindBy(id = "Zip_2")
+ private WebElement altAddrTwoZip;
+ 
+ @FindBy(id = "State_2")
+ private WebElement altAddrTwoState;
+  
+ @FindBy(xpath = "//div[contains(@class,'saveDetails_2')]/a")
+ private WebElement altAddrTwoSaveLink;
+  
+  
 
   public MyBreville() {
     PageFactory.initElements(driver, this);
   }
 
-  public static MyBreville getMyBrevillePage() {
-    if (mybreville == null) mybreville = new MyBreville();
-    return mybreville;
-  }
 
   public boolean verifyNoOrdersDisplayedMsg() {
     return verifyElementIsDisplayed(noOrdersMsg);
@@ -433,5 +471,14 @@ public class MyBreville extends BaseTest {
 
   public boolean verifyMyBrevilleMenu() {
     return verifyElementIsDisplayed(mybrevilleMenu);
+  }
+  
+  public boolean verifyAddAnotherShippingAddrLink() {
+	  return verifyElementIsDisplayed(addAnotherShippingAddrLink);
+  }
+  
+  public void clickOnAddAnotherShippingAddrLink() {
+	  addAnotherShippingAddrLink.click();
+	  logger.log(Status.INFO, "Clicked on Add Another Shipping Addr Link");
   }
 }

@@ -6,21 +6,27 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.grid.config.EnvConfig;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
@@ -42,6 +48,7 @@ public class BaseTest {
   public static ExtentTest logger;
   public static WebDriver driver;
   public static Properties webprop;
+  public static Properties prodprop;
   public static HomePage homepage = null;
   public static SearchPage searchpage = null;
   public static ProductsPage productspage = null;
@@ -50,8 +57,14 @@ public class BaseTest {
   public static Platform platformregistration = null;
   public static String parentWindow;
   public static boolean isNewsLetterPopUpDisplayed = false;
+  //public static String email;
+  public static String email_ca;
+  public static String email_us;
+  public static String email_uk;
 
-  @BeforeSuite
+  
+
+@BeforeSuite
   public static void initBaseConfig() {
     ExtentHtmlReporter extreporter = new ExtentHtmlReporter(
     System.getProperty("user.dir") + File.separator + "Reports" + File.separator + "websiteDemo.html");
@@ -59,8 +72,10 @@ public class BaseTest {
     reporter.attachReporter(extreporter);
     logger = reporter.createTest("Base Test");
     webprop = new Properties();
+    prodprop = new Properties();
     try {
       webprop.load(new FileInputStream(System.getProperty("user.dir") + File.separator + "testdata" + File.separator + "website.properties"));
+      prodprop.load(new FileInputStream(System.getProperty("user.dir") + File.separator + "testdata" + File.separator + "prod.properties"));
       logger.log(Status.INFO, webprop.getProperty("URL"));
     } catch(FileNotFoundException e) {
 
@@ -70,13 +85,26 @@ public class BaseTest {
 
   }
 
-  @BeforeTest@Parameters({
-    "browser"
+  @BeforeMethod@Parameters({
+    "browser",
+    "env"
   })
-  public static void setUp(String browser) {
+  public static void setUp(String browser, String env) {
     if (browser.equalsIgnoreCase("chrome")) {
       WebDriverManager.chromedriver().setup();
-      driver = new ChromeDriver();
+      ChromeOptions options = new ChromeOptions();
+      options.addArguments("ignore-certificate-errors");
+      options.addArguments("start-maximized");
+      options.addArguments("enable-automation");      
+      options.addArguments("--disable-infobars");
+      options.addArguments("--disable-dev-shm-usage");
+      options.addArguments("--disable-browser-side-navigation");
+      options.addArguments("--disable-gpu");
+      options.setPageLoadStrategy(PageLoadStrategy.EAGER);
+      options.addArguments("--disable-gpu");
+      options.addArguments("disable-features=NetworkService");
+      options.addArguments("--force-device-scale-factor=1");
+      driver = new ChromeDriver(options);
       logger.log(Status.INFO, "Launch Chrome Browser");
     } else {
       WebDriverManager.firefoxdriver().setup();
@@ -84,15 +112,20 @@ public class BaseTest {
       logger.log(Status.INFO, "Launch Firefox Browser");
     }
     driver.manage().window().maximize();
+    driver.manage().deleteAllCookies();
+    driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
     logger.log(Status.INFO, "Maximized the Window");
-    String url = webprop.getProperty("URL");
+    String url = "";
+    if (env.equalsIgnoreCase("prod")) url = prodprop.getProperty("URL");
+    else url = webprop.getProperty("URL");
+
     logger.log(Status.INFO, "Navigate to the URL: " + url);
     driver.get(url);
-    homepage = HomePage.getHomePage();
+    homepage = new HomePage();
     searchpage = new SearchPage();
-    productspage = ProductsPage.getProductsPage();
-    transactionpage = TransactionPage.getTransactionPage();
-    mybreville = MyBreville.getMyBrevillePage();
+    productspage = new ProductsPage();
+    transactionpage = new TransactionPage();
+    mybreville = new MyBreville();
     platformregistration = Platform.getPlatformRegistration();
   }
 
@@ -228,7 +261,7 @@ public class BaseTest {
   public void switchToLatestWindow() {
     Set < String > allwindows = driver.getWindowHandles();
     for (String string: allwindows) {
-      System.out.println(driver.getWindowHandle());
+      logger.log(Status.INFO, driver.getWindowHandle());
       driver.switchTo().window(string);
     }
   }
@@ -240,7 +273,6 @@ public class BaseTest {
 
     } catch(Exception e) {
       logger.log(Status.INFO, "exception occurred while validating the webelement and the error message in the below line: " + element);
-      logger.log(Status.ERROR, e.getMessage());
     }
     return false;
   }
@@ -266,7 +298,8 @@ public class BaseTest {
 }
     }
     reporter.flush();
-    if (mybreville.verifyMyBrevilleMenu()) {
+    driver.quit();
+    /*if (mybreville.verifyMyBrevilleMenu()) {
       mybreville.logout();
       logger.log(Status.INFO, "Logged out successfully and waiting for few seconds to close the window..");
       driver.close();
@@ -285,7 +318,7 @@ public class BaseTest {
       driver.switchTo().window(parentWindow);
       logger.log(Status.INFO, "Switched to the Parent | Main window");
       logger.log(Status.INFO, "-------TestCase_01: is Ended---");
-    }
+    }*/
   }
 
 }
