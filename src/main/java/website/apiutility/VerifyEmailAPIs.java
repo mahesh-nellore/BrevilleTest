@@ -15,7 +15,6 @@ public class VerifyEmailAPIs extends BaseTest {
     String userIdUri = "https://mybreville--full.my.salesforce.com/services/data/v49.0/query/?";
     String verifyEmailUri = "https://full-mybreville.cs79.force.com/BrevilleCustomerCommunity/services/data/v48.0/sobjects/User/";
     String accessToken = getAccessToken(accessTokenUri);
-   // logger.log(Status.INFO, "The Access Token: " + accessToken);
     String email = "de.user02@yopmail.com";
     String userID = getUserID(userIdUri, email, accessToken);
     doVerifyEmail(verifyEmailUri, accessToken, userID);

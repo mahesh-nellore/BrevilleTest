@@ -100,6 +100,7 @@ public class BaseTest {
       options.addArguments("--disable-dev-shm-usage");
       options.addArguments("--disable-browser-side-navigation");
       options.addArguments("--disable-gpu");
+      //options.addArguments("--headless");
       options.setPageLoadStrategy(PageLoadStrategy.EAGER);
       options.addArguments("--disable-gpu");
       options.addArguments("disable-features=NetworkService");

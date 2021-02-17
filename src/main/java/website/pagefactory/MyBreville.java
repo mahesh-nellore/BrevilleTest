@@ -1,5 +1,6 @@
 package website.pagefactory;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
@@ -149,6 +150,43 @@ public class MyBreville extends BaseTest {
   
  @FindBy(xpath = "//div[contains(@class,'saveDetails_2')]/a")
  private WebElement altAddrTwoSaveLink;
+ 
+ // Get Order Details
+ 
+ @FindBy(xpath = "(//div[contains(@class,'col-md-2 col-xs-3 text-right no-gutters')]/span)[1]")
+ private WebElement firstLineItemPrice;
+ 
+ @FindBy(xpath = "(//div[contains(@class,'col-md-2 col-xs-3 text-right no-gutters')]/span)[2]")
+ private WebElement secondLineItemPrice;
+ 
+ @FindBy(xpath = "(//div[contains(@class,'col-md-2 col-xs-4 text-right no-gutters pb-xs-1')])[1]")
+ private WebElement orderTaxes;
+ 
+ @FindBy(xpath = "(//div[contains(@class,'col-md-2 col-xs-4 text-right no-gutters pb-xs-1')])[3]")
+ private WebElement orderTotal;
+ 
+ @FindBy(xpath = "(//div[@class='col-xs-12 col-grey fontsize-16 pt-xs-2 no-gutters c-order-add']//span)[2]")
+ private WebElement streetAddress;
+ 
+ @FindBy(xpath = "(//div[@class='col-xs-12 col-grey fontsize-16 pt-xs-2 no-gutters c-order-add']//span)[3]")
+ private WebElement city_State_Zipcode;
+ 
+ @FindBy(xpath = "(//div[@class = 'col-xs-12 col-grey fontsize-16 pt-xs-1 no-gutters'])[1]")
+ private WebElement paymentMethod; 
+
+
+ 	private String subscriptionQuantity;
+	private String subscriptionPrice;
+	  private String fgQuantity;
+	  private String fgPrice;
+	  private String paymentMethodType;
+	  private String orderTax;
+	  private String orderTotalAmount;
+	  private String shippingAddrSt;
+	  private String shippingAddrcity;
+	  private String shippingAddrZipCode;
+  
+  
   
   
 
@@ -481,4 +519,160 @@ public class MyBreville extends BaseTest {
 	  addAnotherShippingAddrLink.click();
 	  logger.log(Status.INFO, "Clicked on Add Another Shipping Addr Link");
   }
+  
+  public String getSubscriptionQuantity() {
+		return subscriptionQuantity;
+	}
+
+
+	public void setSubscriptionQuantity(String subscriptionQuantity) {
+		this.subscriptionQuantity = subscriptionQuantity;
+	}
+
+
+	public String getSubscriptionPrice() {
+		return subscriptionPrice;
+	}
+
+
+	public void setSubscriptionPrice(String subscriptionPrice) {
+		this.subscriptionPrice = subscriptionPrice;
+	}
+
+
+	public String getFgQuantity() {
+		return fgQuantity;
+	}
+
+
+	public void setFgQuantity(String fgQuantity) {
+		this.fgQuantity = fgQuantity;
+	}
+
+
+	public String getFgPrice() {
+		return fgPrice;
+	}
+
+
+	public void setFgPrice(String fgPrice) {
+		this.fgPrice = fgPrice;
+	}
+
+
+	public String getPaymentMethodType() {
+		return paymentMethodType;
+	}
+
+
+	public void setPaymentMethodType(String paymentMethodType) {
+		this.paymentMethodType = paymentMethodType;
+	}
+
+
+	public String getOrderTax() {
+		return orderTax;
+	}
+
+
+	public void setOrderTax(String orderTax) {
+		this.orderTax = orderTax;
+	}
+
+
+	public String getOrderTotalAmount() {
+		return orderTotalAmount;
+	}
+
+
+	public void setOrderTotalAmount(String orderTotalAmount) {
+		this.orderTotalAmount = orderTotalAmount;
+	}
+
+
+	public String getShippingAddrSt() {
+		return shippingAddrSt;
+	}
+
+
+	public void setShippingAddrSt(String shippingAddrSt) {
+		this.shippingAddrSt = shippingAddrSt;
+	}
+
+
+	public String getShippingAddrcity() {
+		return shippingAddrcity;
+	}
+
+
+	public void setShippingAddrcity(String shippingAddrcity) {
+		this.shippingAddrcity = shippingAddrcity;
+	}
+
+
+	public String getShippingAddrZipCode() {
+		return shippingAddrZipCode;
+	}
+
+
+	public void setShippingAddrZipCode(String shippingAddrZipCode) {
+		this.shippingAddrZipCode = shippingAddrZipCode;
+	}
+  // Get Order Details
+  
+  public void setOrderDetails() {
+	  waitForElementToBeVisible(firstLineItemPrice, 30);
+	  String firstLineItemValue = firstLineItemPrice.getText();
+	  String values[] = firstLineItemValue.replaceAll("\\s+", "").split("x");
+	  String price = values[values.length-1].indexOf(".") < 0 ? values[values.length-1] : values[values.length-1].replaceAll("0*$", "")
+			  .replaceAll("\\.$", "").replaceAll("[^A-Za-z0-9.]", "");
+	  if(Integer.parseInt(values[0])== 1) {
+		  setSubscriptionQuantity(values[0]);
+		  setSubscriptionPrice(price);
+	  }else {
+		  setFgQuantity(values[0]);
+		  setFgPrice(price);
+	  }	
+	  String secondLineItemValue = secondLineItemPrice.getText();
+	  String val[] = secondLineItemValue.replaceAll("\\s+", "").split("x");
+	  String amount = val[val.length-1].indexOf(".") < 0 ? val[val.length-1] : val[val.length-1].replaceAll("0*$", "")
+			  .replaceAll("\\.$", "").replaceAll("[^A-Za-z0-9.]", "");
+	  if(Integer.parseInt(val[0])== 1) {
+		  setSubscriptionQuantity(val[0]);
+		  setSubscriptionPrice(amount);
+	  }else {
+		  setFgQuantity(val[0]);
+		  setFgPrice(amount);
+	  }
+	  setShippingAddrSt(streetAddress.getText().replaceAll("[^A-Za-z0-9]", ""));
+	  setShippingAddrcity(city_State_Zipcode.getText().replaceAll("\\s+", "").split(",")[0]);
+	  setShippingAddrZipCode(city_State_Zipcode.getText().replaceAll("\\s+", "").split(",")[1].replaceAll("[^0-9]", ""));
+	  setOrderTax(orderTaxes.getText().replaceAll("[^A-Za-z0-9.]", ""));
+	  setOrderTotalAmount(orderTotal.getText().replaceAll("[^A-Za-z0-9.]", ""));
+	  setPaymentMethodType(paymentMethod.getText());
+	  /*System.out.println("-------------------------------------------------------------------");
+	  System.out.println("First Line Item Price: "+firstLineItemPrice.getText());
+	  System.out.println("Second Line Item Price: "+secondLineItemPrice.getText());
+	  System.out.println("Order Taxes: "+orderTaxes.getText());
+	  System.out.println("Order Total: "+orderTotal.getText());
+	  System.out.println("Payment Method: "+paymentMethod.getText());
+	  System.out.println("Payment Method: "+streetAddress.getText());
+	  System.out.println("Payment Method: "+city_State_Zipcode.getText());
+	  System.out.println("-------------------------------------------------------------------");	  
+	  System.out.println("-------------------------------------------------------------------");
+	  System.out.println("Subscription Quantity: "+getSubscriptionQuantity());
+	  System.out.println("Subscription Price: "+getSubscriptionPrice());
+	  System.out.println("FG Quantity: "+getFgQuantity());
+	  System.out.println("FG Price: "+getFgPrice());
+	  System.out.println("Order Tax: "+getOrderTax());
+	  System.out.println("Order Total: "+getOrderTotalAmount());
+	  System.out.println("Payment Method Type: "+getPaymentMethodType());
+	  System.out.println("Shipping Address Street: "+getShippingAddrSt());
+	  System.out.println("Shipping Address City: "+getShippingAddrcity());
+	  System.out.println("Shipping Address zip Code: "+getShippingAddrZipCode());
+	  System.out.println("-------------------------------------------------------------------");*/
+	  
+	  
+  }
+  
 }

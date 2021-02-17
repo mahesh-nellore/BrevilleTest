@@ -1,18 +1,25 @@
 package website.tests;
 
 import java.io.File;
+import java.util.Map;
+
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import com.aventstack.extentreports.Status;
+
+import website.apiutility.D365;
 import website.apiutility.VerifyEmailAPIs;
 import website.base.BaseTest;
 import website.generic.ExcelUtility;
 import website.generic.GenericUtility;
 
+
 public class SanityCheck_UAT extends BaseTest {
 
   private String email;
+  Map < String,
+  String > map;
 
   @Test(dataProvider = "orderflow")
   public void tc_01_PlaceAndOrder(String data[]) {
@@ -66,22 +73,23 @@ public class SanityCheck_UAT extends BaseTest {
         // Get the random Email
         if ("NewUser".equalsIgnoreCase(data[10]) && "ca".equalsIgnoreCase(data[1]) || "NewUser".equalsIgnoreCase(data[10]) && "cafr".equalsIgnoreCase(data[1])) {
           email = GenericUtility.generateEmail() + "@yopmail.com";
-          System.out.println("This is for New User Creation CA Region: " + email);
+          logger.log(Status.INFO,"This is for New User Creation CA Region: " + email);
         } else if ("NewUser".equalsIgnoreCase(data[10]) && "us".equalsIgnoreCase(data[1])) {
           email = GenericUtility.generateEmail() + "@yopmail.com";
-          System.out.println("This is for New User Creation US Region: " + email);
+          //email = "testususer150220210067@yopmail.com";
+          logger.log(Status.INFO,"This is for New User Creation US Region: " + email);
         } else if ("NewUser".equalsIgnoreCase(data[10]) && "uk".equalsIgnoreCase(data[1])) {
           email = GenericUtility.generateEmail() + "@yopmail.com";
-          System.out.println("This is for New User Creation UK Region: " + email);
+          logger.log(Status.INFO,"This is for New User Creation UK Region: " + email);
         } else if ("Registered".equalsIgnoreCase(data[10]) && "ca".equalsIgnoreCase(data[1]) || "Registered".equalsIgnoreCase(data[10]) && "cafr".equalsIgnoreCase(data[1])) {
           email = email_ca;
-          System.out.println("This is for CA Registered User: " + email);
+          logger.log(Status.INFO,"This is for CA Registered User: " + email);
         } else if ("Registered".equalsIgnoreCase(data[10]) && "us".equalsIgnoreCase(data[1])) {
           email = email_us;
-          System.out.println("This is for US Registered User: " + email);
+          logger.log(Status.INFO,"This is for US Registered User: " + email);
         } else if ("Registered".equalsIgnoreCase(data[10]) && "uk".equalsIgnoreCase(data[1])) {
           email = email_uk;
-          System.out.println("This is for US Registered User: " + email);
+          logger.log(Status.INFO,"This is for US Registered User: " + email);
         }
 
         if ("NewUser".equalsIgnoreCase(data[10])) {
@@ -89,8 +97,8 @@ public class SanityCheck_UAT extends BaseTest {
           Assert.assertTrue(verifyCreateAccount, "The user is unable to create an account. Hence the test case failed.");
         } else {
           boolean verifyLogin = false;
-          if (email != null || email != "" || !email.isEmpty()) verifyLogin = transactionpage.loginAndCheckout(email, data[12]);
-          else verifyLogin = transactionpage.loginAndCheckout(data[11], data[12]);
+          if (email != null || email != "" || !email.isEmpty()) verifyLogin = transactionpage.loginAndCheckout(data[11], data[12]);
+          else verifyLogin = transactionpage.loginAndCheckout(email, data[12]);
           Assert.assertTrue(verifyLogin, "The user is unable to login. Hence the test case failed.");
         }
 
@@ -130,9 +138,9 @@ public class SanityCheck_UAT extends BaseTest {
       Assert.assertTrue(orderNumber_ConfirmationPage.length() > 0, "User is failed to place an Order");
       logger.log(Status.PASS, "Verified that user is Successfully placed an Order and the Order number is: " + orderNumber_ConfirmationPage);
       // Set Email Value
-      if ("NewUser".equalsIgnoreCase(data[10]) && "ca".equalsIgnoreCase(data[1]) || "NewUser".equalsIgnoreCase(data[10]) && "cafr".equalsIgnoreCase(data[1])) email_ca = email+".full";
-      if ("NewUser".equalsIgnoreCase(data[10]) && "us".equalsIgnoreCase(data[1])) email_us = email+".full";
-      if ("NewUser".equalsIgnoreCase(data[10]) && "uk".equalsIgnoreCase(data[1])) email_uk = email+".full";
+      if ("NewUser".equalsIgnoreCase(data[10]) && "ca".equalsIgnoreCase(data[1]) || "NewUser".equalsIgnoreCase(data[10]) && "cafr".equalsIgnoreCase(data[1])) email_ca = email + ".full";
+      if ("NewUser".equalsIgnoreCase(data[10]) && "us".equalsIgnoreCase(data[1])) email_us = email + ".full";
+      if ("NewUser".equalsIgnoreCase(data[10]) && "uk".equalsIgnoreCase(data[1])) email_uk = email + ".full";
 
       // Verify Email ID
       String accessTokenUri = webprop.getProperty("accessTokenUri");
@@ -177,11 +185,11 @@ public class SanityCheck_UAT extends BaseTest {
           mybreville.clickOnOrders_hubpage();
           String ordNumber = mybreville.getFirstOrderNumber_OrdersPage();
           int retrycount = 0;
-          while (retrycount < 10) {
+          while (retrycount < 15) {
             if (ordNumber.trim().equalsIgnoreCase(orderNumber_ConfirmationPage)) {
               break;
             }
-            hardWait(10000);
+            hardWait(20000);
             mybreville.clickMyBrevilleMenu();
             mybreville.clickOnBrevilleHubPage();
             mybreville.clickOnOrders_hubpage();
@@ -192,12 +200,159 @@ public class SanityCheck_UAT extends BaseTest {
           logger.log(Status.INFO, "The order number in the confirmation page and the order number showing up in the order page are: " + orderNumber_ConfirmationPage + " & " + ordNumber);
           Assert.assertEquals(orderNumber_ConfirmationPage.trim(), ordNumber.trim(), "The order number placed by the user and the order shown on the order page are not exactly same. Hence the test case failed.");
           logger.log(Status.PASS, "It has been verified that the user created order is shown in Orders page.");
+          mybreville.setOrderDetails();
+
+          try {
+           boolean D365_flag  =  D365.getOrderDetails("264297");
+            map = D365.getLineItemDetails();
+            if(D365_flag)
+            	logger.log(Status.PASS, "Able to fetch the Order Details from the D365 API's");
+          } catch(Exception e) {
+            logger.log(Status.INFO,"Exception: " + e.getMessage());
+          }
+          boolean subscriptionQuantityFlag = false;
+          boolean subscriptionPriceFlag = false;
+          boolean fgQuantityFlag = false;
+          boolean fgPriceFlag = false;
+          boolean paymentMethodFlag = false;
+          boolean shippingAddrStFlag = false;
+          boolean shippingAddrCityFlag = false;
+          boolean shippingAddrZipCodeFlag = false;
+          boolean orderTaxFlag = false;
+          boolean orderTotalFlag = false;
+          boolean customerOrderReferenceNumberFlag = false;
+          boolean salesOrderNumberFlag = false;
+          boolean carrierServiceFlag = false;
+          boolean carrierIdFlag = false;
+          boolean requestedShippingDateFlag = false;
+
+          if (mybreville.getSubscriptionQuantity().equals(map.get("quantity_Spare Parts").replaceAll("\\s+", ""))) {
+            logger.log(Status.INFO,"Subscription Quantity in AEM is: " + mybreville.getSubscriptionQuantity() + " And the subscription quantity in D365 is: " + map.get("quantity_Spare Parts").replaceAll("\\s+", ""));
+            logger.log(Status.PASS, "Subscription Quantity in AEM is: " + mybreville.getSubscriptionQuantity() + " And the subscription quantity in D365 is: " + map.get("quantity_Spare Parts").replaceAll("\\s+", ""));
+            subscriptionQuantityFlag = true;
+          } else {
+            logger.log(Status.INFO, "Subscription Quantity validation is failed.");
+            logger.log(Status.INFO, "Subscription Quantity in AEM is: " + mybreville.getSubscriptionQuantity() + " And the subscription quantity in D365 is: " + map.get("quantity_Spare Parts").replaceAll("\\s+", ""));
+            subscriptionQuantityFlag = true;
+          }
+          double subscriptionPrice_D365 = Double.parseDouble(map.get("lineAmount_Spare Parts")) - Double.parseDouble(map.get("lineItemDiscount_Spare Parts"));
+          if (mybreville.getSubscriptionPrice().equals(String.valueOf(subscriptionPrice_D365).replaceAll("\\s+", ""))) {
+            logger.log(Status.PASS, "Subscription Price in AEM is: " + mybreville.getSubscriptionPrice() + " And the subscription Price in D365 is: " + String.valueOf(subscriptionPrice_D365).replaceAll("\\s+", ""));
+            subscriptionPriceFlag = true;
+          } else {
+            logger.log(Status.INFO, "Subscription Price validation is failed.");
+            logger.log(Status.INFO, "Subscription Price in AEM is: " + mybreville.getSubscriptionPrice() + " And the subscription Price in D365 is: " + String.valueOf(subscriptionPrice_D365).replaceAll("\\s+", ""));
+          }
+          if (mybreville.getFgQuantity().equals(map.get("quantity_Water Kettles").replaceAll("\\s+", ""))) {
+            logger.log(Status.PASS, "FG Quantity in AEM is: " + mybreville.getFgQuantity() + " And the FG quantity in D365 is: " + map.get("quantity_Water Kettles").replaceAll("\\s+", ""));
+            fgQuantityFlag = true;
+          } else {
+            logger.log(Status.INFO, "FG Quantity validation is failed.");
+            logger.log(Status.INFO, "FG Quantity in AEM is: " + mybreville.getFgQuantity() + " And the FG quantity in D365 is: " + map.get("quantity_Water Kettles").replaceAll("\\s+", ""));
+          }
+          if (mybreville.getFgPrice().equals(map.get("lineAmount_Water Kettles").replaceAll("\\s+", ""))) {
+            logger.log(Status.PASS, "FG Quantity in AEM is: " + mybreville.getFgPrice() + " And the FG quantity in D365 is: " + map.get("lineAmount_Water Kettles").replaceAll("\\s+", ""));
+            fgPriceFlag = true;
+          } else {
+            logger.log(Status.INFO, "FG Price validation is failed.");
+            logger.log(Status.INFO, "FG Quantity in AEM is: " + mybreville.getFgPrice() + " And the FG quantity in D365 is: " + map.get("lineAmount_Water Kettles").replaceAll("\\s+", ""));
+          }
+          if (mybreville.getPaymentMethodType().equals(map.get("customerPaymentMethodName").replaceAll("\\s+", "")) || "Paypal".equals(map.get("customerPaymentMethodName").replaceAll("\\s+", ""))) {
+            logger.log(Status.PASS, "Payment Type in AEM is: " + "Paypal" + " And the Payment Type in D365 is: " + map.get("customerPaymentMethodName").replaceAll("\\s+", ""));
+            paymentMethodFlag = true;
+          } else {
+            logger.log(Status.INFO, "Payment Type Validation is Failed.");
+            logger.log(Status.INFO, "Payment Type in AEM is: " + mybreville.getPaymentMethodType() + " And the Payment Type in D365 is: " + map.get("customerPaymentMethodName").replaceAll("\\s+", ""));
+          }
+          if (mybreville.getShippingAddrSt().equals(map.get("deliveryAddressStreet").replaceAll("\\s+", ""))) {
+            logger.log(Status.PASS, "Shipping Address Street in AEM is: " + mybreville.getShippingAddrSt() + " And the Shipping Address Street in D365 is: " + map.get("deliveryAddressStreet").replaceAll("\\s+", ""));
+            shippingAddrStFlag = true;
+          } else {
+            logger.log(Status.INFO, "Shipping Address Street Validation is Failed.");
+            logger.log(Status.INFO, "Shipping Address Street in AEM is: " + mybreville.getShippingAddrSt() + " And the Shipping Address Street in D365 is: " + map.get("deliveryAddressStreet").replaceAll("\\s+", ""));
+          }
+          if (mybreville.getShippingAddrcity().equals(map.get("deliveryAddressCity").replaceAll("\\s+", ""))) {
+            logger.log(Status.PASS, "Shipping Address City in AEM is: " + mybreville.getShippingAddrcity() + " And the Shipping Address City in D365 is: " + map.get("deliveryAddressCity").replaceAll("\\s+", ""));
+            shippingAddrCityFlag = true;
+          } else {
+            logger.log(Status.INFO, "Shipping Address City Validation is Failed.");
+            logger.log(Status.INFO, "Shipping Address City in AEM is: " + mybreville.getShippingAddrcity() + " And the Shipping Address City in D365 is: " + map.get("deliveryAddressCity").replaceAll("\\s+", ""));
+          }
+          if (mybreville.getShippingAddrZipCode().equals(map.get("deliveryAddressZipCode").replaceAll("\\s+", ""))) {
+            logger.log(Status.PASS, "Shipping Address ZipCode in AEM is: " + mybreville.getShippingAddrZipCode() + " And the Shipping Address ZipCode in D365 is: " + map.get("deliveryAddressZipCode").replaceAll("\\s+", ""));
+            shippingAddrZipCodeFlag = true;
+          } else {
+            logger.log(Status.INFO, "Shipping Address ZipCode Validation is Failed.");
+            logger.log(Status.INFO, "Shipping Address ZipCode in AEM is: " + mybreville.getShippingAddrZipCode() + " And the Shipping Address ZipCode in D365 is: " + map.get("deliveryAddressZipCode").replaceAll("\\s+", ""));
+          }
+          double tax = Double.parseDouble(map.get("lineItemTax_Water Kettles")) + Double.parseDouble(map.get("lineItemTax_Spare Parts"));
+          double tax_D365 = Math.round(tax*100.0)/100.0;
+          if (mybreville.getOrderTax().equals(String.valueOf(tax_D365).replaceAll("\\s+", ""))) {
+            logger.log(Status.PASS, "Order Tax in AEM is: " + mybreville.getOrderTax() + " And the Order Tax in D365 is: " + String.valueOf(tax_D365).replaceAll("\\s+", ""));
+            orderTaxFlag = true;
+          } else {
+            logger.log(Status.INFO, "Order Tax Validation is Failed.");
+            logger.log(Status.INFO, "Order Tax in AEM is: " + mybreville.getOrderTax() + " And the Order Tax in D365 is: " + String.valueOf(tax_D365).replaceAll("\\s+", ""));
+          }
+
+          int fgQuantity_D365 = Integer.parseInt(map.get("quantity_Water Kettles"));
+          logger.log(Status.INFO,"FG Quantity is D365 is: " + fgQuantity_D365);
+          double fgPrice_D365 = (Double.parseDouble(map.get("lineAmount_Water Kettles")) * fgQuantity_D365);
+          logger.log(Status.INFO,"The FG Quantity Price is: " + fgPrice_D365);
+          double orderTotal = fgPrice_D365 + subscriptionPrice_D365 + tax_D365;
+          double orderTotal_D365 = Math.round(orderTotal*100.0)/100.0;
+          logger.log(Status.INFO,"Order Total in D365 is: " + orderTotal_D365);
+          if (mybreville.getOrderTotalAmount().equals(String.valueOf(orderTotal_D365).replaceAll("\\s+", ""))) {
+            logger.log(Status.PASS, "Order Total in AEM is: " + mybreville.getOrderTotalAmount() + " And the Order Tax in D365 is: " + String.valueOf(orderTotal_D365).replaceAll("\\s+", ""));
+            orderTotalFlag = true;
+          } else {
+            logger.log(Status.INFO, "Order Total Validation is Failed.");
+            logger.log(Status.INFO, "Order Total in AEM is: " + mybreville.getOrderTotalAmount() + " And the Order Total in D365 is: " + String.valueOf(orderTotal_D365).replaceAll("\\s+", ""));
+          }
+          if(map.get("salesOrderNumber")!= null || map.get("salesOrderNumber")!="") {
+        	  logger.log(Status.PASS, "The Sales Order Number is: "+map.get("salesOrderNumber"));
+              salesOrderNumberFlag = true;
+          }else {
+              logger.log(Status.INFO, "Sales Order number validation is failed..");
+              logger.log(Status.PASS, "The Sales Order Number is: "+map.get("salesOrderNumber"));
+            }
+          if(map.get("customerOrderReferenceNumber")!= null || map.get("customerOrderReferenceNumber")!="") {
+        	  logger.log(Status.PASS, "The customerOrderReferenceNumber is: "+ map.get("customerOrderReferenceNumber"));
+              customerOrderReferenceNumberFlag = true;
+          }else {
+              logger.log(Status.INFO, "customerOrderReferenceNumber validation is failed..");
+              logger.log(Status.PASS, "The customerOrderReferenceNumber is: "+map.get("customerOrderReferenceNumber"));
+            }
+          if(map.get("carrierService")!= null || map.get("carrierService")!="") {
+        	  logger.log(Status.PASS, "The carrierService is: "+map.get("carrierService"));
+              carrierServiceFlag = true;
+          }else {
+              logger.log(Status.INFO, "carrierService validation is failed..");
+              logger.log(Status.PASS, "The carrierService is: "+map.get("carrierService"));
+            }
+          if(map.get("carrierId")!= null || map.get("carrierId")!="") {
+        	  logger.log(Status.PASS, "The carrierId is: "+map.get("carrierId"));
+              carrierIdFlag = true;
+          }else {
+              logger.log(Status.INFO, "carrierId validation is failed..");
+              logger.log(Status.PASS, "The carrierId is: "+map.get("carrierService"));
+            }
+          if(map.get("requestedShippingDate")!= null || map.get("requestedShippingDate")!="") {
+        	  logger.log(Status.PASS, "The requestedShippingDate is: "+map.get("requestedShippingDate"));
+        	  requestedShippingDateFlag = true;
+          }else {
+              logger.log(Status.INFO, "requestedShippingDate validation is failed..");
+              logger.log(Status.PASS, "The requestedShippingDate is: "+map.get("carrierService"));
+            }
+          Assert.assertTrue(salesOrderNumberFlag && customerOrderReferenceNumberFlag && carrierServiceFlag && requestedShippingDateFlag && carrierIdFlag);
+          Assert.assertTrue(subscriptionQuantityFlag && subscriptionPriceFlag && fgQuantityFlag && fgPriceFlag && shippingAddrStFlag && shippingAddrCityFlag && shippingAddrZipCodeFlag && paymentMethodFlag && orderTaxFlag && orderTotalFlag);
+
         }
+
       }
 
     } catch(Exception e) {
       logger.log(Status.INFO, "Exception: " + e.getMessage());
-      System.out.println("Exception is: " + e.getMessage());
       Assert.fail("Exception occured hence failing the test case.");
     }
   }

@@ -155,7 +155,10 @@ public class TransactionPage extends BaseTest {
   @FindBy(id = "payPaypal")
   private WebElement paypalDiv;
 
-  @FindBy(css = "div[aria-label*='PayPal']")
+  /*@FindBy(css = "div[aria-label*='PayPal']")
+  private WebElement payWithpaypalButton;*/
+  
+  @FindBy(xpath = "//div[contains(@aria-label,'PayPal')]/div//span")
   private WebElement payWithpaypalButton;
   
  /* @FindBy(id = "paypalBtn")
