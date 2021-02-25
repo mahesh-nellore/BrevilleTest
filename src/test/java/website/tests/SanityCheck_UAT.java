@@ -72,14 +72,13 @@ public class SanityCheck_UAT extends BaseTest {
         logger.log(Status.PASS, "It has been validated that the cart is not showing up the Checkout As Guest option to the users when there is a subscription product in the Cart.");
         // Get the random Email
         if ("NewUser".equalsIgnoreCase(data[10]) && "ca".equalsIgnoreCase(data[1]) || "NewUser".equalsIgnoreCase(data[10]) && "cafr".equalsIgnoreCase(data[1])) {
-          email = GenericUtility.generateEmail() + "@yopmail.com";
+          email = "test"+GenericUtility.generateEmail() + "@yopmail.com";
           logger.log(Status.INFO,"This is for New User Creation CA Region: " + email);
         } else if ("NewUser".equalsIgnoreCase(data[10]) && "us".equalsIgnoreCase(data[1])) {
-          email = GenericUtility.generateEmail() + "@yopmail.com";
-          //email = "testususer150220210067@yopmail.com";
+          email = "test"+GenericUtility.generateEmail() + "@yopmail.com";
           logger.log(Status.INFO,"This is for New User Creation US Region: " + email);
         } else if ("NewUser".equalsIgnoreCase(data[10]) && "uk".equalsIgnoreCase(data[1])) {
-          email = GenericUtility.generateEmail() + "@yopmail.com";
+          email = "test"+GenericUtility.generateEmail() + "@yopmail.com";
           logger.log(Status.INFO,"This is for New User Creation UK Region: " + email);
         } else if ("Registered".equalsIgnoreCase(data[10]) && "ca".equalsIgnoreCase(data[1]) || "Registered".equalsIgnoreCase(data[10]) && "cafr".equalsIgnoreCase(data[1])) {
           email = email_ca;
@@ -90,7 +89,16 @@ public class SanityCheck_UAT extends BaseTest {
         } else if ("Registered".equalsIgnoreCase(data[10]) && "uk".equalsIgnoreCase(data[1])) {
           email = email_uk;
           logger.log(Status.INFO,"This is for US Registered User: " + email);
-        }
+        }else if ("NewUser".equalsIgnoreCase(data[10]) && "eude".equalsIgnoreCase(data[1])) {
+            email = "test"+GenericUtility.generateEmail() + "@yopmail.com";
+            logger.log(Status.INFO,"This is for New User Creation EU/DE Region: " + email);
+          }else if ("NewUser".equalsIgnoreCase(data[10]) && "au".equalsIgnoreCase(data[1])) {
+              email = "autest"+GenericUtility.generateEmail() + "@yopmail.com";
+              logger.log(Status.INFO,"This is for New User Creation EU/DE Region: " + email);
+            }else if ("NewUser".equalsIgnoreCase(data[10]) && "chde".equalsIgnoreCase(data[1])) {
+                email = "test"+GenericUtility.generateEmail() + "@yopmail.com";
+                logger.log(Status.INFO,"This is for New User Creation CH/DE Region: " + email);
+              }
 
         if ("NewUser".equalsIgnoreCase(data[10])) {
           boolean verifyCreateAccount = transactionpage.loginAndCheckout_NewUser(email, data[12]);
@@ -134,7 +142,7 @@ public class SanityCheck_UAT extends BaseTest {
       };
       if ("paypal".equalsIgnoreCase(data[14])) transactionpage.paymentUsingPayPal(paypalDetails);
       else transactionpage.paymentUsingCreditCard(paymentdetails);
-      String orderNumber_ConfirmationPage = transactionpage.getPurchaseOrderId();
+      String orderNumber_ConfirmationPage = transactionpage.getPurchaseOrderId().trim();
       Assert.assertTrue(orderNumber_ConfirmationPage.length() > 0, "User is failed to place an Order");
       logger.log(Status.PASS, "Verified that user is Successfully placed an Order and the Order number is: " + orderNumber_ConfirmationPage);
       // Set Email Value
@@ -200,7 +208,7 @@ public class SanityCheck_UAT extends BaseTest {
           logger.log(Status.INFO, "The order number in the confirmation page and the order number showing up in the order page are: " + orderNumber_ConfirmationPage + " & " + ordNumber);
           Assert.assertEquals(orderNumber_ConfirmationPage.trim(), ordNumber.trim(), "The order number placed by the user and the order shown on the order page are not exactly same. Hence the test case failed.");
           logger.log(Status.PASS, "It has been verified that the user created order is shown in Orders page.");
-          mybreville.setOrderDetails();
+         /*mybreville.setOrderDetails();
 
           try {
            boolean D365_flag  =  D365.getOrderDetails("264297");
@@ -228,7 +236,6 @@ public class SanityCheck_UAT extends BaseTest {
 
           if (mybreville.getSubscriptionQuantity().equals(map.get("quantity_Spare Parts").replaceAll("\\s+", ""))) {
             logger.log(Status.INFO,"Subscription Quantity in AEM is: " + mybreville.getSubscriptionQuantity() + " And the subscription quantity in D365 is: " + map.get("quantity_Spare Parts").replaceAll("\\s+", ""));
-            logger.log(Status.PASS, "Subscription Quantity in AEM is: " + mybreville.getSubscriptionQuantity() + " And the subscription quantity in D365 is: " + map.get("quantity_Spare Parts").replaceAll("\\s+", ""));
             subscriptionQuantityFlag = true;
           } else {
             logger.log(Status.INFO, "Subscription Quantity validation is failed.");
@@ -251,14 +258,14 @@ public class SanityCheck_UAT extends BaseTest {
             logger.log(Status.INFO, "FG Quantity in AEM is: " + mybreville.getFgQuantity() + " And the FG quantity in D365 is: " + map.get("quantity_Water Kettles").replaceAll("\\s+", ""));
           }
           if (mybreville.getFgPrice().equals(map.get("lineAmount_Water Kettles").replaceAll("\\s+", ""))) {
-            logger.log(Status.PASS, "FG Quantity in AEM is: " + mybreville.getFgPrice() + " And the FG quantity in D365 is: " + map.get("lineAmount_Water Kettles").replaceAll("\\s+", ""));
+            logger.log(Status.PASS, "FG Price in AEM is: " + mybreville.getFgPrice() + " And the FG quantity in D365 is: " + map.get("lineAmount_Water Kettles").replaceAll("\\s+", ""));
             fgPriceFlag = true;
           } else {
             logger.log(Status.INFO, "FG Price validation is failed.");
-            logger.log(Status.INFO, "FG Quantity in AEM is: " + mybreville.getFgPrice() + " And the FG quantity in D365 is: " + map.get("lineAmount_Water Kettles").replaceAll("\\s+", ""));
+            logger.log(Status.INFO, "FG Price in AEM is: " + mybreville.getFgPrice() + " And the FG quantity in D365 is: " + map.get("lineAmount_Water Kettles").replaceAll("\\s+", ""));
           }
           if (mybreville.getPaymentMethodType().equals(map.get("customerPaymentMethodName").replaceAll("\\s+", "")) || "Paypal".equals(map.get("customerPaymentMethodName").replaceAll("\\s+", ""))) {
-            logger.log(Status.PASS, "Payment Type in AEM is: " + "Paypal" + " And the Payment Type in D365 is: " + map.get("customerPaymentMethodName").replaceAll("\\s+", ""));
+            //logger.log(Status.PASS, "Payment Type in AEM is: " + "Paypal" + " And the Payment Type in D365 is: " + map.get("customerPaymentMethodName").replaceAll("\\s+", ""));
             paymentMethodFlag = true;
           } else {
             logger.log(Status.INFO, "Payment Type Validation is Failed.");
@@ -345,7 +352,7 @@ public class SanityCheck_UAT extends BaseTest {
               logger.log(Status.PASS, "The requestedShippingDate is: "+map.get("carrierService"));
             }
           Assert.assertTrue(salesOrderNumberFlag && customerOrderReferenceNumberFlag && carrierServiceFlag && requestedShippingDateFlag && carrierIdFlag);
-          Assert.assertTrue(subscriptionQuantityFlag && subscriptionPriceFlag && fgQuantityFlag && fgPriceFlag && shippingAddrStFlag && shippingAddrCityFlag && shippingAddrZipCodeFlag && paymentMethodFlag && orderTaxFlag && orderTotalFlag);
+          Assert.assertTrue(subscriptionQuantityFlag && subscriptionPriceFlag && fgQuantityFlag && fgPriceFlag && shippingAddrStFlag && shippingAddrCityFlag && shippingAddrZipCodeFlag && paymentMethodFlag && orderTaxFlag && orderTotalFlag);*/
 
         }
 

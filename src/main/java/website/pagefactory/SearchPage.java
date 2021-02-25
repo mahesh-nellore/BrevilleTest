@@ -148,24 +148,15 @@ public class SearchPage extends BaseTest {
       "SP0020149"
     };
     String[] spareparts_au = {
+      "BWF100",
       "BES012CLR0NAN1",
-      "BES040GRY0NAN1",
-      "BES015CLR0NAN1",
-      "BES006",
+      "BKC250",
+      "BES008WHT0NAN1",
+      "BES013CLR0NAN1",
       "BES009CLR0NAN1",
       "BES010CLR0NAN1",
-      "BES480BSS0NAN1",
-      "BES030BSS0NAN1",
-      "BES013CLR0NAN1",
-      "BWF100",
-      "BES035BLK0NAN1",
-      "BES011CLR0NAN1",
-      "BES008WHT0NAN1",
-      "BCB100BSS",
-      "SP0016051",
-      "AQP-CJUG",
-      "AQP-24CS",
-      "AQP-BM4"
+      "BES014CLR0NAN1",
+      "BES011CLR0NAN1"
     };
     if ("us".equalsIgnoreCase(str)) list = Arrays.asList(spareParts);
     else if ("ca".equalsIgnoreCase(str) || "cafr".equalsIgnoreCase(str)) list = Arrays.asList(subscriptions);

@@ -461,13 +461,12 @@ public class MyBreville extends BaseTest {
   public String getFirstOrderNumber_OrdersPage() {
     String orderNumber = "";
     hardWait(5000);
-    if (!verifyNoOrdersDisplayedMsg()) {
-      waitForElementToBeVisible(firstOrderNumber_OrdersPage, 90);
-      String value = firstOrderNumber_OrdersPage.getText();
-      orderNumber = value.split("\\.")[1];
-    }
-
-    return orderNumber;
+    waitForElementToBeVisible(firstOrderNumber_OrdersPage, 90);
+    if(verifyElementIsDisplayed(firstOrderNumber_OrdersPage)) {
+        String value = firstOrderNumber_OrdersPage.getText();
+        String words[] = value.split("\\.");
+        orderNumber = words[words.length-1].trim();
+    }    return orderNumber;
   }
 
   public boolean verifyCancelSubscription() {

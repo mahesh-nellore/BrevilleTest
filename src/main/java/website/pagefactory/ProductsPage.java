@@ -76,8 +76,7 @@ public class ProductsPage extends BaseTest {
   }
 
   public void clickGoToCart() {
-    // hardWait(5000);
-    if (priceMismatch.size() > 1) {
+	  if (priceMismatch.size() > 1) {
       logger.log(Status.INFO, "There is a price mismatch for the selected product. handling it.");
       int count = 0;
       for (WebElement webElement: priceMismatch) {
@@ -87,10 +86,10 @@ public class ProductsPage extends BaseTest {
       }
     } else {
       logger.log(Status.INFO, "There is no price mismatch");
-    }
-    waitForElementToBeClickable(goToCartButton);
-    goToCartButton.click();
-    logger.log(Status.INFO, "Clicking on the Go To Cart Button");
+      waitForElementToBeClickable(goToCartButton);
+      goToCartButton.click();
+      logger.log(Status.INFO, "Clicking on the Go To Cart Button");
+    }    
     hardWait(8000);
     while (transactionpage.verifyLoaderImage()) {
       hardWait(5000);

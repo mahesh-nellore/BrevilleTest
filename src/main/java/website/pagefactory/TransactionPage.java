@@ -584,7 +584,7 @@ public class TransactionPage extends BaseTest {
       address1.sendKeys(str[2]);
       city.sendKeys(str[3]);
       zipcode.sendKeys(str[4]);
-      if ("ca".equalsIgnoreCase(str[7]) || "cafr".equalsIgnoreCase(str[7]) || "us".equalsIgnoreCase(str[7])) {
+      if ("ca".equalsIgnoreCase(str[7]) || "cafr".equalsIgnoreCase(str[7]) || "us".equalsIgnoreCase(str[7]) || "au".equalsIgnoreCase(str[7])) {
         Select select = new Select(state);
         select.selectByVisibleText(str[5]);
       } else if ("eu".equalsIgnoreCase(str[7])) {
@@ -627,7 +627,7 @@ public class TransactionPage extends BaseTest {
     waitForElementToBeVisible(submitOrderButton);
     submitOrderButton.click();
     hardWait(5000);
-    if ("eu".equalsIgnoreCase(str[7]) || "uk".equalsIgnoreCase(str[7])) {
+    if (str[7].contains("eu") || "uk".equalsIgnoreCase(str[7])) {
       logger.log(Status.INFO, " The Order belongs to EU region");
       System.out.println("The Order belongs to EU Region");
       hardWait(8000);

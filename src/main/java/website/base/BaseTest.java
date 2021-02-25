@@ -300,26 +300,6 @@ public class BaseTest {
     }
     reporter.flush();
     driver.quit();
-    /*if (mybreville.verifyMyBrevilleMenu()) {
-      mybreville.logout();
-      logger.log(Status.INFO, "Logged out successfully and waiting for few seconds to close the window..");
-      driver.close();
-      logger.log(Status.INFO, "Closed the child window");
-      hardWait(2000);
-      logger.log(Status.INFO, "Waiting for few seconds before switching to Parent Window");
-      System.out.println("Parent Window: " + parentWindow);
-      driver.switchTo().window(parentWindow);
-      logger.log(Status.INFO, "Switched to the Parent | Main window");
-      logger.log(Status.INFO, "-------TestCase_01: is Ended---");
-    } else {
-      driver.close();
-      logger.log(Status.INFO, "Closed the child window");
-      hardWait(2000);
-      logger.log(Status.INFO, "Waiting for few seconds before switching to Parent Window");
-      driver.switchTo().window(parentWindow);
-      logger.log(Status.INFO, "Switched to the Parent | Main window");
-      logger.log(Status.INFO, "-------TestCase_01: is Ended---");
-    }*/
   }
 
 }

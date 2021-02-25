@@ -61,8 +61,8 @@ public class HomePage extends BaseTest {
 
   @FindBy(xpath = "(//img[contains(@src,'tea')])[1]")
   private WebElement kettlesImage;
-  
-  @FindBy(xpath= "(//a[contains(@href,'cookers')])[1]")
+
+  @FindBy(xpath = "(//a[contains(@href,'cookers')])[1]")
   private WebElement cookersLink;
 
   @FindAll(@FindBy(xpath = "//div[contains(@class, 'js-grid-item')]/a"))
@@ -101,6 +101,12 @@ public class HomePage extends BaseTest {
   @FindBy(css = "a[data-country='de']")
   private WebElement selectCountryGerman;
   
+  @FindBy(css = "a[data-country='FR']")
+  private WebElement selectCountryFrance;
+
+  @FindBy(css = "a[href*='ch/de']")
+  private WebElement selectCountrySwitzerland;
+
   @FindBy(css = "a[data-country='nl']")
   private WebElement selectCountryNetherlands;
 
@@ -173,7 +179,24 @@ public class HomePage extends BaseTest {
       selectCountryGerman.click();
       logger.log(Status.INFO, "Chosen country as German.");
       selectRegionEurope.click();
-    } else if ("au".equalsIgnoreCase(str)) {
+    } else if ("chde".equalsIgnoreCase(str)) {
+      waitForElementToBeClickable(selectRegionEurope);
+      selectRegionEurope.click();
+      logger.log(Status.INFO, "Chosen continent as Europe.");
+      waitForElementToBeClickable(selectCountrySwitzerland);
+      selectCountrySwitzerland.click();
+      logger.log(Status.INFO, "Chosen country as Switzerland.");
+      selectRegionEurope.click();
+    }else if ("eufr".equalsIgnoreCase(str)) {
+        waitForElementToBeClickable(selectRegionEurope);
+        selectRegionEurope.click();
+        logger.log(Status.INFO, "Chosen continent as Europe.");
+        waitForElementToBeClickable(selectCountryFrance);
+        selectCountryFrance.click();
+        logger.log(Status.INFO, "Chosen country as France.");
+        selectRegionEurope.click();
+      }
+    else if ("au".equalsIgnoreCase(str)) {
       waitForElementToBeClickable(selectRegionAsia);
       selectRegionAsia.click();
       logger.log(Status.INFO, "Chosen continent as Asia.");
@@ -213,7 +236,7 @@ public class HomePage extends BaseTest {
     return verifyElementIsDisplayed(newsLetterSignupButton);
   }
 
- /* public static HomePage getHomePage() {
+  /* public static HomePage getHomePage() {
     if (homepage == null) homepage = new HomePage();
     return homepage;
   }*/
@@ -320,13 +343,13 @@ public class HomePage extends BaseTest {
     logger.log(Status.INFO, "Clicking on the Kettle on the PLP page.");
     if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
   }
-  
+
   public void clickOnCookersLink() {
-	    waitForElementToBeClickable(cookersLink);
-	    clickElementUsingJavaScriptExecutor(cookersLink);
-	    logger.log(Status.INFO, "Clicking on the Cookers on the PLP page.");
-	    if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
-	  }
+    waitForElementToBeClickable(cookersLink);
+    clickElementUsingJavaScriptExecutor(cookersLink);
+    logger.log(Status.INFO, "Clicking on the Cookers on the PLP page.");
+    if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
+  }
 
   public String addKettleToCart() {
     hardWait(5000);
@@ -337,7 +360,7 @@ public class HomePage extends BaseTest {
     while (totalKettles > 0) {
       try {
         element = listOfKettles.get(totalKettles);
-        System.out.println("The product Xpath: "+element);
+        System.out.println("The product Xpath: " + element);
         waitForElementToBeClickable(element);
         clickElementUsingJavaScriptExecutor(element);
         totalKettles--;
@@ -345,7 +368,7 @@ public class HomePage extends BaseTest {
         logger.log(Status.INFO, "Exception occured while adding the kettle to the Cart: " + e.getMessage());
       }
       boolean flag = productspage.verifyAddToCartIsPresent();
-      System.out.println("Add to Cart for the produc is displayed: "+flag);
+      System.out.println("Add to Cart for the produc is displayed: " + flag);
       if (flag) {
         modelNumber = productspage.getModelNumber();
         logger.log(Status.INFO, "Add to cart option is available for the product: " + modelNumber);
@@ -364,7 +387,7 @@ public class HomePage extends BaseTest {
           }
 
         } else if (productspage.verifyGoToCartButton() || productspage.verifyAddItemToCart()) break;
-        
+
       } else {
         waitForElementToBeClickable(returnToKettlesPage);
         clickElementUsingJavaScriptExecutor(returnToKettlesPage);
