@@ -5,7 +5,7 @@
   <parameter name = "browser" value = "chrome"/>
   <parameter name = "env" value = "uat"/>
     <classes>
-     <class name="website.tests.SanityCheck_UAT"/>
+     <class name="website.tests.Platform_Regression"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
