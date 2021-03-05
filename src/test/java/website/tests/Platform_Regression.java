@@ -151,18 +151,22 @@ public class Platform_Regression extends BaseTest {
       if ("NewUser".equalsIgnoreCase(data[10]) && "uk".equalsIgnoreCase(data[1])) email_uk = email + ".full";
 
       // Verify Email ID
-      String accessTokenUri = webprop.getProperty("accessTokenUri");
-      String userIdUri = webprop.getProperty("userIdUri");
-      String verifyEmailUri = webprop.getProperty("verifyEmailUri");
-      String accessToken = VerifyEmailAPIs.getAccessToken(accessTokenUri);
-      logger.log(Status.INFO, "The Access Token: " + accessToken);
-      String userID = VerifyEmailAPIs.getUserID(userIdUri, email, accessToken);
-      logger.log(Status.INFO, "The User ID: " + userID);
-      int statusCode = VerifyEmailAPIs.doVerifyEmail(verifyEmailUri, accessToken, userID);
-      logger.log(Status.INFO, "The Status Code: " + statusCode);
-      Assert.assertEquals(statusCode, 204, "Failed to verify the Email using API's");
-      if (statusCode == 204) {
-        if ("Registered".equalsIgnoreCase(data[10]) || "NewUser".equalsIgnoreCase(data[10])) {
+      int statusCode = 0;
+      if("NewUser".equalsIgnoreCase(data[10])) {
+    	  String accessTokenUri = webprop.getProperty("accessTokenUri");
+          String userIdUri = webprop.getProperty("userIdUri");
+          String verifyEmailUri = webprop.getProperty("verifyEmailUri");
+          String accessToken = VerifyEmailAPIs.getAccessToken(accessTokenUri);
+          logger.log(Status.INFO, "The Access Token: " + accessToken);
+          String userID = VerifyEmailAPIs.getUserID(userIdUri, email, accessToken);
+          logger.log(Status.INFO, "The User ID: " + userID);
+          statusCode = VerifyEmailAPIs.doVerifyEmail(verifyEmailUri, accessToken, userID);
+          logger.log(Status.INFO, "The Status Code: " + statusCode);
+          Assert.assertEquals(statusCode, 204, "Failed to verify the Email using API's");
+      }
+      
+      if (("NewUser".equalsIgnoreCase(data[10]) && statusCode == 204) || "Registered".equalsIgnoreCase(data[10]) ) {
+        
           mybreville.clickMyBrevilleMenu();
           mybreville.clickOnBrevilleHubPage();
           boolean verifyLinks_hibpage = mybreville.verifyLinksInHubpage();
@@ -356,7 +360,7 @@ public class Platform_Regression extends BaseTest {
 
         }
 
-      }
+      
 
     } catch(Exception e) {
       logger.log(Status.INFO, "Exception: " + e.getMessage());
