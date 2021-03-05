@@ -15,7 +15,7 @@ import website.generic.ExcelUtility;
 import website.generic.GenericUtility;
 
 
-public class SanityCheck_UAT extends BaseTest {
+public class Platform_Regression extends BaseTest {
 
   private String email;
   Map < String,
