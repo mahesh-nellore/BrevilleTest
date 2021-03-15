@@ -268,7 +268,7 @@ public class BaseTest {
   }
 
   public boolean verifyElementIsDisplayed(WebElement element) {
-    hardWait(5000);
+    hardWait(8000);
     try {
       return element.isDisplayed();
 
