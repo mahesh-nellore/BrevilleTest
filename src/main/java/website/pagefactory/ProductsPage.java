@@ -21,8 +21,8 @@ public class ProductsPage extends BaseTest {
   @FindBy(xpath = "//button[contains(@class,'primary js-addToCartBtn')]")
   private WebElement addToCartButton;
 
-  @FindBy(css = "a[class$='primary']")
-  private WebElement goToCartButton;
+  @FindAll(@FindBy(css = "a[class*='primary']"))
+  private List<WebElement> goToCartButton;
 
   @FindAll(@FindBy(xpath = "//a[contains(@class, 'primary')]"))
   private List < WebElement > priceMismatch;
@@ -43,14 +43,12 @@ public class ProductsPage extends BaseTest {
     PageFactory.initElements(driver, this);
   }
 
-  /*public static ProductsPage getProductsPage() {
-    if (productspage == null) productspage = new ProductsPage();
-    return productspage;
-  }*/
+ 
 
   public String getModelNumber() {
-    hardWait(2000);
-    return modelNumber.getText();
+	  waitForElementToBeVisible(modelNumber);
+	  String modelNum = modelNumber.getText();
+    return modelNum;
   }
 
   public void selectItemFromList() {
@@ -75,27 +73,10 @@ public class ProductsPage extends BaseTest {
     return productAddedMsg.getText();
   }
 
-  public void clickGoToCart() {
-	  if (priceMismatch.size() > 1) {
-      logger.log(Status.INFO, "There is a price mismatch for the selected product. handling it.");
-      int count = 0;
-      for (WebElement webElement: priceMismatch) {
-        logger.log(Status.INFO, webElement.getText());
-        if (count == priceMismatch.size() - 1) webElement.click();
-        count++;
-      }
-    } else {
-      logger.log(Status.INFO, "There is no price mismatch");
-      waitForElementToBeClickable(goToCartButton);
-      goToCartButton.click();
-      logger.log(Status.INFO, "Clicking on the Go To Cart Button");
-    }    
-    hardWait(8000);
-    while (transactionpage.verifyLoaderImage()) {
-      hardWait(5000);
-      System.out.println("Waiting for the page to be loaded completly");
-    }
-    if (transactionpage.verifyProductOutOfStockAlert()) transactionpage.handleProductOutOfStockAlert();
+  public void clickGoToCart() {	 
+	  	int size = goToCartButton.size();		 
+		 waitForElementToBeClickable(goToCartButton.get(size-1));
+		 goToCartButton.get(size-1).click();
   }
 
   public void clickOnAddToCartButton() {
@@ -109,23 +90,20 @@ public class ProductsPage extends BaseTest {
 
   public boolean verifyAddItemToCart() {
     try {
-      hardWait(5000);
-      logger.log(Status.INFO, "waiting for few seconds for the Pop up to be opened");
-      System.out.println("waiting for few seconds for the Pop up to be opened");
-      if (priceMismatch.size() != 0) {
-        logger.log(Status.INFO, "Add Item to Cart is Displayed");
-        System.out.println("Add Item to Cart is Displayed");
+      hardWait(5000);            
+      if (priceMismatch.size() != 0) {       
         return true;
       }
     } catch(Exception e) {
-      logger.log(Status.INFO, "Exception caught while verify 'Add Item To Cart' button : " + e.getMessage());
-      System.out.println("Exception caught while verify 'Add Item To Cart' button : " + e.getMessage());
+      //logger.log(Status.INFO, "Exception caught while verify 'Add Item To Cart' button : " + e.getMessage());      
     }
     return false;
   }
 
   public boolean verifyGoToCartButton() {
-    return verifyElementIsDisplayed(goToCartButton);
+	 int size = goToCartButton.size();	
+	 waitForElementToBeClickable(goToCartButton.get(size-1));
+    return verifyElementIsDisplayed(goToCartButton.get(size-1));
   }
 
 }

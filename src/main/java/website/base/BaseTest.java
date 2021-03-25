@@ -4,10 +4,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -19,7 +19,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.grid.config.EnvConfig;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -28,7 +27,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Parameters;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -38,7 +36,6 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import website.pagefactory.HomePage;
 import website.pagefactory.MyBreville;
-import website.pagefactory.Platform;
 import website.pagefactory.ProductsPage;
 import website.pagefactory.SearchPage;
 import website.pagefactory.TransactionPage;
@@ -54,7 +51,6 @@ public class BaseTest {
   public static ProductsPage productspage = null;
   public static TransactionPage transactionpage = null;
   public static MyBreville mybreville = null;
-  public static Platform platformregistration = null;
   public static String parentWindow;
   public static boolean isNewsLetterPopUpDisplayed = false;
   //public static String email;
@@ -76,7 +72,7 @@ public class BaseTest {
     try {
       webprop.load(new FileInputStream(System.getProperty("user.dir") + File.separator + "testdata" + File.separator + "website.properties"));
       prodprop.load(new FileInputStream(System.getProperty("user.dir") + File.separator + "testdata" + File.separator + "prod.properties"));
-      logger.log(Status.INFO, webprop.getProperty("URL"));
+      //logger.log(Status.INFO, webprop.getProperty("URL"));
     } catch(FileNotFoundException e) {
 
 } catch(IOException e) {
@@ -106,28 +102,28 @@ public class BaseTest {
       options.addArguments("disable-features=NetworkService");
       options.addArguments("--force-device-scale-factor=1");
       driver = new ChromeDriver(options);
-      logger.log(Status.INFO, "Launch Chrome Browser");
+      //logger.log(Status.INFO, "Launch Chrome Browser");
     } else {
       WebDriverManager.firefoxdriver().setup();
       driver = new FirefoxDriver();
-      logger.log(Status.INFO, "Launch Firefox Browser");
+      //logger.log(Status.INFO, "Launch Firefox Browser");
     }
     driver.manage().window().maximize();
     driver.manage().deleteAllCookies();
-    driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
-    logger.log(Status.INFO, "Maximized the Window");
+    driver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
+    driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
+    //logger.log(Status.INFO, "Maximized the Window");
     String url = "";
     if (env.equalsIgnoreCase("prod")) url = prodprop.getProperty("URL");
     else url = webprop.getProperty("URL");
 
-    logger.log(Status.INFO, "Navigate to the URL: " + url);
+    //logger.log(Status.INFO, "Navigate to the URL: " + url);
     driver.get(url);
     homepage = new HomePage();
     searchpage = new SearchPage();
     productspage = new ProductsPage();
     transactionpage = new TransactionPage();
     mybreville = new MyBreville();
-    platformregistration = Platform.getPlatformRegistration();
   }
 
   @AfterTest
@@ -143,8 +139,8 @@ public class BaseTest {
       WebDriverWait wait = new WebDriverWait(driver, 30);
       wait.until(ExpectedConditions.visibilityOf(element));
     } catch(Exception e) {
-      logger.log(Status.INFO, "Seems like the element is not displayed in GUI and find the exact error message in the below line...." + element);
-      logger.log(Status.INFO, "Exception Wait for Element: " + e.getMessage());
+      //logger.log(Status.INFO, "Seems like the element is not displayed in GUI and find the exact error message in the below line...." + element);
+      //logger.log(Status.INFO, "Exception Wait for Element: " + e.getMessage());
     }
   }
 
@@ -153,8 +149,8 @@ public class BaseTest {
       WebDriverWait wait = new WebDriverWait(driver, seconds);
       wait.until(ExpectedConditions.visibilityOf(element));
     } catch(Exception e) {
-      logger.log(Status.INFO, "Seems like the element is not displayed in GUI and find the exact error message in the below line...." + element);
-      logger.log(Status.INFO, "Exception Wait for Element: " + e.getMessage());
+      //logger.log(Status.INFO, "Seems like the element is not displayed in GUI and find the exact error message in the below line...." + element);
+      //logger.log(Status.INFO, "Exception Wait for Element: " + e.getMessage());
     }
   }
 
@@ -163,10 +159,28 @@ public class BaseTest {
       WebDriverWait wait = new WebDriverWait(driver, 60);
       wait.until(ExpectedConditions.elementToBeClickable(element));
     } catch(Exception e) {
-      logger.log(Status.INFO, "Seems like the element is not displayed in GUI and find the exact error message in the below line...." + element);
-      logger.log(Status.INFO, "Exception Wait for Element>>" + e.getMessage());
+      //logger.log(Status.INFO, "Seems like the element is not displayed in GUI and find the exact error message in the below line...." + element);
+      //logger.log(Status.INFO, "Exception Wait for Element>>" + e.getMessage());
     }
   }
+  public void waitForElementsToBeVisible(List<WebElement> element) {
+	    try {
+	      WebDriverWait wait = new WebDriverWait(driver, 60);
+	      wait.until(ExpectedConditions.visibilityOfAllElements(element));
+	    } catch(Exception e) {
+	      //logger.log(Status.INFO, "Seems like the element is not displayed in GUI and find the exact error message in the below line...." + element);
+	      //logger.log(Status.INFO, "Exception Wait for Element>>" + e.getMessage());
+	    }
+	  }
+  /*public void waitForElementToBeDisplayed(WebElement element) {
+	    try {
+	      WebDriverWait wait = new WebDriverWait(driver, 30);
+	      wait.until(ExpectedConditions.visibilityOf(element));
+	    } catch(Exception e) {
+	      //logger.log(Status.INFO, "Seems like the element is not displayed in GUI and find the exact error message in the below line...." + element);
+	      //logger.log(Status.INFO, "Exception Wait for Element>>" + e.getMessage());
+	    }
+	  }*/
 
   public String getScreenShot() {
     TakesScreenshot ts = (TakesScreenshot) driver;
@@ -177,7 +191,7 @@ public class BaseTest {
     try {
       FileUtils.copyFile(src, des);
     } catch(IOException e) {
-      logger.log(Status.INFO, "Exception Wait for Element>>" + e.getMessage());
+      //logger.log(Status.INFO, "Exception Wait for Element>>" + e.getMessage());
     }
     return path;
 
@@ -186,7 +200,7 @@ public class BaseTest {
   public void hardWait(long time) {
     try {
       Thread.sleep(time);
-      logger.log(Status.INFO, "Waiting for few seconds to load the page completly...");
+      //logger.log(Status.INFO, "Waiting for few seconds to load the page completly...");
     } catch(InterruptedException e) {
 
 }
@@ -224,16 +238,16 @@ public class BaseTest {
       hardWait(5000);
       try {
         if (element != null) {
-          logger.log(Status.INFO, "The Element is present in the DOM: " + element);
+          //logger.log(Status.INFO, "The Element is present in the DOM: " + element);
           hardWait(2000);
           if (element.isDisplayed()) {
-            logger.log(Status.INFO, "The Element is Displayed on the Page: " + element);
+            //logger.log(Status.INFO, "The Element is Displayed on the Page: " + element);
             return true;
           }
         }
 
       } catch(Exception e) {
-        logger.log(Status.INFO, "Exception caught while waiting for the Element: " + e.getMessage());
+        //logger.log(Status.INFO, "Exception caught while waiting for the Element: " + e.getMessage());
       }
       count++;
 
@@ -245,10 +259,10 @@ public class BaseTest {
   public boolean isElementPresent(WebElement element) {
     try {
       waitForElementToBeVisible(element);
-      logger.log(Status.INFO, "Waiting for 10 seconds to load the page");
+      //logger.log(Status.INFO, "Waiting for 10 seconds to load the page");
       if (element.isDisplayed()) return true;
     } catch(Exception e) {
-      logger.log(Status.INFO, "Error occured while verifying the element is present on the Page" + e.getMessage());
+      //logger.log(Status.INFO, "Error occured while verifying the element is present on the Page" + e.getMessage());
     }
     return false;
 
@@ -262,18 +276,18 @@ public class BaseTest {
   public void switchToLatestWindow() {
     Set < String > allwindows = driver.getWindowHandles();
     for (String string: allwindows) {
-      logger.log(Status.INFO, driver.getWindowHandle());
+      //logger.log(Status.INFO, driver.getWindowHandle());
       driver.switchTo().window(string);
     }
   }
 
   public boolean verifyElementIsDisplayed(WebElement element) {
-    hardWait(8000);
+	  waitForElementToBeVisible(element);
     try {
       return element.isDisplayed();
 
     } catch(Exception e) {
-      logger.log(Status.INFO, "exception occurred while validating the webelement and the error message in the below line: " + element);
+      //logger.log(Status.INFO, "exception occurred while validating the webelement and the error message in the below line: " + element);
     }
     return false;
   }

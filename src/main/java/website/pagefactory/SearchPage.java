@@ -39,7 +39,6 @@ public class SearchPage extends BaseTest {
 
   public int getSearchResultCount() {
     waitForElementToBeVisible(searchResultMsg);
-    System.out.println("Search Result Count>>" + searchResultMsg.getText());
     return Integer.parseInt(searchResultMsg.getText());
   }
 
@@ -58,21 +57,24 @@ public class SearchPage extends BaseTest {
   }
 
   public boolean clickOnSearchResultProduct() {
-    if (!verifyElementIsDisplayed(noRecordsFoundMessage)) {
-      waitForElementToBeClickable(clickOnSearchresultItem);
-      hardWait(2000);
-      clickElementUsingJavaScriptExecutor(clickOnSearchresultItem);
-      logger.log(Status.INFO, "The product is displayed on the web page based on search criteria And selected the displayed product");
-
-      return true;
-    }
-    return false;
+	  boolean flag = false;
+	  if(verifyElementIsDisplayed(clickOnSearchresultItem)) {
+		  waitForElementToBeClickable(clickOnSearchresultItem);
+	      hardWait(2000);
+	      clickElementUsingJavaScriptExecutor(clickOnSearchresultItem);
+	      //logger.log(Status.INFO "The product is displayed on the web page based on search criteria And selected the displayed product");
+	      flag = true;
+	  }else if(verifyElementIsDisplayed(noRecordsFoundMessage)) {
+		  //logger.log(Status.INFO "On Click on search Result :- No Records found message is displayed");
+	  } 
+    
+    return flag;
 
   }
 
   public void addSearchItemToCart() {
     hardWait(5000);
-    logger.log(Status.INFO, "Waiting for few milli seconds..");
+    //logger.log(Status.INFO "Waiting for few milli seconds..");
     if (productspage.verifyAddToCartIsPresent()) {
       productspage.clickOnAddToCartButton();
     } else {
@@ -170,28 +172,14 @@ public class SearchPage extends BaseTest {
     	  hardWait(5000);
         boolean isAddToCartDisplayed = productspage.verifyAddToCartIsPresent();
         if (isAddToCartDisplayed) {
-          logger.log(Status.INFO, "Add To Cart button is displayed for the product: " + string);
+          //logger.log(Status.INFO "Add To Cart button is displayed for the product: " + string);
           productspage.clickOnAddToCartButton();
-          logger.log(Status.INFO, "Clicked on Add To Cart Button");
-          hardWait(8000);
-          while(transactionpage.verifyLoaderImage()) {
-        	  hardWait(5000);
-          }
-          if (transactionpage.verifyProductOutOfStockAlert()) {
-            System.out.println("Pop up opened on clicking Add to cart button");
-            transactionpage.handleProductOutOfStockAlert();
-            productspage.clickOnAddToCartButton();
-            hardWait(3000);
-            if (transactionpage.verifyProductOutOfStockAlert()) {
-              System.out.println("Pop up opened on clicking Add to cart button");
-              transactionpage.handleProductOutOfStockAlert();
-            } 
-          } else if (productspage.verifyGoToCartButton() || productspage.verifyAddItemToCart()) {
-          	break;
-          }
+          //logger.log(Status.INFO "Clicked on Add To Cart Button");
+          boolean isGoToCartButtonDisplayed = productspage.verifyGoToCartButton();
+          if(isGoToCartButtonDisplayed)
+        	  break;
         }else {
-            logger.log(Status.INFO, "Add To Cart button is not displayed for the product: " + string);
-            System.out.println("Add To Cart button is not displayed for the product: " + string);
+            //logger.log(Status.INFO "Add To Cart button is not displayed for the product: " + string);
           }
 
       }

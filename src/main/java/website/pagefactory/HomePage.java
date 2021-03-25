@@ -139,7 +139,8 @@ public class HomePage extends BaseTest {
     try {
       waitForElementToBeClickable(evidonAcceptButton);
       clickElementUsingJavaScriptExecutor(evidonAcceptButton);
-      logger.log(Status.INFO, "clicked on evidon Acept button");
+      //logger.log(Status.INFO, "clicked on evidon Acept button");
+      hardWait(2000);
     } catch(Exception e) {
       // TODO: handle exception
     }
@@ -149,68 +150,68 @@ public class HomePage extends BaseTest {
     if ("us".equalsIgnoreCase(str)) {
       waitForElementToBeClickable(selectRegionAmericas);
       selectRegionAmericas.click();
-      logger.log(Status.INFO, "Chosen continent as America.");
+      //logger.log(Status.INFO, "Chosen continent as America.");
       waitForElementToBeClickable(selectCountryUS);
       selectCountryUS.click();
-      logger.log(Status.INFO, "Choseb country as USA");
+      //logger.log(Status.INFO, "Choseb country as USA");
       hardWait(2000);
       selectRegionAmericas.click();
     } else if ("ca".equalsIgnoreCase(str)) {
       waitForElementToBeClickable(selectRegionAmericas);
       selectRegionAmericas.click();
-      logger.log(Status.INFO, "Chosen continent as America.");
+      //logger.log(Status.INFO, "Chosen continent as America.");
       waitForElementToBeClickable(selectCountryCAEN);
       selectCountryCAEN.click();
-      logger.log(Status.INFO, "Chosen country as Canada.");
+      //logger.log(Status.INFO, "Chosen country as Canada.");
       selectRegionAmericas.click();
     } else if ("cafr".equalsIgnoreCase(str)) {
       waitForElementToBeClickable(selectRegionAmericas);
       selectRegionAmericas.click();
-      logger.log(Status.INFO, "Chosen continent as America.");
+      //logger.log(Status.INFO, "Chosen continent as America.");
       waitForElementToBeClickable(selectCountryCAFR);
       selectCountryCAFR.click();
-      logger.log(Status.INFO, "Chosen country as Canada FR.");
+      //logger.log(Status.INFO, "Chosen country as Canada FR.");
       selectRegionAmericas.click();
     } else if ("eude".equalsIgnoreCase(str)) {
       waitForElementToBeClickable(selectRegionEurope);
       selectRegionEurope.click();
-      logger.log(Status.INFO, "Chosen continent as Europe.");
+      //logger.log(Status.INFO, "Chosen continent as Europe.");
       waitForElementToBeClickable(selectCountryGerman);
       selectCountryGerman.click();
-      logger.log(Status.INFO, "Chosen country as German.");
+      //logger.log(Status.INFO, "Chosen country as German.");
       selectRegionEurope.click();
     } else if ("chde".equalsIgnoreCase(str)) {
       waitForElementToBeClickable(selectRegionEurope);
       selectRegionEurope.click();
-      logger.log(Status.INFO, "Chosen continent as Europe.");
+      //logger.log(Status.INFO, "Chosen continent as Europe.");
       waitForElementToBeClickable(selectCountrySwitzerland);
       selectCountrySwitzerland.click();
-      logger.log(Status.INFO, "Chosen country as Switzerland.");
+      //logger.log(Status.INFO, "Chosen country as Switzerland.");
       selectRegionEurope.click();
     }else if ("eufr".equalsIgnoreCase(str)) {
         waitForElementToBeClickable(selectRegionEurope);
         selectRegionEurope.click();
-        logger.log(Status.INFO, "Chosen continent as Europe.");
+        //logger.log(Status.INFO, "Chosen continent as Europe.");
         waitForElementToBeClickable(selectCountryFrance);
         selectCountryFrance.click();
-        logger.log(Status.INFO, "Chosen country as France.");
+        //logger.log(Status.INFO, "Chosen country as France.");
         selectRegionEurope.click();
       }
     else if ("au".equalsIgnoreCase(str)) {
       waitForElementToBeClickable(selectRegionAsia);
       selectRegionAsia.click();
-      logger.log(Status.INFO, "Chosen continent as Asia.");
+      //logger.log(Status.INFO, "Chosen continent as Asia.");
       waitForElementToBeClickable(selectCountryAU);
       selectCountryAU.click();
-      logger.log(Status.INFO, "Chosen country as Australia.");
+      //logger.log(Status.INFO, "Chosen country as Australia.");
       selectRegionAsia.click();
     } else {
       waitForElementToBeClickable(selectRegionEurope);
       selectRegionEurope.click();
-      logger.log(Status.INFO, "Chosen continent as Europe.");
+      //logger.log(Status.INFO, "Chosen continent as Europe.");
       waitForElementToBeClickable(selectCountryUK);
       selectCountryUK.click();
-      logger.log(Status.INFO, "Chosen country as UK.");
+      //logger.log(Status.INFO, "Chosen country as UK.");
     }
 
   }
@@ -226,10 +227,11 @@ public class HomePage extends BaseTest {
   }
 
   public void closeNewsLetterPopUp() {
-    logger.log(Status.INFO, "Wait for the close icon to be displayed in the newsletter pop up");
+    //logger.log(Status.INFO, "Wait for the close icon to be displayed in the newsletter pop up");
     waitForElementToBeClickable(newsLetterCloseButton);
     newsLetterCloseButton.click();
-    logger.log(Status.INFO, "Newsletter popup closed.");
+    hardWait(2000);
+    //logger.log(Status.INFO, "Newsletter popup closed.");
   }
 
   public boolean verifyNewsLetterPopUpIsDisplayed() {
@@ -243,7 +245,6 @@ public class HomePage extends BaseTest {
 
   public String getTitle() {
     String title = driver.getTitle();
-    System.out.println("Title>>" + title);
     return title;
 
   }
@@ -274,11 +275,13 @@ public class HomePage extends BaseTest {
     return verifyWebElement(letsChatButton);
   }
 
-  public void clickOnProducts() {
+  public void clickOnProducts(String str) {
     waitForElementToBeClickable(productsLabel);
     productsLabel.click();
-    logger.log(Status.INFO, "Clicking on the products on the home page.");
-    if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
+    //logger.log(Status.INFO, "Clicking on the products on the home page.");
+    hardWait(2000);
+    if("eude".equalsIgnoreCase(str) || "chde".equalsIgnoreCase(str) || "uk".equalsIgnoreCase(str))
+    	if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
   }
 
   public int numberOfproductsCount() {
@@ -320,12 +323,14 @@ public class HomePage extends BaseTest {
   public void searchForProduct(String searchValue) {
     waitForElementToBeClickable(inputTextForSearch);
     inputTextForSearch.sendKeys(searchValue);
-    logger.log(Status.INFO, "Searching for the subscription product: " + searchValue);
-    if (verifySearchresultOption()) {
+    //logger.log(Status.INFO, "Searching for the subscription product: " + searchValue);
+    hardWait(2000);
+    inputTextForSearch.sendKeys(Keys.RETURN);
+   /* if (verifySearchresultOption()) {
       searchResultOption.click();
     } else {
       inputTextForSearch.sendKeys(Keys.RETURN);
-    }
+    }*/
   }
 
   public boolean verifySearchresultOption() {
@@ -337,64 +342,50 @@ public class HomePage extends BaseTest {
     selectOvensFromProductList.click();
   }
 
-  public void clickOnKettlesImage() {
+  public void clickOnKettlesImage(String str) {
     waitForElementToBeClickable(kettlesImage);
     clickElementUsingJavaScriptExecutor(kettlesImage);
-    logger.log(Status.INFO, "Clicking on the Kettle on the PLP page.");
-    if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
+    //logger.log(Status.INFO, "Clicking on the Kettle on the PLP page.");
+    if("eude".equalsIgnoreCase(str) || "chde".equalsIgnoreCase(str) || "uk".equalsIgnoreCase(str))
+    	if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
   }
 
   public void clickOnCookersLink() {
     waitForElementToBeClickable(cookersLink);
     clickElementUsingJavaScriptExecutor(cookersLink);
-    logger.log(Status.INFO, "Clicking on the Cookers on the PLP page.");
+    //logger.log(Status.INFO, "Clicking on the Cookers on the PLP page.");
     if (verifyNewsLetterPopUpIsDisplayed()) closeNewsLetterPopUp();
   }
 
   public String addKettleToCart() {
-    hardWait(5000);
+    //hardWait(5000);
     waitForElementToBeClickable(listOfKettles.get(0));
     int totalKettles = (listOfKettles.size()) - 1;
-    logger.log(Status.INFO, "The total number of products displayed in the web page under Kettles are: " + totalKettles);
+    //logger.log(Status.INFO, "The total number of products displayed in the web page under Kettles are: " + totalKettles);
     WebElement element = null;
     while (totalKettles > 0) {
       try {
         element = listOfKettles.get(totalKettles);
-        System.out.println("The product Xpath: " + element);
         waitForElementToBeClickable(element);
         clickElementUsingJavaScriptExecutor(element);
         totalKettles--;
       } catch(Exception e) {
-        logger.log(Status.INFO, "Exception occured while adding the kettle to the Cart: " + e.getMessage());
+        //logger.log(Status.INFO, "Exception occured while adding the kettle to the Cart: " + e.getMessage());
       }
       boolean flag = productspage.verifyAddToCartIsPresent();
-      System.out.println("Add to Cart for the produc is displayed: " + flag);
       if (flag) {
         modelNumber = productspage.getModelNumber();
-        logger.log(Status.INFO, "Add to cart option is available for the product: " + modelNumber);
+        //logger.log(Status.INFO, "Add to cart option is available for the product: " + modelNumber);
         productspage.clickOnAddToCartButton();
-        hardWait(9000);
-        if (transactionpage.verifyProductOutOfStockAlert()) {
-          System.out.println("Pop up opened on clicking Add to cart button");
-          transactionpage.handleProductOutOfStockAlert();
-          productspage.clickOnAddToCartButton();
-          hardWait(8000);
-          if (transactionpage.verifyProductOutOfStockAlert()) {
-            System.out.println("Pop up opened on clicking Add to cart button");
-            transactionpage.handleProductOutOfStockAlert();
-            waitForElementToBeClickable(returnToKettlesPage);
-            clickElementUsingJavaScriptExecutor(returnToKettlesPage);
-          }
-
-        } else if (productspage.verifyGoToCartButton() || productspage.verifyAddItemToCart()) break;
-
+        boolean isGoToCartButtonDisplayed = productspage.verifyGoToCartButton();
+        if(isGoToCartButtonDisplayed)
+        	break;
       } else {
         waitForElementToBeClickable(returnToKettlesPage);
         clickElementUsingJavaScriptExecutor(returnToKettlesPage);
       }
 
     }
-    logger.log(Status.INFO, "Adding the product to the Cart: " + modelNumber);
     return modelNumber;
 
   }

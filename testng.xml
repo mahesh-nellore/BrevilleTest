@@ -6,6 +6,7 @@
   <parameter name = "env" value = "uat"/>
     <classes>
      <class name="website.tests.Platform_Regression"/>
+     <class name="website.tests.D3665_Validation"/>
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->
