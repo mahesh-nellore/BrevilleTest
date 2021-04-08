@@ -3,16 +3,18 @@
 <suite guice-stage="DEVELOPMENT" name="Failed suite [Suite]">
   <test thread-count="5" name="Test(failed)">
     <parameter name="browser" value="chrome"/>
+    <parameter name="project" value="mp"/>
+    <parameter name="env" value="uat"/>
     <classes>
-      <class name="website.tests.SanityCheck_UAT">
+      <class name="website.tests.TC_Beanz_ShopCoffee_Test">
         <methods>
           <include name="initBaseConfig"/>
-          <include name="tc_01_PlaceAndOrder" invocation-numbers="0 1"/>
+          <include name="shopCoffeeLabel" invocation-numbers="0"/>
           <include name="setUp"/>
           <include name="tearDown"/>
           <include name="teardown"/>
         </methods>
-      </class> <!-- website.tests.SanityCheck_UAT -->
+      </class> <!-- website.tests.TC_Beanz_ShopCoffee_Test -->
     </classes>
   </test> <!-- Test(failed) -->
 </suite> <!-- Failed suite [Suite] -->

@@ -4,9 +4,11 @@
   <test thread-count="5" name="Test">
   <parameter name = "browser" value = "chrome"/>
   <parameter name = "env" value = "uat"/>
+    <parameter name = "project" value = "mp"/>
     <classes>
-     <class name="website.tests.Platform_Regression"/>
-     <class name="website.tests.D3665_Validation"/>
+    <class name="website.tests.TC_Beanz_ShopCoffee_Test"/>
+    <!-- <class name="website.tests.Platform_Regression"/>
+     <class name="website.tests.D3665_Validation"/> -->
     </classes>
   </test> <!-- Test -->
 </suite> <!-- Suite -->

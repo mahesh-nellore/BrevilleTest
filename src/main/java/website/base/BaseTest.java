@@ -34,6 +34,9 @@ import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import website.pagefactory.BeanzAddToCartPage;
+import website.pagefactory.BeanzHomePage;
+import website.pagefactory.BeanzTransactionPage;
 import website.pagefactory.HomePage;
 import website.pagefactory.MyBreville;
 import website.pagefactory.ProductsPage;
@@ -47,9 +50,12 @@ public class BaseTest {
   public static Properties webprop;
   public static Properties prodprop;
   public static HomePage homepage = null;
+  public static BeanzHomePage beanzHomepage = null;
   public static SearchPage searchpage = null;
   public static ProductsPage productspage = null;
+  public static BeanzAddToCartPage addToCartPage = null;
   public static TransactionPage transactionpage = null;
+  public static BeanzTransactionPage beanzTransactionpage = null;
   public static MyBreville mybreville = null;
   public static String parentWindow;
   public static boolean isNewsLetterPopUpDisplayed = false;
@@ -83,11 +89,12 @@ public class BaseTest {
 
   @BeforeMethod@Parameters({
     "browser",
-    "env"
+    "env",
+    "project"
   })
-  public static void setUp(String browser, String env) {
+  public static void setUp(String browser, String env, String project) {
     if (browser.equalsIgnoreCase("chrome")) {
-      WebDriverManager.chromedriver().setup();
+      WebDriverManager.chromedriver().version("89.0").setup();
       ChromeOptions options = new ChromeOptions();
       options.addArguments("ignore-certificate-errors");
       options.addArguments("start-maximized");
@@ -115,14 +122,18 @@ public class BaseTest {
     //logger.log(Status.INFO, "Maximized the Window");
     String url = "";
     if (env.equalsIgnoreCase("prod")) url = prodprop.getProperty("URL");
+    else if (project.equalsIgnoreCase("mp")) url = webprop.getProperty("BeanzURL");
     else url = webprop.getProperty("URL");
 
     //logger.log(Status.INFO, "Navigate to the URL: " + url);
     driver.get(url);
+    beanzHomepage = new BeanzHomePage();
+    addToCartPage = new BeanzAddToCartPage();
     homepage = new HomePage();
     searchpage = new SearchPage();
     productspage = new ProductsPage();
     transactionpage = new TransactionPage();
+    beanzTransactionpage = new BeanzTransactionPage();
     mybreville = new MyBreville();
   }
 
