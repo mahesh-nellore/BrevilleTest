@@ -28,6 +28,12 @@ public class BeanzTransactionPage extends BaseTest {
 	@FindBy(xpath = "(//button[contains(@id , 'dropdownMenuButton')])[1]")
 	private WebElement subscriptionPlanDropdown;
 	
+	@FindBy(xpath = "//div[contains(text(),'Belle Espresso')]")
+	private WebElement textOnAddToCart;
+	
+	@FindBy(xpath = "(//a//preceding:: div[contains(@class, 'dropdown-menu') and @aria-labelledby = 'dropdownMenuButton'])[1]//a")
+	private List< WebElement > listOfEverySubscription;
+	
 	@FindBy(xpath = "//button[@id='cartDropdownMenuButton']") //Send Me Dropdown
 	private WebElement quantityDropDown;
 	
@@ -73,6 +79,9 @@ public class BeanzTransactionPage extends BaseTest {
 
 	@FindBy(css = "input#phoneNumber_shipping")
 	private WebElement phoneNumber;
+	
+	@FindBy(css = "#state_shipping")
+	private WebElement stateShip;
 	
 	@FindBy(id = "cardholder-name")
 	private WebElement cardHolderName;
@@ -205,7 +214,7 @@ public class BeanzTransactionPage extends BaseTest {
 	@FindBy(xpath = "//input[@name='password']")
 	private WebElement passwordTextBox_CreateAccount;
 
-	@FindBy(css = "button[class*='button_breville']")
+	@FindBy(xpath = "//button[contains(text(),'Create account')]")
 	private WebElement continueButton_CreateAccount;
 
 	@FindAll(@FindBy(tagName = "iframe"))
@@ -224,8 +233,12 @@ public class BeanzTransactionPage extends BaseTest {
 	@FindBy(id = "js-sign-up-label")
 	private WebElement createAccountLoginButton;
 	
-	@FindBy(xpath = "(//div[contains(@class,'c-login-btn')])[1]")
+	@FindBy(xpath = "//a[@id='js-my-beanz-sign-in']")
 	private WebElement loginButton;
+	
+	@FindBy(id = "region_shipping")
+	private WebElement region;
+	
 
 	public BeanzTransactionPage() {
 		PageFactory.initElements(driver, this);
@@ -239,6 +252,11 @@ public class BeanzTransactionPage extends BaseTest {
 		return flag;
 
 	}
+	
+	public void selectStateShipping(String str) {
+		Select select = new Select(stateShip);
+		select.selectByVisibleText(str);
+	}
 
 	public void handleProductOutOfStockAlert() {
 		try {
@@ -250,9 +268,25 @@ public class BeanzTransactionPage extends BaseTest {
 		}
 	}
 	
-	public boolean vefiryUpdateplan() {
+	public boolean verifyFirstName_Checkoutpage() {
+		return verifyElementIsDisplayed(firstname);
+	}
+
+	public boolean verifyPaypalEmail() {
+		return verifyElementIsDisplayed(paypalEmailID);
+	}
+
+	public boolean verifyPaypalPassword() {
+		return verifyElementIsDisplayed(paypalPassword);
+	}
+
+	public boolean verifyPaypalContinueButton() {
+		return verifyElementIsDisplayed(paypalContinueButton);
+	}
+	
+	/*public boolean vefiryUpdateplan(String str) {
 		String initialValue = getPlan();
-		updatePlan();
+		updatePlan(str);
 		while (verifyLoaderImage()) {
 			hardWait(5000);
 		}
@@ -263,30 +297,84 @@ public class BeanzTransactionPage extends BaseTest {
 			return true;
 		else
 			return false;
-	}
+	}*/
 	
-	public String getPlan() {
+	 public boolean vefiryUpdateplan() {
+	        String initialValue = getPlan();
+	        System.out.println("Test update:-" +initialValue);
+	        updatePlan();
+	       verifyLoaderImage();
+	        	//waitForElementsToBeVisible(loaderImage);
+	            hardWait(3000);
+
+	        hardWait(2000);
+	        String editedValue = getPlan();
+	        System.out.println("Test Edited:-" +editedValue);
+	        //logger.log(Status.INFO, "The plan for the product before edit is and the plan after update is: " + initialValue+ " & " + editedValue);
+	        if (initialValue.equalsIgnoreCase(editedValue))
+	            return true;
+	        else
+	            return false;
+	    }
+	 
+	
+	/*public String getPlan() {
+		String option = "";
 		waitForElementToBeClickable(subscriptionPlanDropdown);
-	//	subscriptionPlanDropdown.click();
-		hardWait(3000);
-		Select select = new Select(subscriptionPlanDropdown);
-		return select.getFirstSelectedOption().getText();
+		subscriptionPlanDropdown.click();
+		
+		for (WebElement webElement : listOfEverySubscription) {
+			 option = webElement.getText();
 	}
+		return option;
+}*/
 	
-	public void updatePlan() {
-		String value = getPlan();
+	  public String getPlan() {
+		  String option = "";
+	        waitForElementToBeClickable(subscriptionPlanDropdown);
+	        subscriptionPlanDropdown.click();
+	        for (WebElement webElement : listOfEverySubscription) {
+				 option = webElement.getText();
+				 textOnAddToCart.click();
+				 break;
+		}
+			return option;
+	    }
+	
+	/*public void updatePlan(String str) {
+		//String value = getPlan();
 		hardWait(3000);
-		Select select = new Select(subscriptionPlanDropdown);
-		List<WebElement> options = select.getOptions();
-		for (WebElement webElement : options) {
-			String option = webElement.getText();
-			if (!value.equalsIgnoreCase(option)) {
-				select.selectByVisibleText(option);
-				break;
-			}
+		String option = "";
+		for (WebElement webElement : listOfEverySubscription) {
+			 option = webElement.getText();
+		if (str.equalsIgnoreCase(option)) {
+			webElement.click();
+			break;
 		}
 	}
-	
+
+	}	*/
+	  
+	  public void updatePlan() {
+	        String value = getPlan();
+	        String option = "";
+	        waitForElementToBeClickable(subscriptionPlanDropdown);
+	        subscriptionPlanDropdown.click();
+	        for (WebElement webElement : listOfEverySubscription) {
+				 option = webElement.getText();
+	        //for (WebElement webElement : options) {
+	           // String option = webElement.getText();
+	            if (!value.equalsIgnoreCase(option)) {
+	            	webElement.click();
+	            	
+	            	while (verifyLoaderImage()) {
+	    	            hardWait(5000);
+	    	        }
+	                break;
+	            }
+	        }
+	    }
+		
 	public boolean verifyLoaderImage() {
 		boolean flag = false;
 		try {
@@ -333,6 +421,14 @@ public class BeanzTransactionPage extends BaseTest {
 		return qty;
 	}
 
+	public String getPurchaseOrderId() {
+		hardWait(2000);
+		while (verifyLoaderImage()) {
+			hardWait(5000);
+		}
+		waitForElementToBeVisible(purchaseOrderId);
+		return purchaseOrderId.getText();
+	}
 	
 	public boolean vefiryUpdateQuantity() {
 		int initialValue = getQuantity();
@@ -376,8 +472,8 @@ public class BeanzTransactionPage extends BaseTest {
 	}
 	
 	public void clickOnCreateAccountButton_CartPage() {
-		waitForElementToBeClickable(createAccountButton_Cartpage);
-		createAccountButton_Cartpage.click();
+		waitForElementToBeClickable(oneTimeCreateAccount);
+		oneTimeCreateAccount.click();
 		logger.log(Status.INFO, "Clicked on Create account/Login button in Cart page");
 	}
 	
@@ -390,6 +486,101 @@ public class BeanzTransactionPage extends BaseTest {
 		return verifyElementIsDisplayed(username);
 	}
 	
+	public boolean verifyContinuePaymentButton() {
+		return verifyElementIsDisplayed(continuePaymentButton);
+	}
+	
+	public boolean verifyLoaderImageOnPaypalWindow() {
+		boolean flag = false;
+		try {
+			if (displayLoaderOnPayPalWindow.isDisplayed())
+				flag = true;
+		} catch (Exception e) {
+			logger.log(Status.INFO, "Exception occured while verifying the loader image");
+		}
+		return flag;
+	}
+	
+	public boolean verifyCardHolderName() {
+		waitForElementToBeClickable(cardHolderName);
+		try {
+			return cardHolderName.isDisplayed();
+		} catch (Exception e) {
+			logger.log(Status.INFO,
+					"Exception Occured while waiting for the cardHolderName and the exception is:" + e.getMessage());
+		}
+		return false;
+	}
+	
+	public void paymentUsingCreditCard(String str[]) {
+		while(verifyLoaderImage()) {
+			hardWait(2000);
+		}
+		hardWait(2000);
+		if (verifyFirstName_Checkoutpage()) {
+			waitForElementToBeVisible(firstname);
+			firstname.sendKeys(str[0]);
+			lastname.sendKeys(str[1]);
+			address1.sendKeys(str[2]);
+			city.sendKeys(str[3]);
+			zipcode.sendKeys(str[4]);
+			if ("ca".equalsIgnoreCase(str[7]) || "cafr".equalsIgnoreCase(str[7]) || "us".equalsIgnoreCase(str[7])
+					|| "au".equalsIgnoreCase(str[7])) {
+				Select select = new Select(state);
+				select.selectByVisibleText(str[5]);
+			} else if ("eu".equalsIgnoreCase(str[7])) {
+				region.sendKeys(str[5]);
+			}
+			phoneNumber.clear();
+			phoneNumber.sendKeys(str[6]);
+			continueToPayment.click();
+			hardWait(1000);
+			if (verifyElementIsDisplayed(saveShippingAddrButton)) {
+				waitForElementToBeClickable(saveShippingAddrButton);
+				saveShippingAddrButton.click();
+			} else {
+				logger.log(Status.INFO,"Save Shipping address pop up is not displayed");
+			}
+
+		} else if (verifyCardHolderName())
+			logger.log(Status.INFO, "After merge cart user is navigated to Checkout page.");
+		else if (verifyContinuePaymentButton())
+			continuePaymentButton.click();
+		else {
+			logger.log(Status.INFO,
+					"Seems like Cart has orders in it, hence redirected to Cart page instead of checkout page..");
+			checkoutOptForLoggedInUsr.click();
+			logger.log(Status.INFO, "Clicked On Chekout Button..");
+		}
+		waitForElementToBeClickable(cardHolderName);
+		cardHolderName.sendKeys(str[8]);
+		switchToFrame(iframeBrainTree);
+		creditCardNumber.sendKeys(str[9]);
+		switchToParentFrame();
+		switchToFrame(iframeExpiryDate);
+		expiryDate.sendKeys(str[10]);
+		switchToParentFrame();
+		switchToFrame(iframeCvv);
+		cvv.sendKeys(str[11]);
+		switchToParentFrame();
+		hardWait(2000);
+		clickElementUsingJavaScriptExecutor(termsAndConditionsCheckbox);
+		waitForElementToBeVisible(submitOrderButton);
+		submitOrderButton.click();
+		//hardWait(5000);
+		if (str[7].contains("eu") || "uk".equalsIgnoreCase(str[7])) {
+			logger.log(Status.INFO, " The Order belongs to EU region");
+			hardWait(8000);
+			switchToFrame(cardinalIframe);
+			logger.log(Status.INFO, "Switched to the CC iframe");
+			authPassword.sendKeys("1234");
+			submitButtonAuthPage.click();
+			hardWait(2000);
+			switchToParentFrame();
+		}
+
+	}
+
 	public boolean loginAndCheckout_NewUser(String uname, String pwd) {
 		boolean flag = false;
 		hardWait(2000);
@@ -422,7 +613,7 @@ public class BeanzTransactionPage extends BaseTest {
 		waitForElementToBeClickable(loginButton);
 		loginButton.click();
 		//logger.log(Status.INFO, "Clicking on the Login option from My Breville menu.");
-		hardWait(5000);
+		hardWait(9000);
 		if (verifyusername()) {
 			flag = true;
 			waitForElementToBeClickable(username);
@@ -439,7 +630,7 @@ public class BeanzTransactionPage extends BaseTest {
 		return flag;
 	}
 	
-	public void fillTheForm(String form[]) {
+/*	public void fillTheForm(String form[]) {
 		waitForTheElementToVisible(emailAddress);
 		hardWait(2000);
 		emailAddress.sendKeys(form[0]);
@@ -452,9 +643,168 @@ public class BeanzTransactionPage extends BaseTest {
 		address1.sendKeys(form[3]);
 		city.sendKeys(form[4]);
 		zipcode.sendKeys(form[5]);
+		selectStateShipping(form[8]);
 		phoneNumber.clear();
 		phoneNumber.sendKeys(form[7]);
 		continueToPayment.click();
+	}*/
+	
+	public void fillTheForm(String form[]) {
+        waitForTheElementToVisible(emailAddress);
+        hardWait(2000);
+        emailAddress.sendKeys(form[0]);
+        hardWait(1000);
+        waitForElementToBeClickable(continueToShippingButton);
+        clickElementUsingJavaScriptExecutor(continueToShippingButton);
+        waitForElementToBeVisible(firstname);
+        firstname.sendKeys(form[1]);
+        lastname.sendKeys(form[2]);
+        address1.sendKeys(form[3]);
+        city.sendKeys(form[4]);
+        zipcode.sendKeys(form[5]);
+        if ("ca".equalsIgnoreCase(form[1]) || "us".equalsIgnoreCase(form[1])) {
+            Select select = new Select(state);
+            select.selectByVisibleText(form[8]);
+        } else if ("eu".equalsIgnoreCase(form[1])) {
+            region.sendKeys(form[6]);
+        }
+        phoneNumber.clear();
+        phoneNumber.sendKeys(form[7]);
+        continueToPayment.click();
+    }
+	
+	public void paymentUsingPayPal(String str[]) {
+		while(verifyLoaderImage()) {
+			hardWait(2000);
+		}
+		hardWait(2000);
+		if (verifyFirstName_Checkoutpage()) {
+			waitForElementToBeVisible(firstname);
+			firstname.sendKeys(str[0]);
+			lastname.sendKeys(str[1]);
+			address1.sendKeys(str[2]);
+			city.sendKeys(str[3]);
+			zipcode.sendKeys(str[4]);
+			if ("ca".equalsIgnoreCase(str[7]) || "cafr".equalsIgnoreCase(str[7]) || "us".equalsIgnoreCase(str[7])
+					|| "au".equalsIgnoreCase(str[7])) {
+				Select select = new Select(state);
+				select.selectByVisibleText(str[5]);
+			} else if ("eu".equalsIgnoreCase(str[7])) {
+				region.sendKeys(str[5]);
+			}
+			phoneNumber.clear();
+			phoneNumber.sendKeys(str[6]);
+			continueToPayment.click();
+			hardWait(1000);
+			if (verifyElementIsDisplayed(saveShippingAddrButton)) {
+				waitForElementToBeClickable(saveShippingAddrButton);
+				saveShippingAddrButton.click();
+			} else {
+				//logger.log(Status.INFO, "Save Shipping address pop up is not displayed");
+			}
+
+		} else if (verifyCardHolderName())
+			logger.log(Status.INFO, "After merge cart user is navigated to Checkout page.");
+		else if (verifyContinuePaymentButton())
+			continuePaymentButton.click();
+		else {
+			logger.log(Status.INFO,
+					"Seems like Cart has orders in it, hence redirected to Cart page instead of checkout page..");
+			checkoutOptForLoggedInUsr.click();
+			logger.log(Status.INFO, "Clicked On Chekout Button..");
+		}
+
+		String parentWindow = driver.getWindowHandle();
+		waitForElementToBeClickable(paypalRadioButton);
+		paypalRadioButton.click();
+		//logger.log(Status.INFO, "Clicking on paypal radio button");
+		hardWait(10000);
+		for (WebElement element : allFrames) {
+			String value = element.getAttribute("name");
+			if (value.contains("xcomponent__ppbutton__4_0_165")) {
+				logger.log(Status.INFO,"The paypal iframe is Available");
+			}
+		}
+		for (WebElement element : allFrames) {
+			element.getAttribute("id");
+		}
+		for (WebElement element : allFrames) {
+			element.getAttribute("src");
+		}
+		driver.switchTo().frame(3);
+		//logger.log(Status.INFO, "Switched to the frame");
+		hardWait(10000);
+		payWithpaypalButton.click();
+		//logger.log(Status.INFO, "Clicking on pay with paypal button");
+		hardWait(8000);
+		switchToLatestWindow();
+		hardWait(1000);
+		//logger.log(Status.INFO, "switched to the latest window");
+		while (verifyLoaderImageOnPaypalWindow()) {
+			hardWait(2000);
+		}
+		// waitForElementToBeVisible(paypalEmailID);
+		waitForElementToBeClickable(paypalEmailID);
+		if (verifyPaypalEmail()) {
+			paypalEmailID.sendKeys(str[8]);
+			//logger.log(Status.INFO, "Entered username: " + str[8]);
+			waitForElementToBeClickable(paypalNextButton);
+			paypalNextButton.click();
+			//logger.log(Status.INFO, "Clicking on Next button");
+			hardWait(1000);
+			while (verifyLoaderImageOnPaypalWindow()) {
+				hardWait(2000);
+			}
+			
+		}
+		waitForElementToBeClickable(paypalPassword);
+		if (verifyPaypalPassword()) {
+			waitForElementToBeClickable(paypalPassword);
+			paypalPassword.sendKeys(str[9]);
+			//logger.log(Status.INFO, "Entered password: " + str[9]);
+			waitForElementToBeClickable(paypalLoginButton);
+			paypalLoginButton.click();
+			//logger.log(Status.INFO, "Clicking on Login button");
+			hardWait(2000);
+			while (verifyLoaderImageOnPaypalWindow()) {
+				hardWait(2000);
+			}
+			
+		}
+
+		waitForElementToBeClickable(paypalContinueButton);
+		if (verifyPaypalContinueButton()) {
+			waitForElementToBeClickable(paypalContinueButton);
+			paypalContinueButton.click();
+			//logger.log(Status.INFO, "Clicking on paypal continue button");
+			hardWait(1000);
+			while (verifyLoaderImageOnPaypalWindow()) {
+				hardWait(2000);
+			}
+			
+		}
+		while (verifyLoaderImageOnPaypalWindow()) {
+			hardWait(2000);
+		}
+		
+		waitForElementToBeClickable(paypalAgreeAndPayButton);
+		hardWait(5000);
+		clickElementUsingJavaScriptExecutor(paypalAgreeAndPayButton);
+		//logger.log(Status.INFO, "Clicking on Agree button");
+		while (verifyLoaderImageOnPaypalWindow()) {
+			hardWait(2000);
+		}
+		hardWait(5000);
+		driver.switchTo().window(parentWindow);
+		//logger.log(Status.INFO, "Switched back to parent window");
+		waitForElementToBeClickable(paypalTermsAndConditionsCheckBox);
+		hardWait(2000);
+		clickElementUsingJavaScriptExecutor(paypalTermsAndConditionsCheckBox);
+		//logger.log(Status.INFO, "Selected terms and conditions checkbox");
+		waitForElementToBeClickable(paypalSubmitOrder);
+		paypalSubmitOrder.click();
+		//logger.log(Status.INFO, "Clicking on the submit button");
+
 	}
 	
 	

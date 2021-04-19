@@ -46,7 +46,7 @@
 		<ul id='nav-mobile' class='right hide-on-med-and-down nav-right'>
 			<li>
                 <a href='#!'>
-                    <span class='label suite-start-time blue darken-3'>Apr 6, 2021 09:59:03 AM</span>
+                    <span class='label suite-start-time blue darken-3'>Apr 14, 2021 09:19:10 AM</span>
 				</a>
 			</li>
 			<li>
@@ -138,10 +138,10 @@
 					<canvas id='child-analysis' width='100' height='80'></canvas>
 				</div>
 				<div class='block text-small'>
-					<span class='tooltipped' data-position='top' data-tooltip='16.667%'><span class='strong'>1</span> step(s) passed</span>
+					<span class='tooltipped' data-position='top' data-tooltip='45.455%'><span class='strong'>5</span> step(s) passed</span>
 				</div>
 				<div class='block text-small'>
-					<span class='strong tooltipped' data-position='top' data-tooltip='16.667%'>1</span> step(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='66.667%'>4</span> others
+					<span class='strong tooltipped' data-position='top' data-tooltip='9.091%'>1</span> step(s) failed, <span class='strong tooltipped' data-position='top' data-tooltip='45.455%'>5</span> others
 				</div>
 			</div>
 		</div>
@@ -159,13 +159,13 @@
 				<li class='test displayed active  pass' status='pass' bdd='false' test-id='1'>
 					<div class='test-heading'>
 						<span class='test-name'>Base Test</span>
-						<span class='test-time'>Apr 6, 2021 09:59:03 AM</span>
+						<span class='test-time'>Apr 14, 2021 09:19:11 AM</span>
 						<span class='test-status right pass'>pass</span>
 					</div>
 					<div class='test-content hide'>
 <div class='test-time-info'>
-	<span class='label start-time'>Apr 6, 2021 09:59:03 AM</span>
-	<span class='label end-time'>Apr 6, 2021 09:59:03 AM</span>
+	<span class='label start-time'>Apr 14, 2021 09:19:11 AM</span>
+	<span class='label end-time'>Apr 14, 2021 09:19:11 AM</span>
 	<span class='label time-taken grey lighten-1 white-text'>0h 0m 0s+0ms</span>
 </div>
 					</div>
@@ -174,15 +174,15 @@
 				
 				<li class='test displayed active  fail' status='fail' bdd='false' test-id='2'>
 					<div class='test-heading'>
-						<span class='test-name'>SanityCheck:NA</span>
-						<span class='test-time'>Apr 6, 2021 09:59:26 AM</span>
+						<span class='test-name'>SanityCheck:us</span>
+						<span class='test-time'>Apr 14, 2021 09:19:21 AM</span>
 						<span class='test-status right fail'>fail</span>
 					</div>
 					<div class='test-content hide'>
 <div class='test-time-info'>
-	<span class='label start-time'>Apr 6, 2021 09:59:26 AM</span>
-	<span class='label end-time'>Apr 6, 2021 10:00:16 AM</span>
-	<span class='label time-taken grey lighten-1 white-text'>0h 0m 50s+185ms</span>
+	<span class='label start-time'>Apr 14, 2021 09:19:21 AM</span>
+	<span class='label end-time'>Apr 14, 2021 09:21:47 AM</span>
+	<span class='label time-taken grey lighten-1 white-text'>0h 2m 25s+693ms</span>
 </div>
 	<div class='test-steps'>
 		<table class='bordered table-results'>
@@ -196,36 +196,58 @@
 			<tbody>
 				<tr class='log' status='info'>
 					<td class='status info' title='info' alt='info'><i class='material-icons'>info_outline</i></td>
-					<td class='timestamp'>9:59:26 AM</td>
+					<td class='timestamp'>9:19:21 AM</td>
 					<td class='step-details'>TestCase: Place one FG & subscription order using Paypal as a payment method from Breville and validate the order details in My Breville drop down - US/EN</td>
 				</tr>
 				<tr class='log' status='info'>
 					<td class='status info' title='info' alt='info'><i class='material-icons'>info_outline</i></td>
-					<td class='timestamp'>9:59:26 AM</td>
+					<td class='timestamp'>9:19:21 AM</td>
 					<td class='step-details'>Switched to latest window</td>
 				</tr>
 				<tr class='log' status='info'>
 					<td class='status info' title='info' alt='info'><i class='material-icons'>info_outline</i></td>
-					<td class='timestamp'>9:59:58 AM</td>
+					<td class='timestamp'>9:19:39 AM</td>
 					<td class='step-details'>Add to cart option is available for the product:</td>
 				</tr>
 				<tr class='log' status='pass'>
 					<td class='status pass' title='pass' alt='pass'><i class='material-icons'>check_circle</i></td>
-					<td class='timestamp'>10:00:12 AM</td>
+					<td class='timestamp'>9:19:51 AM</td>
 					<td class='step-details'>It has been validated that the cart page is providing multiple options login & checkout As Guest to the users.</td>
+				</tr>
+				<tr class='log' status='pass'>
+					<td class='status pass' title='pass' alt='pass'><i class='material-icons'>check_circle</i></td>
+					<td class='timestamp'>9:19:59 AM</td>
+					<td class='step-details'>It has been verified that the user is able to update the plan for the subscriptionproduct in the cart page</td>
+				</tr>
+				<tr class='log' status='pass'>
+					<td class='status pass' title='pass' alt='pass'><i class='material-icons'>check_circle</i></td>
+					<td class='timestamp'>9:20:00 AM</td>
+					<td class='step-details'>It has been validated that the cart is not showing up the Checkout As Guest option to the users when there is a subscription product in the Cart.</td>
 				</tr>
 				<tr class='log' status='info'>
 					<td class='status info' title='info' alt='info'><i class='material-icons'>info_outline</i></td>
-					<td class='timestamp'>10:00:15 AM</td>
-					<td class='step-details'>Exception: Element should have been "select" but was "button"
-Build info: version: '3.141.59', revision: 'e82be7d358', time: '2018-11-14T08:17:03'
-System info: host: 'LAPTOP-F56PNM75', ip: '172.31.16.1', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '1.8.0_281'
-Driver info: driver.version: unknown</td>
+					<td class='timestamp'>9:20:00 AM</td>
+					<td class='step-details'>This is for New User Creation: testNAPD4NN3FM240PGLY3@yopmail.com</td>
+				</tr>
+				<tr class='log' status='info'>
+					<td class='status info' title='info' alt='info'><i class='material-icons'>info_outline</i></td>
+					<td class='timestamp'>9:20:03 AM</td>
+					<td class='step-details'>Clicked on Create account/Login button in Cart page</td>
+				</tr>
+				<tr class='log' status='pass'>
+					<td class='status pass' title='pass' alt='pass'><i class='material-icons'>check_circle</i></td>
+					<td class='timestamp'>9:20:26 AM</td>
+					<td class='step-details'>Verified that User is able to create the account successfully</td>
+				</tr>
+				<tr class='log' status='pass'>
+					<td class='status pass' title='pass' alt='pass'><i class='material-icons'>check_circle</i></td>
+					<td class='timestamp'>9:21:41 AM</td>
+					<td class='step-details'>Verified that user is Successfully placed an Order and the Order number is: 266876</td>
 				</tr>
 				<tr class='log' status='fail'>
 					<td class='status fail' title='fail' alt='fail'><i class='material-icons'>cancel</i></td>
-					<td class='timestamp'>10:00:16 AM</td>
-					<td class='step-details'>Exception occured hence failing the test case.<img data-featherlight='D:\Breville_Automation\BrevilleTest\screenshots\1617683416461.png' width='10%' src='D:\Breville_Automation\BrevilleTest\screenshots\1617683416461.png' data-src='D:\Breville_Automation\BrevilleTest\screenshots\1617683416461.png'></td>
+					<td class='timestamp'>9:21:47 AM</td>
+					<td class='step-details'>expected [true] but found [false]<img data-featherlight='D:\Breville_Automation\BrevilleTest\screenshots\1618372307395.png' width='10%' src='D:\Breville_Automation\BrevilleTest\screenshots\1618372307395.png' data-src='D:\Breville_Automation\BrevilleTest\screenshots\1618372307395.png'></td>
 				</tr>
 			</tbody>
 		</table>
@@ -273,25 +295,25 @@ Driver info: driver.version: unknown</td>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Steps
-					<div class='panel-lead'>6</div>
+					<div class='panel-lead'>11</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Start
-					<div class='panel-lead'>Apr 6, 2021 09:59:03 AM</div>
+					<div class='panel-lead'>Apr 14, 2021 09:19:10 AM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 			 		End
-			 		<div class='panel-lead'>Apr 6, 2021 10:00:16 AM</div>
+			 		<div class='panel-lead'>Apr 14, 2021 09:21:47 AM</div>
 				</div>
 			</div>
 			<div class='col s2'>
 				<div class='card-panel r'>
 					Time Taken
-					<div class='panel-lead'>0h 1m 13s+359ms</div>
+					<div class='panel-lead'>0h 2m 36s+480ms</div>
 				</div>
 			</div>
 		</div>
@@ -312,13 +334,13 @@ Driver info: driver.version: unknown</td>
 				skipParent: 0,
 				exceptionsParent: 1,
 				
-				passChild: 1,
+				passChild: 5,
 				failChild: 1,
 				fatalChild: 0,
 				errorChild: 0,
 				warningChild: 0,
 				skipChild: 0,
-				infoChild: 4,
+				infoChild: 5,
 				exceptionsChild: 1,
 				
 				passGrandChild: 0,
